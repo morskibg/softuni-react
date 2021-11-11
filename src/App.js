@@ -1,45 +1,26 @@
-import React, { Fragment } from "react";
+import React, { Fragment } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
   Redirect,
   Route,
   Link,
-} from "react-router-dom";
-import AuthState from "./context/auth/AuthState";
-import AlertState from "./context/alert/AlertState";
-import axios from "axios";
-import Navbar from "./components/layout/Navbar";
-import Test from "./components/Test";
+} from 'react-router-dom';
+import AuthState from './context/auth/AuthState';
+import AlertState from './context/alert/AlertState';
+import axios from 'axios';
+import Navbar from './components/layout/Navbar';
+import Test from './components/Test';
 
-import "./App.css";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
-import Alerts from "./components/layout/Alerts";
-import Logout from "./components/auth/Logout";
-import RequireAuth from "./components/auth/RequireAuth";
-import RequireGuest from "./components/auth/RequireGuest";
+import './App.css';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import Alerts from './components/layout/Alerts';
+import Logout from './components/auth/Logout';
+import RequireAuth from './components/auth/RequireAuth';
+import RequireGuest from './components/auth/RequireGuest';
 
 const App = () => {
-  // const clickButton = async () => {
-  //   let test = undefined;
-  //   const config = {
-  //     headers: {
-  //       Authorization:
-  //         "Bearer " +
-  //         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MzcyMjk1NzYsInN1YiI6IjEifQ.tafJRnVsb8rqMX6xl7ZHYN3NbxvGhwLSRIjb7QvXGVQ",
-  //     },
-  //   };
-  //   try {
-  //     test = await axios.get(
-  //       "https://softuni-react-backend.herokuapp.com/api/v1/users",
-  //       config
-  //     );
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   console.log(test);
-  // };
   return (
     <AuthState>
       <AlertState>
@@ -49,8 +30,14 @@ const App = () => {
             <div className='container'>
               <Alerts />
               <Routes>
-                <Route path='login' element={<Login />} />
-                <Route path='register' element={<Register />} />
+                <Route
+                  path='/register'
+                  element={
+                    <RequireGuest>
+                      <Register />
+                    </RequireGuest>
+                  }
+                />
                 <Route
                   path='/login'
                   element={

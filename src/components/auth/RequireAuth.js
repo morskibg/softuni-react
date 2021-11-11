@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
-import { Navigate, Route, useLocation } from "react-router-dom";
-import AuthContext from "../../context/auth/authContext";
+import React, { useContext } from 'react';
+import { Navigate, Route, useLocation } from 'react-router-dom';
+import AuthContext from '../../context/auth/authContext';
 
 function RequireAuth({ children }) {
+  console.log('AAAAAUUUUUUUUUUUUUT');
   const authContext = useContext(AuthContext);
   const { isAuthenticated } = authContext;
 
