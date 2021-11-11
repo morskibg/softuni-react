@@ -1,6 +1,5 @@
 {
-  "name": "softuni-react",
-  "proxy": "http://10.10.10.71:8000",
+  "name": "softuni-react",  
   "version": "0.1.0",
   "private": true,
   "dependencies": {

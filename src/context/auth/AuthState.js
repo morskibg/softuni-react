@@ -1,8 +1,8 @@
-import React, { useReducer } from "react";
-import axios from "axios";
-import AuthContext from "./authContext";
-import authReducer from "./authReducer";
-import setAuthToken from "../../utils/setAuthToken";
+import React, { useReducer } from 'react';
+import axios from 'axios';
+import AuthContext from './authContext';
+import authReducer from './authReducer';
+import setAuthHeader from '../../utils/setAuthHeader';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -12,11 +12,11 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_ERRORS,
-} from "../types";
+} from '../types';
 
 const AuthState = (props) => {
   const initialState = {
-    token: localStorage.getItem("token"),
+    token: localStorage.getItem('token'),
     isAuthenticated: null,
     loading: true,
     user: null,
@@ -27,10 +27,10 @@ const AuthState = (props) => {
 
   // Load User
   const loadUser = async () => {
-    setAuthToken(localStorage.token);
+    setAuthHeader(localStorage.token);
 
     try {
-      const res = await axios.get("/api/auth");
+      const res = await axios.get('/api/v1/users/me');
 
       dispatch({
         type: USER_LOADED,
@@ -45,12 +45,12 @@ const AuthState = (props) => {
   const register = async (formData) => {
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
 
     try {
-      const res = await axios.post("/api/users", formData, config);
+      const res = await axios.post('/api/users', formData, config);
 
       dispatch({
         type: REGISTER_SUCCESS,
@@ -68,27 +68,31 @@ const AuthState = (props) => {
 
   // Login User
   const login = async (formData) => {
-    console.log("IN LOOOOGIN");
+    console.log('IN LOOOOGIN', formData);
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
     };
+    const credentials = new URLSearchParams();
+    credentials.append('username', formData.email);
+    credentials.append('password', formData.password);
 
     try {
       const res = await axios.post(
-        "/api/v1/login/access-token",
-        formData,
+        '/api/v1/login/access-token',
+        credentials,
         config
       );
-
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,
       });
 
-      //   loadUser();
+      loadUser();
     } catch (err) {
+      console.log('🚀 ~ file: AuthState.js ~ line 93 ~ login ~ err', err);
+
       dispatch({
         type: LOGIN_FAIL,
         payload: err.response.data.msg,
@@ -115,8 +119,7 @@ const AuthState = (props) => {
         login,
         logout,
         clearErrors,
-      }}
-    >
+      }}>
       {props.children}
     </AuthContext.Provider>
   );
