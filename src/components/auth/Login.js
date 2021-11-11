@@ -1,13 +1,29 @@
 import React, { useState, useContext, useEffect } from "react";
-// import AuthContext from "../../context/auth/authContext";
-// import AlertContext from '../../context/alert/alertContext';
-import PropTypes from "prop-types";
+import { useNavigate, useLocation } from "react-router-dom";
 import AuthContext from "../../context/auth/authContext";
+import AlertContext from "../../context/alert/alertContext";
 
-const Login = (props) => {
-  // const alertContext = useContext(AlertContext);
+const Login = () => {
+  const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
+
+  const { setAlert } = alertContext;
   const { login, error, clearErrors, isAuthenticated } = authContext;
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  console.log("🚀 ~ file: Login.js ~ line 15 ~ Login ~ state", state);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+
+    if (error === "Incorrect email or password") {
+      setAlert(error, "danger");
+      clearErrors();
+    }
+    // eslint-disable-next-line
+  }, [error, isAuthenticated]);
 
   const [user, setUser] = useState({
     email: "",
@@ -21,7 +37,7 @@ const Login = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (email === "" || password === "") {
-      console.log("Please fill in all fields", "danger");
+      setAlert("Please fill in all fields", "danger");
     } else {
       login({
         email,
@@ -67,13 +83,13 @@ const Login = (props) => {
   );
 };
 
-Login.propTypes = {
-  email: PropTypes.string,
-  password: PropTypes.string,
-};
-Login.defaultProps = {
-  email: "admin@aol.com",
-  password: "12345",
-};
+// Login.propTypes = {
+//   email: PropTypes.string,
+//   password: PropTypes.string,
+// };
+// Login.defaultProps = {
+//   email: "admin@aol.com",
+//   password: "12345",
+// };
 
 export default Login;

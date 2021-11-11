@@ -7,9 +7,9 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_ERRORS,
-} from '../types';
+} from "../types";
 
-const func = (state, action) => {
+const authReducer = (state, action) => {
   switch (action.type) {
     case USER_LOADED:
       return {
@@ -20,7 +20,7 @@ const func = (state, action) => {
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      localStorage.setItem('token', action.payload.access_token);
+      localStorage.setItem("token", action.payload.access_token);
       return {
         ...state,
         ...action.payload,
@@ -31,7 +31,7 @@ const func = (state, action) => {
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
       return {
         ...state,
         token: null,
@@ -49,4 +49,4 @@ const func = (state, action) => {
       return state;
   }
 };
-export default func;
+export default authReducer;
