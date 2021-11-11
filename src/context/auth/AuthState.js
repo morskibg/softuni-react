@@ -18,6 +18,7 @@ const AuthState = (props) => {
   const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: localStorage.getItem('token') ? true : false,
+    isAdmin: false,
     loading: true,
     user: null,
     error: null,
@@ -50,7 +51,7 @@ const AuthState = (props) => {
     };
 
     try {
-      const res = await axios.post('/api/users', formData, config);
+      const res = await axios.post('/api/v1/users', formData, config);
 
       dispatch({
         type: REGISTER_SUCCESS,
@@ -61,7 +62,7 @@ const AuthState = (props) => {
     } catch (err) {
       dispatch({
         type: REGISTER_FAIL,
-        payload: err.response.data.msg,
+        payload: err.response.data.detail,
       });
     }
   };
@@ -111,6 +112,7 @@ const AuthState = (props) => {
       value={{
         token: state.token,
         isAuthenticated: state.isAuthenticated,
+        isAdmin: state.isAdmin,
         loading: state.loading,
         user: state.user,
         error: state.error,

@@ -7,7 +7,7 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_ERRORS,
-} from "../types";
+} from '../types';
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -15,23 +15,25 @@ const authReducer = (state, action) => {
       return {
         ...state,
         isAuthenticated: true,
+        isAdmin: action.payload.is_superuser ? true : false,
         loading: false,
         user: action.payload,
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      localStorage.setItem("token", action.payload.access_token);
+      localStorage.setItem('token', action.payload.access_token);
       return {
         ...state,
         ...action.payload,
         isAuthenticated: true,
+        isAdmin: false,
         loading: false,
       };
     case REGISTER_FAIL:
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
-      localStorage.removeItem("token");
+      localStorage.removeItem('token');
       return {
         ...state,
         token: null,

@@ -17,8 +17,8 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Alerts from './components/layout/Alerts';
 import Logout from './components/auth/Logout';
-import RequireAuth from './components/auth/RequireAuth';
-import RequireGuest from './components/auth/RequireGuest';
+import RequireAuth from './components/route-guards/RequireAuth';
+import RequireGuest from './components/route-guards/RequireGuest';
 
 const App = () => {
   return (
@@ -54,7 +54,6 @@ const App = () => {
                     </RequireAuth>
                   }
                 />
-                {/* <PrivateRoute path='logout' element={<Logout />} /> */}
               </Routes>
             </div>
           </Fragment>
