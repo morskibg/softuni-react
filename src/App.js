@@ -1,15 +1,8 @@
 import React, { Fragment, useContext } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Redirect,
-  Route,
-  Link,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
-import Navbar from "./components/layout/Navbar_old";
+
 import Header from "./components/layout/Navdrawer";
 
 // import "./App.css";
@@ -23,6 +16,27 @@ import Home from "./components/pages/Home";
 
 import { Container } from "@mui/material";
 
+// import { createTheme } from "@mui/material/styles";
+// import { ThemeProvider } from "@mui/material";
+// import CssBaseline from "@mui/material/CssBaseline";
+
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       light: "#757ce8",
+//       main: "#fefefe",
+//       dark: "#002884",
+//       contrastText: "#fff",
+//     },
+//     secondary: {
+//       light: "#ff7961",
+//       main: "#f44336",
+//       dark: "#ba000d",
+//       contrastText: "#000",
+//     },
+//   },
+// });
+
 const App = () => {
   return (
     <AuthState>
@@ -35,6 +49,7 @@ const App = () => {
             {/* <Navbar /> */}
 
             <Alerts />
+
             <Routes>
               <Route path='/' element={<Home />} />
               <Route

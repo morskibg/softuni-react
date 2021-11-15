@@ -28,6 +28,7 @@ import {
 } from "react-router-dom";
 
 import AuthContext from "../../context/auth/authContext";
+import ThemeContext from "../../context/theme/themeContext";
 
 const drawerWidth = 240;
 
@@ -101,6 +102,8 @@ const Navdrawer = () => {
   const { isAuthenticated, isAdmin } = authContext;
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+
+  console.log("🚀 ~ file: App.js ~ line 45 ~ App ~ theme", theme);
 
   const handleDrawerOpen = () => {
     setOpen(true);

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import ThemeState from "./context/theme/ThemeState";
 // import { createTheme } from "@mui/material/styles";
 // import { ThemeProvider } from "@mui/material";
 // import CssBaseline from "@mui/material/CssBaseline";
@@ -22,11 +23,12 @@ import reportWebVitals from "./reportWebVitals";
 //       contrastText: "#000",
 //     },
 //   },
-// });
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeState>
+      <App />
+    </ThemeState>
   </React.StrictMode>,
   document.getElementById("root")
 );
