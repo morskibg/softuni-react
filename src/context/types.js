@@ -8,3 +8,5 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOGOUT";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
+export const SET_DARK_THEME = "SET_DARK_THEME";
+export const SET_LIGHT_THEME = "SET_LIGHT_THEME";
