@@ -12,10 +12,10 @@ const Home = () => {
 
   const { setAlert } = alertContext;
   const { isAuthenticated } = authContext;
-  const { setDark, setLight } = themeContext;
+  // const { setDark, setLight } = themeContext;
   const clickButton = (e) => {
     console.log(e);
-    setDark();
+    // setDark();
   };
 
   if (isAuthenticated) {

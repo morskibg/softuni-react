@@ -26,12 +26,15 @@ const ThemeState = (props) => {
     const darkTheme = createTheme({
       ...baseTheme,
       palette: {
-        mode: "dark",
+        type: "dark",
         primary: {
-          main: "#bbbbb",
+          main: "#089468",
         },
         secondary: {
-          main: "#fafafa",
+          main: "#f50057",
+        },
+        success: {
+          main: "#c2ff70",
         },
       },
     });
@@ -46,12 +49,18 @@ const ThemeState = (props) => {
     const lightTheme = createTheme({
       ...baseTheme,
       palette: {
-        mode: "light",
+        type: "light",
         primary: {
-          main: "#fafafa",
+          main: "#880e4f",
         },
         secondary: {
-          main: "#26a27b",
+          main: "#ff6f00",
+        },
+        success: {
+          main: "#c2ff70",
+        },
+        error: {
+          main: "#d40508",
         },
       },
     });

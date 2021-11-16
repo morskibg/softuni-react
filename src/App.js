@@ -1,10 +1,14 @@
 import React, { Fragment, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+import { Container } from "@mui/material/";
+
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
 
 import Header from "./components/layout/Navdrawer";
-
 // import "./App.css";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
@@ -13,75 +17,105 @@ import Logout from "./components/auth/Logout";
 import RequireAuth from "./components/route-guards/RequireAuth";
 import RequireGuest from "./components/route-guards/RequireGuest";
 import Home from "./components/pages/Home";
+import { darkTheme, lightTheme } from "./components/layout/Theme";
 
-import { Container } from "@mui/material";
-
-// import { createTheme } from "@mui/material/styles";
-// import { ThemeProvider } from "@mui/material";
-// import CssBaseline from "@mui/material/CssBaseline";
-
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       light: "#757ce8",
-//       main: "#fefefe",
-//       dark: "#002884",
-//       contrastText: "#fff",
-//     },
-//     secondary: {
-//       light: "#ff7961",
-//       main: "#f44336",
-//       dark: "#ba000d",
-//       contrastText: "#000",
-//     },
-//   },
-// });
+import ThemeContext from "./context/theme/themeContext";
+import deepOrange from "@mui/material/colors/deepOrange";
+import amber from "@mui/material/colors/amber";
+import deepPurple from "@mui/material/colors/deepPurple";
+import grey from "@mui/material/colors/grey";
 
 const App = () => {
+  const themeContext = useContext(ThemeContext);
+  const { theme } = themeContext;
+  const themeToLoad = theme ?? lightTheme;
+
+  console.log("🚀 ~ file: App.js ~ line 28 ~ App ~ themeToLoad", themeToLoad);
+
   return (
-    <AuthState>
-      <AlertState>
-        <Router>
-          <Fragment>
-            <Container />
+    <ThemeProvider theme={themeToLoad}>
+      <CssBaseline />
+      <AuthState>
+        <AlertState>
+          <Router>
+            <Fragment>
+              <Container />
 
-            <Header />
-            {/* <Navbar /> */}
+              <Header />
+              {/* <Navbar /> */}
 
-            <Alerts />
+              <Alerts />
 
-            <Routes>
-              <Route path='/' element={<Home />} />
-              <Route
-                path='/register'
-                element={
-                  <RequireGuest>
-                    <Register />
-                  </RequireGuest>
-                }
-              />
-              <Route
-                path='/login'
-                element={
-                  <RequireGuest>
-                    <Login />
-                  </RequireGuest>
-                }
-              />
-              <Route
-                path='/logout'
-                element={
-                  <RequireAuth>
-                    <Logout />
-                  </RequireAuth>
-                }
-              />
-            </Routes>
-          </Fragment>
-        </Router>
-      </AlertState>
-    </AuthState>
+              <Routes>
+                <Route path='/' element={<Home />} />
+                <Route
+                  path='/register'
+                  element={
+                    <RequireGuest>
+                      <Register />
+                    </RequireGuest>
+                  }
+                />
+                <Route
+                  path='/login'
+                  element={
+                    <RequireGuest>
+                      <Login />
+                    </RequireGuest>
+                  }
+                />
+                <Route
+                  path='/logout'
+                  element={
+                    <RequireAuth>
+                      <Logout />
+                    </RequireAuth>
+                  }
+                />
+              </Routes>
+            </Fragment>
+          </Router>
+        </AlertState>
+      </AuthState>
+    </ThemeProvider>
   );
 };
 
 export default App;
+
+// import React from "react";
+// import ReactDOM from "react-dom";
+// import CssBaseline from "@mui/material/CssBaseline";
+// import { ThemeProvider, createTheme } from "@mui/material/styles";
+// import Button from "@mui/material/Button";
+
+// const themeLight = createTheme({
+//   palette: {
+//     background: {
+//       default: "#e4f0e2",
+//     },
+//   },
+// });
+
+// const themeDark = createTheme({
+//   palette: {
+//     background: {
+//       default: "#222222",
+//     },
+//     text: {
+//       primary: "#ffffff",
+//     },
+//   },
+// });
+
+// const App = () => {
+//   const [light, setLight] = React.useState(true);
+//   return (
+//     <ThemeProvider theme={light ? themeLight : themeDark}>
+//       <CssBaseline />
+//       <Button onClick={() => setLight((prev) => !prev)}>Toggle Theme</Button>
+//     </ThemeProvider>
+//   );
+// };
+
+// export default App;
