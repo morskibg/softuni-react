@@ -1,13 +1,18 @@
-import React, { useContext } from 'react';
-import { Navigate, Route, useLocation } from 'react-router-dom';
-import AuthContext from '../../context/auth/authContext';
+import React, { useContext, useEffect } from "react";
+import { Navigate, Route, useLocation } from "react-router-dom";
+import AuthContext from "../../context/auth/authContext";
 
 function RequireAuth({ children }) {
-  console.log('AAAAAUUUUUUUUUUUUUT');
+  console.log("AAAAAUUUUUUUUUUUUUT");
   const authContext = useContext(AuthContext);
-  const { isAuthenticated } = authContext;
+  const { isAuthenticated, isAdmin } = authContext;
 
   let location = useLocation();
+
+  useEffect(() => {
+    isAdmin();
+    // eslint-disable-next-line
+  }, []);
 
   if (!isAuthenticated) {
     // Redirect them to the /login page, but save the current location they were

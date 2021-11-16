@@ -1,8 +1,9 @@
-import React, { useReducer } from 'react';
-import axios from 'axios';
-import AuthContext from './authContext';
-import authReducer from './authReducer';
-import setAuthHeader from '../../utils/setAuthHeader';
+import React, { useReducer } from "react";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+import AuthContext from "./authContext";
+import authReducer from "./authReducer";
+import setAuthHeader from "../../utils/setAuthHeader";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -12,12 +13,13 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_ERRORS,
-} from '../types';
+  IS_ADMIN,
+} from "../types";
 
 const AuthState = (props) => {
   const initialState = {
-    token: localStorage.getItem('token'),
-    isAuthenticated: localStorage.getItem('token') ? true : false,
+    token: localStorage.getItem("token"),
+    isAuthenticated: localStorage.getItem("token") ? true : false,
     isAdmin: false,
     loading: true,
     user: null,
@@ -31,7 +33,7 @@ const AuthState = (props) => {
     setAuthHeader(localStorage.token);
 
     try {
-      const res = await axios.get('/api/v1/users/me');
+      const res = await axios.get("/api/v1/users/me");
 
       dispatch({
         type: USER_LOADED,
@@ -46,12 +48,12 @@ const AuthState = (props) => {
   const register = async (formData) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
 
     try {
-      const res = await axios.post('/api/v1/users', formData, config);
+      const res = await axios.post("/api/v1/users", formData, config);
 
       dispatch({
         type: REGISTER_SUCCESS,
@@ -69,19 +71,18 @@ const AuthState = (props) => {
 
   // Login User
   const login = async (formData) => {
-    console.log('IN LOOOOGIN', formData);
     const config = {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     };
     const credentials = new URLSearchParams();
-    credentials.append('username', formData.email);
-    credentials.append('password', formData.password);
+    credentials.append("username", formData.email);
+    credentials.append("password", formData.password);
 
     try {
       const res = await axios.post(
-        '/api/v1/login/access-token',
+        "/api/v1/login/access-token",
         credentials,
         config
       );
@@ -92,8 +93,6 @@ const AuthState = (props) => {
 
       loadUser();
     } catch (err) {
-      console.log('🚀 ~ file: AuthState.js ~ line 93 ~ login ~ err', err);
-
       dispatch({
         type: LOGIN_FAIL,
         payload: err.response.data.detail,
@@ -107,12 +106,27 @@ const AuthState = (props) => {
   // Clear Errors
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
 
+  const isAdmin = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return false;
+    }
+    const decoded = jwt_decode(token);
+    console.log(
+      "🚀 ~ file: AuthState.js ~ line 114 ~ isAdmin ~ decoded",
+      decoded
+    );
+    dispatch({
+      type: IS_ADMIN,
+      payload: decoded.is_admin,
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
         token: state.token,
         isAuthenticated: state.isAuthenticated,
-        isAdmin: state.isAdmin,
         loading: state.loading,
         user: state.user,
         error: state.error,
@@ -121,7 +135,9 @@ const AuthState = (props) => {
         login,
         logout,
         clearErrors,
-      }}>
+        isAdmin,
+      }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

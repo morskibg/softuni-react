@@ -3,79 +3,40 @@ import { createTheme } from "@mui/material/styles";
 
 import ThemeContext from "./themeContext";
 import themeReducer from "./themeReducer";
-import { SET_DARK_THEME, SET_LIGHT_THEME } from "../types";
-
-const baseTheme = createTheme({
-  typography: {
-    fontFamily: "'Work Sans', sans-serif",
-    fontSize: 14,
-    fontFamilySecondary: "'Roboto Condensed', sans-serif",
-  },
-});
+import { TOGGLE_THEME } from "../types";
 
 const ThemeState = (props) => {
   const initialState = {
-    isDark: false,
-    theme: null,
+    isDark: localStorage.getItem("isDark"),
   };
   const [state, dispatch] = useReducer(themeReducer, initialState);
 
-  // Set Dark
+  // // Set Dark
 
-  const setDark = () => {
-    const darkTheme = createTheme({
-      ...baseTheme,
-      palette: {
-        type: "dark",
-        primary: {
-          main: "#089468",
-        },
-        secondary: {
-          main: "#f50057",
-        },
-        success: {
-          main: "#c2ff70",
-        },
-      },
-    });
-    dispatch({
-      type: SET_DARK_THEME,
-      payload: { isDark: true, theme: darkTheme },
-    });
-  };
+  // const setDark = () => {
+  //   dispatch({
+  //     type: SET_DARK_THEME,
+  //   });
+  // };
 
-  // Set Light
-  const setLight = () => {
-    const lightTheme = createTheme({
-      ...baseTheme,
-      palette: {
-        type: "light",
-        primary: {
-          main: "#880e4f",
-        },
-        secondary: {
-          main: "#ff6f00",
-        },
-        success: {
-          main: "#c2ff70",
-        },
-        error: {
-          main: "#d40508",
-        },
-      },
-    });
+  // // Set Light
+  // const setLight = () => {
+  //   dispatch({
+  //     type: SET_LIGHT_THEME,
+  //   });
+  // };
+
+  const toggle = () => {
     dispatch({
-      type: SET_LIGHT_THEME,
-      payload: lightTheme,
+      type: TOGGLE_THEME,
     });
   };
 
   return (
     <ThemeContext.Provider
       value={{
-        theme: state.theme,
-        setDark,
-        setLight,
+        isDark: state.isDark,
+        toggle,
       }}
     >
       {props.children}

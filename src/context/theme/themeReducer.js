@@ -1,19 +1,18 @@
-import { SET_DARK_THEME, SET_LIGHT_THEME } from "../types";
+import { TOGGLE_THEME } from "../types";
 
 const themeReducer = (state, action) => {
   console.log("in theme reducer");
   switch (action.type) {
-    case SET_DARK_THEME:
-      console.log(state);
-      console.log(action.payload.theme);
+    case TOGGLE_THEME:
+      console.log(state.isDark);
+      localStorage.setItem("isDark", !state.isDark);
       return {
         ...state,
-        theme: action.payload.theme,
-        isDark: action.payload.isDark,
+        isDark: !state.isDark,
       };
-    case SET_LIGHT_THEME:
+
     default:
-      return { ...state, theme: action.theme };
+      return { ...state, isDark: false };
   }
 };
 export default themeReducer;

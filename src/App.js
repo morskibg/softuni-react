@@ -20,15 +20,11 @@ import Home from "./components/pages/Home";
 import { darkTheme, lightTheme } from "./components/layout/Theme";
 
 import ThemeContext from "./context/theme/themeContext";
-import deepOrange from "@mui/material/colors/deepOrange";
-import amber from "@mui/material/colors/amber";
-import deepPurple from "@mui/material/colors/deepPurple";
-import grey from "@mui/material/colors/grey";
 
 const App = () => {
   const themeContext = useContext(ThemeContext);
-  const { theme } = themeContext;
-  const themeToLoad = theme ?? lightTheme;
+  const { isDark } = themeContext;
+  const themeToLoad = isDark ? darkTheme : lightTheme;
 
   console.log("🚀 ~ file: App.js ~ line 28 ~ App ~ themeToLoad", themeToLoad);
 
