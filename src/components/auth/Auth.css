@@ -104,3 +104,9 @@ img {
   font-size: 12px;
   outline: inherit;
 }
+.register_reset-button {
+  min-width: "1px";
+  color: crimson;
+  border: 9px solid rgb(38, 201, 125);
+  /* max-width: "200px"; */
+}

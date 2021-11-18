@@ -1,18 +1,20 @@
 import { TOGGLE_THEME } from "../types";
 
 const themeReducer = (state, action) => {
-  console.log("in theme reducer");
   switch (action.type) {
     case TOGGLE_THEME:
-      console.log(state.isDark);
-      localStorage.setItem("isDark", !state.isDark);
+      const newThemeValue = state.themeMode === "dark" ? "light" : "dark";
+      localStorage.setItem(
+        process.env.REACT_APP_THEME_TOKEN_NAME,
+        newThemeValue
+      );
       return {
         ...state,
-        isDark: !state.isDark,
+        themeMode: newThemeValue,
       };
 
     default:
-      return { ...state, isDark: false };
+      return { ...state, themeMode: false };
   }
 };
 export default themeReducer;

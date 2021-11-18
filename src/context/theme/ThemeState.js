@@ -1,30 +1,17 @@
 import React, { useReducer } from "react";
-import { createTheme } from "@mui/material/styles";
-
 import ThemeContext from "./themeContext";
 import themeReducer from "./themeReducer";
 import { TOGGLE_THEME } from "../types";
 
 const ThemeState = (props) => {
   const initialState = {
-    isDark: localStorage.getItem("isDark"),
+    themeMode: localStorage.getItem(process.env.REACT_APP_THEME_TOKEN_NAME),
   };
+  console.log(
+    `🚀 ~ file: ThemeState.js ~ line 9 ~ ThemeState ~ localStorage.getItem(${process.env.REACT_APP_THEME_TOKEN_NAME})`,
+    localStorage.getItem(process.env.REACT_APP_THEME_TOKEN_NAME)
+  );
   const [state, dispatch] = useReducer(themeReducer, initialState);
-
-  // // Set Dark
-
-  // const setDark = () => {
-  //   dispatch({
-  //     type: SET_DARK_THEME,
-  //   });
-  // };
-
-  // // Set Light
-  // const setLight = () => {
-  //   dispatch({
-  //     type: SET_LIGHT_THEME,
-  //   });
-  // };
 
   const toggle = () => {
     dispatch({
@@ -35,7 +22,7 @@ const ThemeState = (props) => {
   return (
     <ThemeContext.Provider
       value={{
-        isDark: state.isDark,
+        themeMode: state.themeMode,
         toggle,
       }}
     >

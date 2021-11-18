@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import AuthContext from '../../context/auth/authContext';
+import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import AuthContext from "../../context/auth/authContext";
 
 function RequireAuth({ children }) {
-  console.log('AAAAADMINNNN');
+  // console.log('AAAAADMINNNN');
   const authContext = useContext(AuthContext);
   const { isAdmin } = authContext;
 

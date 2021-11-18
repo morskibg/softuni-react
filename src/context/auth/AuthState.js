@@ -13,7 +13,8 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_ERRORS,
-  IS_ADMIN,
+  GET_ROLE,
+  GET_USER_DATA,
 } from "../types";
 
 const AuthState = (props) => {
@@ -21,11 +22,12 @@ const AuthState = (props) => {
     token: localStorage.getItem("token"),
     isAuthenticated: localStorage.getItem("token") ? true : false,
     isAdmin: false,
+    isGuest: false,
     loading: true,
     user: null,
     error: null,
   };
-
+  // console.log("in Auth State");
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   // Load User
@@ -34,13 +36,17 @@ const AuthState = (props) => {
 
     try {
       const res = await axios.get("/api/v1/users/me");
+      // console.log("🚀 ~ file: AuthState.js ~ line 39 ~ loadUser ~ res", res);
 
       dispatch({
         type: USER_LOADED,
         payload: res.data,
       });
     } catch (err) {
-      dispatch({ type: AUTH_ERROR });
+      const errMsg = Array.isArray(err.response.data.detail)
+        ? err.response.data.detail[0]["msg"]
+        : err.response.data.detail;
+      dispatch({ type: AUTH_ERROR, payload: errMsg });
     }
   };
 
@@ -54,17 +60,26 @@ const AuthState = (props) => {
 
     try {
       const res = await axios.post("/api/v1/users", formData, config);
-
+      console.log("dispatgjing registaer", REGISTER_SUCCESS);
       dispatch({
         type: REGISTER_SUCCESS,
-        payload: res.data,
+        payload: { data: res.data, msg: "User create successfully" },
       });
 
-      loadUser();
+      // loadUser();
     } catch (err) {
+      // console.log("🚀 ~ file: AuthState.js ~ line 68 ~ register ~ err", err);
+      // console.log(err.response);
+      // console.log(err.response.data);
+      // console.log(err.response.data.detail[0]["msg"]);
+      // console.log(err.response.data.detail.isArray);
+      const errMsg = Array.isArray(err.response.data.detail)
+        ? err.response.data.detail[0]["msg"]
+        : err.response.data.detail;
+      console.log("dispatgjing registaer", REGISTER_FAIL);
       dispatch({
         type: REGISTER_FAIL,
-        payload: err.response.data.detail,
+        payload: errMsg,
       });
     }
   };
@@ -86,16 +101,20 @@ const AuthState = (props) => {
         credentials,
         config
       );
+      console.log("dispatch after login");
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: res.data,
+        payload: { data: res.data, msg: "" },
       });
 
       loadUser();
     } catch (err) {
+      const errMsg = Array.isArray(err.response.data.detail)
+        ? err.response.data.detail[0]["msg"]
+        : err.response.data.detail;
       dispatch({
         type: LOGIN_FAIL,
-        payload: err.response.data.detail,
+        payload: errMsg,
       });
     }
   };
@@ -106,20 +125,33 @@ const AuthState = (props) => {
   // Clear Errors
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
 
-  const isAdmin = () => {
+  const getUserData = () => {
+    dispatch({
+      type: GET_USER_DATA,
+    });
+  };
+  const getRole = () => {
     const token = localStorage.getItem("token");
+    console.log("🚀 ~ file: AuthState.js ~ line 121 ~ getRole ~ token", token);
     if (!token) {
       return false;
     }
-    const decoded = jwt_decode(token);
-    console.log(
-      "🚀 ~ file: AuthState.js ~ line 114 ~ isAdmin ~ decoded",
-      decoded
-    );
-    dispatch({
-      type: IS_ADMIN,
-      payload: decoded.is_admin,
-    });
+    try {
+      const decoded = jwt_decode(token);
+      dispatch({
+        type: GET_ROLE,
+        payload: decoded,
+      });
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: AuthState.js ~ line 131 ~ getRole ~ error",
+        error
+      );
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: error,
+      });
+    }
   };
 
   return (
@@ -127,6 +159,8 @@ const AuthState = (props) => {
       value={{
         token: state.token,
         isAuthenticated: state.isAuthenticated,
+        isAdmin: state.isAdmin,
+        isGuest: state.isGuest,
         loading: state.loading,
         user: state.user,
         error: state.error,
@@ -135,7 +169,8 @@ const AuthState = (props) => {
         login,
         logout,
         clearErrors,
-        isAdmin,
+        getRole,
+        getUserData,
       }}
     >
       {props.children}

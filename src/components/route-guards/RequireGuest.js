@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import { Navigate, Route, useLocation } from 'react-router-dom';
-import AuthContext from '../../context/auth/authContext';
+import React, { useContext, useEffect } from "react";
+import { Navigate, Route, useLocation } from "react-router-dom";
+import AuthContext from "../../context/auth/authContext";
 
 function RequireGuest({ children }) {
-  console.log('GEEEEEEEEEEEEEEEEEEEEEEEST');
+  // console.log("GEEEEEEEEEEEEEEEEEEEEEEEST");
   const authContext = useContext(AuthContext);
   const { isAuthenticated } = authContext;
 

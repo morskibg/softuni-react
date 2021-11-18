@@ -1,0 +1,51 @@
+/* Global Styles */
+:root {
+  --primary-color-g: #003699;
+  --dark-color-g: #333333;
+  --light-color-g: #f4f4f4;
+  --danger-color-g: #dc3545;
+  --success-color-g: #28a745;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.alert {
+  padding: 0.7rem;
+  margin: 1rem 0;
+  opacity: 0.9;
+  background: var(--danger-color-g);
+  color: #333;
+}
+.withDrawer {
+  margin-left: 15rem;
+  /* padding: 20 rem; */
+}
+
+/* Mobile Styles */
+@media (max-width: 700px) {
+  .hide-sm {
+    display: none;
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Text Styles */
+  .x-large {
+    font-size: 3rem;
+  }
+
+  .large {
+    font-size: 2rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+}

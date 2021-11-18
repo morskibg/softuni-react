@@ -1,4 +1,5 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -19,6 +20,9 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Button from "@mui/material/Button";
 import PowerIcon from "@mui/icons-material/Power";
+import CreateUserIcon from "@mui/icons-material/PersonAdd";
+import ManageUsersIcon from "@mui/icons-material/PeopleAlt";
+import LogoutIcon from "@mui/icons-material/Logout";
 import {
   BrowserRouter as Router,
   Routes,
@@ -28,7 +32,8 @@ import {
 } from "react-router-dom";
 
 import AuthContext from "../../context/auth/authContext";
-import ThemeContext from "../../context/theme/themeContext";
+import AlertContext from "../../context/alert/alertContext";
+import AdminContext from "../../context/admin/adminContext";
 
 const drawerWidth = 240;
 
@@ -99,13 +104,42 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const Navdrawer = () => {
+const Navdrawer = (props) => {
+  const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
-  const { isAuthenticated, isAdmin } = authContext;
+  const adminContext = useContext(AdminContext);
+
+  const { setAlert } = alertContext;
+  const { isAuthenticated, isAdmin, error, clearErrors } = authContext;
+  const { getUsers, users } = adminContext;
+
+  const navigate = useNavigate();
+  // const currLocation = useLocation();
+  // console.log(
+  //   "🚀 ~ file: Navdrawer.js ~ line 115 ~ Navdrawer ~ currLocation",
+  //   currLocation
+  // );
+
+  // useEffect(() => {
+  //   if (!isAuthenticated || currLocation.pathname === "/register") {
+  //     console.log("aaaaaaaaaaa", isAuthenticated);
+  //     return null;
+  //   }
+
+  //   if (error) {
+  //     setAlert(error, "danger");
+  //     clearErrors();
+  //   }
+
+  //   // eslint-disable-next-line
+  // }, [error, isAuthenticated]);
+
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
-  console.log("🚀 ~ file: App.js ~ line 45 ~ App ~ theme", theme);
+  if (!isAuthenticated) {    
+    return null;
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -115,9 +149,39 @@ const Navdrawer = () => {
     setOpen(false);
   };
 
-  if (!isAuthenticated) {
-    return null;
-  }
+  const loadUsers = () => {
+    getUsers();
+    
+  };
+
+  // if (!isAuthenticated || currLocation.pathname === "/register") {
+  const menuItems = [
+    {
+      text: "First",
+      icon: <PowerIcon />,
+    },
+    {
+      text: "Second",
+      icon: <InboxIcon />,
+    },
+    {
+      text: "Third",
+      icon: <MailIcon />,
+    },
+  ];
+
+  const adminItems = [
+    {
+      text: "Create User",
+      icon: <CreateUserIcon />,
+      onClick: () => navigate("register"),
+    },
+    {
+      text: "Manage Users",
+      icon: <ManageUsersIcon />,
+      onClick: loadUsers,
+    },
+  ];
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar position='sticky' open={open} enableColorOnDark>
@@ -161,25 +225,47 @@ const Navdrawer = () => {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+          {menuItems.map((item) => (
+            <ListItem button key={item.text} onClick={() => navigate("logout")}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text}></ListItemText>
             </ListItem>
           ))}
         </List>
+
         <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+        {isAdmin && (
+          <Fragment>
+            <Typography variant='h7' mt={2} ml={1}>
+              Admin
+            </Typography>
+            <List>
+              {adminItems.map((item) => (
+                <ListItem button key={item.text} onClick={item.onClick}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text}></ListItemText>
+                </ListItem>
+              ))}
+            </List>
+          </Fragment>
+        )}
+
+        <List
+          sx={{
+            display: "flex",
+            flexGrow: 1,
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            // position: "absolute",
+            // bottom: "0",
+          }}
+        >
+          <ListItem button key={"logout"} onClick={() => navigate("logout")}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Logout"}></ListItemText>
+          </ListItem>
         </List>
       </Drawer>
     </Box>

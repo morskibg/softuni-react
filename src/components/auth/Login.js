@@ -34,7 +34,7 @@ const Login = () => {
   // const { state } = useLocation();
 
   const { control, handleSubmit, setValue } = useForm();
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     password: "",
     showPassword: false,
   });
@@ -50,6 +50,7 @@ const Login = () => {
       setAlert(error, "danger");
       clearErrors();
     }
+
     // eslint-disable-next-line
   }, [error, isAuthenticated]);
 
@@ -57,8 +58,12 @@ const Login = () => {
 
   const onGuestSliderChange = (event) => {
     if (event.target.checked) {
-      setValue("email", "guestUser@demo.com", { shouldValidate: true });
-      setValue("password", "guestUser", { shouldValidate: true });
+      setValue("email", process.env.REACT_APP_GUEST_EMAIL, {
+        shouldValidate: true,
+      });
+      setValue("password", process.env.REACT_APP_GUEST_PASSWORD, {
+        shouldValidate: true,
+      });
     } else {
       setValue("email", "");
       setValue("password", "");

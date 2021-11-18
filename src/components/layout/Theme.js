@@ -51,7 +51,7 @@ const darkTheme = createTheme({
 });
 
 const lightTheme = createTheme({
-  ...baseTheme,
+  // ...baseTheme,
   palette: {
     type: "light",
     background: {
@@ -68,7 +68,7 @@ const lightTheme = createTheme({
       main: "#c2ff70",
     },
     error: {
-      main: "#d40508",
+      main: "#ff0000",
     },
   },
 });

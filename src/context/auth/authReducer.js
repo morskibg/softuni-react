@@ -7,12 +7,14 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_ERRORS,
-  IS_ADMIN,
+  GET_ROLE,
+  GET_USER_DATA,
 } from "../types";
 
 const authReducer = (state, action) => {
   switch (action.type) {
     case USER_LOADED:
+      console.log("in USER_LOADED");
       return {
         ...state,
         isAuthenticated: true,
@@ -22,19 +24,23 @@ const authReducer = (state, action) => {
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      localStorage.setItem("token", action.payload.access_token);
+      if (action.type === LOGIN_SUCCESS) {
+        localStorage.setItem("token", action.payload.data.access_token);
+      }
       return {
         ...state,
-        ...action.payload,
+        ...action.payload.data,
         isAuthenticated: true,
         isAdmin: false,
         loading: false,
+        error: action.payload.msg,
       };
     case REGISTER_FAIL:
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
       localStorage.removeItem("token");
+
       return {
         ...state,
         token: null,
@@ -48,10 +54,18 @@ const authReducer = (state, action) => {
         ...state,
         error: null,
       };
-    case IS_ADMIN:
+
+    case GET_ROLE:
       return {
         ...state,
-        isAdmin: action.payload,
+        isAdmin: action.payload.is_admin,
+        isGuest: action.payload.is_guest,
+      };
+    case GET_USER_DATA:
+      console.log("in GET_USER_DATA");
+      return {
+        ...state,
+        user: state.user,
       };
 
     default:
