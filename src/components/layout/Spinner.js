@@ -1,13 +1,11 @@
 import React, { Fragment } from "react";
-import spinner from "./spinner.gif";
+import spinner from "../../assets/spinner.gif";
+import { Box } from "@mui/system";
+import "./Spinner.css";
 
 const SpinnerToExport = () => (
-  <Fragment>
-    <img
-      src={spinner}
-      style={{ width: "200px", margin: "auto", display: "block" }}
-      alt='Loading...'
-    />
-  </Fragment>
+  <Box className='spinner-container'>
+    <img src={spinner} alt='Loading...' />
+  </Box>
 );
 export default SpinnerToExport;

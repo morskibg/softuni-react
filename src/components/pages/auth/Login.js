@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import AuthContext from "../../context/auth/authContext";
-import AlertContext from "../../context/alert/alertContext";
-import AdminContext from "../../context/admin/adminContext";
-import "./Auth.css";
-import background from "../../assets/login.jpg";
+import AuthContext from "../../../context/auth/authContext";
+import AlertContext from "../../../context/alert/alertContext";
+// import AdminContext from "../../context/admin/adminContext";
+import "./Login.css";
+import background from "../../../assets/login.jpg";
 
 import {
   Button,
@@ -111,9 +111,6 @@ const Login = () => {
       <div className='form-container'>
         <div className='leftSide'>
           <div className='loginInput'>
-            {/* <h1>
-              Account <span className='text-primary'>Login</span>
-            </h1> */}
             <FormControl>
               <FormGroup>
                 <FormControlLabel
@@ -211,9 +208,7 @@ const Login = () => {
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
           }}
-        >
-          {/* <img className='loginImg' src={`${background}`} alt='bcg' />; */}
-        </div>
+        ></div>
       </div>
     </Fragment>
   );

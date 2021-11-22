@@ -1,5 +1,5 @@
 /*login page*/
-body {
+/* body {
   background: #f4f4f4;
 }
 
@@ -24,28 +24,28 @@ input:focus {
 
 .column {
   flex: 1;
-}
+} */
 
-.left-half {
+/* .left-half {
   width: 100%;
   height: 100%;
-  justify-content: space-between;
-  /* padding: 30px 80px 30px 60px; */
-}
+  justify-content: space-between; */
+/* padding: 30px 80px 30px 60px; */
+/* } */
 
-.input {
+/* .input {
   display: block;
   width: 100%;
   border: none;
-}
+} */
 
-.input-label {
+/* .input-label {
   color: #838282;
   font-size: 18px;
   margin-top: 30px;
-}
+} */
 
-.error {
+/* .error {
   font-size: 10px;
   color: rgb(255, 71, 71);
 }
@@ -53,7 +53,7 @@ img {
   width: 900px;
   height: 600px;
   object-fit: contain;
-}
+} */
 .form-container {
   min-height: 100vh;
   display: flex;
@@ -82,31 +82,4 @@ img {
   text-align: center;
   transform: translateX(50%);
   /* transform: translateY(-9%); */
-}
-.loginImg {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  /* width: 100%;
-  height: 100%; */
-  object-fit: cover;
-}
-.submit {
-  margin-top: 50px;
-  background: #35477d;
-  color: #fff;
-  border: none;
-  padding: 15px;
-  cursor: pointer;
-  font: inherit;
-  font-size: 12px;
-  outline: inherit;
-}
-.register_reset-button {
-  min-width: "1px";
-  color: crimson;
-  border: 9px solid rgb(38, 201, 125);
-  /* max-width: "200px"; */
 }

@@ -9,11 +9,10 @@ import AdminState from "./context/admin/AdminState";
 
 import Header from "./components/layout/Navdrawer";
 import "./App.css";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
+import Login from "./components/pages/auth/Login";
+import Register from "./components/pages/admin/Register";
 import Alerts from "./components/layout/Alerts";
-import Logout from "./components/auth/Logout";
-import DataTable from "./components/layout/DataTable";
+import Logout from "./components/pages/auth/Logout";
 import RequireAuth from "./components/route-guards/RequireAuth";
 import RequireGuest from "./components/route-guards/RequireGuest";
 import RequireAdmin from "./components/route-guards/RequireAdmin";
@@ -23,6 +22,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { darkTheme, lightTheme } from "./components/layout/Theme";
 
 import ThemeContext from "./context/theme/themeContext";
+import Users from "./components/pages/admin/Users";
 
 const App = () => {
   const themeToLoad =
@@ -31,7 +31,6 @@ const App = () => {
   return (
     <ThemeProvider theme={themeToLoad}>
       <CssBaseline />
-
       <AuthState>
         <AlertState>
           <AdminState>
@@ -43,7 +42,7 @@ const App = () => {
                 <Routes>
                   <Route path='/' element={<Home />} />
                   <Route
-                    path='/register'
+                    path='admin/register'
                     element={
                       <RequireAdmin>
                         <Register />
@@ -51,7 +50,15 @@ const App = () => {
                     }
                   />
                   <Route
-                    path='/login'
+                    path='admin/users'
+                    element={
+                      <RequireAdmin>
+                        <Users />
+                      </RequireAdmin>
+                    }
+                  />
+                  <Route
+                    path='login'
                     element={
                       <RequireGuest>
                         <Login />
@@ -59,18 +66,10 @@ const App = () => {
                     }
                   />
                   <Route
-                    path='/logout'
+                    path='logout'
                     element={
                       <RequireAuth>
                         <Logout />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route
-                    path='/users'
-                    element={
-                      <RequireAuth>
-                        <Home />
                       </RequireAuth>
                     }
                   />
@@ -85,40 +84,3 @@ const App = () => {
 };
 
 export default App;
-
-// import React from "react";
-// import ReactDOM from "react-dom";
-// import CssBaseline from "@mui/material/CssBaseline";
-// import { ThemeProvider, createTheme } from "@mui/material/styles";
-// import Button from "@mui/material/Button";
-
-// const themeLight = createTheme({
-//   palette: {
-//     background: {
-//       default: "#e4f0e2",
-//     },
-//   },
-// });
-
-// const themeDark = createTheme({
-//   palette: {
-//     background: {
-//       default: "#222222",
-//     },
-//     text: {
-//       primary: "#ffffff",
-//     },
-//   },
-// });
-
-// const App = () => {
-//   const [light, setLight] = React.useState(true);
-//   return (
-//     <ThemeProvider theme={light ? themeLight : themeDark}>
-//       <CssBaseline />
-//       <Button onClick={() => setLight((prev) => !prev)}>Toggle Theme</Button>
-//     </ThemeProvider>
-//   );
-// };
-
-// export default App;

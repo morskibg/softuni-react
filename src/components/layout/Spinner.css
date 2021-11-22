@@ -1,0 +1,13 @@
+.spinner-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* animation: spin 1.1s infinite linear; */
+}
+img {
+  display: block;
+  width: 8rem; /* change this value */
+  height: 8rem; /* change this value */
+}

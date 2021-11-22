@@ -1,27 +1,15 @@
-import React, { useContext, useEffect, Fragment, useState } from "react";
+import React, { useContext, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import Spinner from "./Spinner";
 
 import AdminContext from "../../context/admin/adminContext";
 import { Box } from "@mui/system";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import "./DataTable.css";
+
+import "./UsersTable.css";
 import { Typography } from "@mui/material";
 import RegisterIcon from "@mui/icons-material/Storage";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ClearIcon from "@mui/icons-material/LayersClear";
-import {
-  Button,
-  FormControl,
-  TextField,
-  FormControlLabel,
-  FormGroup,
-  Switch,
-  Divider,
-  InputAdornment,
-  IconButton,
-  ButtonGroup,
-} from "@mui/material";
+import { Button, ButtonGroup } from "@mui/material";
 
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
@@ -36,18 +24,9 @@ const columns = [
 
 const UsersTable = () => {
   const adminContext = useContext(AdminContext);
-  const { users, getUsers, loading } = adminContext;
+  const { users } = adminContext;
 
-  useEffect(() => {
-    if (!users) {
-      getUsers();
-    }
-    // createRows();
-
-    // eslint-disable-next-line
-  }, [users]);
-
-  const [selectedRows, setselectedRows] = useState();
+  const [selectedRows, setSelectedRows] = useState();
   const createRows = () => {
     const res = users.map((user) =>
       Object.assign({}, user, {
@@ -80,7 +59,7 @@ const UsersTable = () => {
             const selectedRowData = rows.filter((row) =>
               selectedIDs.has(row.id)
             );
-            setselectedRows(selectedRowData);
+            setSelectedRows(selectedRowData);
           }}
         />
         <ButtonGroup

@@ -147,11 +147,11 @@ const Navdrawer = (props) => {
     setOpen(false);
   };
 
-  const loadUsers = () => {
-    getUsers();
-    setLoader();
-    navigate("/");
-  };
+  // const loadUsers = () => {
+  //   getUsers();
+  //   setLoader();
+  //   navigate("/");
+  // };
 
   // if (!isAuthenticated || currLocation.pathname === "/register") {
   const menuItems = [
@@ -179,13 +179,13 @@ const Navdrawer = (props) => {
     {
       text: "Create User",
       icon: <CreateUserIcon />,
-      onClick: () => navigate("register"),
+      onClick: () => navigate("/admin/register"),
     },
     {
       text: "Manage Users",
       icon: <ManageUsersIcon />,
-      onClick: loadUsers,
-      // onClick: () => navigate("users"),
+      // onClick: loadUsers,
+      onClick: () => navigate("/admin/users"),
     },
   ];
   return (

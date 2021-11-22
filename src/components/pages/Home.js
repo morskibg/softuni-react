@@ -10,14 +10,14 @@ import Spinner from "../layout/Spinner";
 import AuthContext from "../../context/auth/authContext";
 import AlertContext from "../../context/alert/alertContext";
 import AdminContext from "../../context/admin/adminContext";
-import ThemeContext from "../../context/theme/themeContext";
-import { Typography, Button } from "@mui/material";
-import { Box } from "@mui/system";
+// import ThemeContext from "../../context/theme/themeContext";
+// import { Typography, Button } from "@mui/material";
+// import { Box } from "@mui/system";
 
-import DarkModeIcon from "@mui/icons-material/Brightness4";
-import LightModeIcon from "@mui/icons-material/Brightness7";
+// import DarkModeIcon from "@mui/icons-material/Brightness4";
+// import LightModeIcon from "@mui/icons-material/Brightness7";
 
-import DataTable from "../layout/DataTable";
+// import DataTable from "../layout/UsersTable";
 import "./Home.css";
 
 const Home = (props) => {
@@ -28,7 +28,8 @@ const Home = (props) => {
   const { setAlert } = alertContext;
   const { isAuthenticated, isAdmin, isGuest, getRole } = authContext;
 
-  const { users, clearUsersFromState, loading, getUsers } = adminContext;
+  const { users, clearUsersFromState, loading, getUsers, setLoader } =
+    adminContext;
   console.log("🚀 ~ file: Home.js ~ line 26 ~ Home ~ users", users);
 
   useEffect(() => {
@@ -67,21 +68,24 @@ const Home = (props) => {
   //   };
   // }, []);
 
-  const location = useLocation();
+  // const location = useLocation();
 
   // useEffect(() => {
   //   console.log("Location changed", location);
-  //   if (location.pathname === "/users") {
+  //   if (location.pathname === "/admin/users") {
+  //     setLoader();
   //     getUsers();
+  //   } else {
+  //     clearUsersFromState();
   //   }
   // }, [location]);
 
-  useEffect(() => {
-    console.log("Location changed", location);
-    if (users.length > 0) {
-      clearUsersFromState();
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   console.log("Location changed", location);
+  //   if (users.length > 0) {
+  //     clearUsersFromState();
+  //   }
+  // }, [location]);
 
   if (isAuthenticated) {
     console.log("in home in is Auth - checking for loading", loading);
@@ -91,11 +95,6 @@ const Home = (props) => {
       return (
         <div className='with-drawer'>
           <div style={{ display: "flex", justifyContent: "center" }}></div>
-          {/* <Routes>
-            <Route path='/users' element={<DataTable />} />
-          </Routes> */}
-
-          {users.length > 0 && <DataTable />}
         </div>
       );
     }
