@@ -1,5 +1,12 @@
 import React, { useState, useContext, useEffect, Fragment } from "react";
-import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import {
+  useNavigate,
+  useLocation,
+  Navigate,
+  Routes,
+  Route,
+} from "react-router-dom";
+import Spinner from "../layout/Spinner";
 import AuthContext from "../../context/auth/authContext";
 import AlertContext from "../../context/alert/alertContext";
 import AdminContext from "../../context/admin/adminContext";
@@ -10,59 +17,88 @@ import { Box } from "@mui/system";
 import DarkModeIcon from "@mui/icons-material/Brightness4";
 import LightModeIcon from "@mui/icons-material/Brightness7";
 
-import DataTable from "../layout/Table";
+import DataTable from "../layout/DataTable";
+import "./Home.css";
 
-const Home = () => {
+const Home = (props) => {
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
   const adminContext = useContext(AdminContext);
-  const themeContext = useContext(ThemeContext);
 
   const { setAlert } = alertContext;
-  const { error, clearErrors, isAuthenticated, isAdmin, isGuest, getRole } =
-    authContext;
-  const { toggle, themeMode } = themeContext;
-  const { users } = adminContext;
+  const { isAuthenticated, isAdmin, isGuest, getRole } = authContext;
+
+  const { users, clearUsersFromState, loading, getUsers } = adminContext;
   console.log("🚀 ~ file: Home.js ~ line 26 ~ Home ~ users", users);
 
   useEffect(() => {
-    if (error) {
-      setAlert(error, "danger");
-      clearErrors();
-    }
-    // console.log("in home use efect");
-    getRole();
-    // eslint-disable-next-line
-  }, [isAdmin, isGuest]);
+    if (authContext.error || adminContext.error) {
+      // console.log(
+      //   "🚀 ~ file: Home.js ~ line 30 ~ useEffect ~ adminContext.error",
+      //   adminContext.error
+      // );
+      // console.log(
+      //   "🚀 ~ file: Home.js ~ line 30 ~ useEffect ~ authContext.error",
+      //   authContext.error
+      // );
+      const alert = authContext.error ?? adminContext.error;
+      // console.log("🚀 ~ file: Home.js ~ line 33 ~ useEffect ~ alert", alert);
 
-  const clickButton = (e) => {
-    toggle();
-  };
+      setAlert(alert.msg, alert.type);
+      authContext.clearErrors();
+      adminContext.clearErrors();
+    }
+    getRole();
+
+    // eslint-disable-next-line
+  }, [isAdmin, isGuest, adminContext.error, authContext.error]);
+
+  // const alertUser = (e) => {
+  //   e.preventDefault();
+  //   e.returnValue = "";
+  //   console.log("fired"); //console.log is present on F5, not when leaving the page
+  // };
+
+  // useEffect(() => {
+  //   console.log("kokoko");
+  //   window.addEventListener("beforeunload", alertUser);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", alertUser);
+  //   };
+  // }, []);
+
+  const location = useLocation();
+
+  // useEffect(() => {
+  //   console.log("Location changed", location);
+  //   if (location.pathname === "/users") {
+  //     getUsers();
+  //   }
+  // }, [location]);
+
+  useEffect(() => {
+    console.log("Location changed", location);
+    if (users.length > 0) {
+      clearUsersFromState();
+    }
+  }, [location]);
 
   if (isAuthenticated) {
-    // console.log("in home autenticated", isGuest);
-    return (
-      <div className='withDrawer'>
-        <Typography variant='h1'>Hello from Home</Typography>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            type='submit'
-            variant='contained'
-            endIcon={themeMode ? <LightModeIcon /> : <DarkModeIcon />}
-            // color={checked ? "error" : "primary"}
-            onClick={clickButton}
-          >
-            {themeMode ? " go light " : "go night"}
-          </Button>
+    console.log("in home in is Auth - checking for loading", loading);
+    if (loading) {
+      return <Spinner />;
+    } else {
+      return (
+        <div className='with-drawer'>
+          <div style={{ display: "flex", justifyContent: "center" }}></div>
+          {/* <Routes>
+            <Route path='/users' element={<DataTable />} />
+          </Routes> */}
 
-          <div>
-            <Typography>{isAdmin && "Logged as Admin"}</Typography>
-            <Typography>{isGuest && "Logged as Guest"}</Typography>
-          </div>
+          {users.length > 0 && <DataTable />}
         </div>
-        {users.length > 0 && <DataTable />}
-      </div>
-    );
+      );
+    }
   } else {
     return <Navigate to='/login' />;
   }

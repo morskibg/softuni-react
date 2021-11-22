@@ -1,4 +1,5 @@
 import { Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import React, { useContext } from "react";
 import AlertContext from "../../context/alert/alertContext";
 import "./Alert.css";
@@ -9,12 +10,9 @@ const Alerts = () => {
   return (
     alertContext.alerts.length > 0 &&
     alertContext.alerts.map((alert) => (
-      <Typography key={alert.id} className={`alert alert-${alert.type}`}>
-        {alert.msg}
-      </Typography>
-      // <div key={alert.id} className={`alert alert-${alert.type}`}>
-      //   {/* <i className='fas fa-info-circle' /> {alert.msg} */}
-      // </div>
+      <Box key={alert.id} className={`alert alert-${alert.type}`}>
+        <Typography>{alert.msg}</Typography>
+      </Box>
     ))
   );
 };

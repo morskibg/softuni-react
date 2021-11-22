@@ -13,6 +13,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Alerts from "./components/layout/Alerts";
 import Logout from "./components/auth/Logout";
+import DataTable from "./components/layout/DataTable";
 import RequireAuth from "./components/route-guards/RequireAuth";
 import RequireGuest from "./components/route-guards/RequireGuest";
 import RequireAdmin from "./components/route-guards/RequireAdmin";
@@ -62,6 +63,14 @@ const App = () => {
                     element={
                       <RequireAuth>
                         <Logout />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path='/users'
+                    element={
+                      <RequireAuth>
+                        <Home />
                       </RequireAuth>
                     }
                   />

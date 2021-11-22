@@ -52,36 +52,34 @@ const AuthState = (props) => {
 
   // Register User
   const register = async (formData) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    try {
-      const res = await axios.post("/api/v1/users", formData, config);
-      console.log("dispatgjing registaer", REGISTER_SUCCESS);
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload: { data: res.data, msg: "User create successfully" },
-      });
-
-      // loadUser();
-    } catch (err) {
-      // console.log("🚀 ~ file: AuthState.js ~ line 68 ~ register ~ err", err);
-      // console.log(err.response);
-      // console.log(err.response.data);
-      // console.log(err.response.data.detail[0]["msg"]);
-      // console.log(err.response.data.detail.isArray);
-      const errMsg = Array.isArray(err.response.data.detail)
-        ? err.response.data.detail[0]["msg"]
-        : err.response.data.detail;
-      console.log("dispatgjing registaer", REGISTER_FAIL);
-      dispatch({
-        type: REGISTER_FAIL,
-        payload: errMsg,
-      });
-    }
+    // const config = {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // };
+    // try {
+    //   const res = await axios.post("/api/v1/users", formData, config);
+    //   console.log("dispatgjing registaer", REGISTER_SUCCESS);
+    //   dispatch({
+    //     type: REGISTER_SUCCESS,
+    //     payload: { data: res.data, msg: "User create successfully" },
+    //   });
+    //   // loadUser();
+    // } catch (err) {
+    //   // console.log("🚀 ~ file: AuthState.js ~ line 68 ~ register ~ err", err);
+    //   // console.log(err.response);
+    //   // console.log(err.response.data);
+    //   // console.log(err.response.data.detail[0]["msg"]);
+    //   // console.log(err.response.data.detail.isArray);
+    //   const errMsg = Array.isArray(err.response.data.detail)
+    //     ? err.response.data.detail[0]["msg"]
+    //     : err.response.data.detail;
+    //   console.log("dispatgjing registaer", REGISTER_FAIL);
+    //   dispatch({
+    //     type: REGISTER_FAIL,
+    //     payload: errMsg,
+    //   });
+    // }
   };
 
   // Login User
@@ -125,14 +123,26 @@ const AuthState = (props) => {
   // Clear Errors
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
 
-  const getUserData = () => {
-    dispatch({
-      type: GET_USER_DATA,
-    });
+  const getUserData = async () => {
+    setAuthHeader(localStorage.token);
+
+    try {
+      const res = await axios.get("/api/v1/users/me");
+
+      dispatch({
+        type: GET_USER_DATA,
+        payload: res.data,
+      });
+    } catch (err) {
+      const errMsg = Array.isArray(err.response.data.detail)
+        ? err.response.data.detail[0]["msg"]
+        : err.response.data.detail;
+      dispatch({ type: AUTH_ERROR, payload: errMsg });
+    }
   };
   const getRole = () => {
     const token = localStorage.getItem("token");
-    console.log("🚀 ~ file: AuthState.js ~ line 121 ~ getRole ~ token", token);
+
     if (!token) {
       return false;
     }

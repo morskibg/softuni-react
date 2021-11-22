@@ -23,6 +23,8 @@ import PowerIcon from "@mui/icons-material/Power";
 import CreateUserIcon from "@mui/icons-material/PersonAdd";
 import ManageUsersIcon from "@mui/icons-material/PeopleAlt";
 import LogoutIcon from "@mui/icons-material/Logout";
+import DarkModeIcon from "@mui/icons-material/Brightness4";
+import LightModeIcon from "@mui/icons-material/Brightness7";
 import {
   BrowserRouter as Router,
   Routes,
@@ -34,6 +36,7 @@ import {
 import AuthContext from "../../context/auth/authContext";
 import AlertContext from "../../context/alert/alertContext";
 import AdminContext from "../../context/admin/adminContext";
+import ThemeContext from "../../context/theme/themeContext";
 
 const drawerWidth = 240;
 
@@ -108,10 +111,12 @@ const Navdrawer = (props) => {
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
   const adminContext = useContext(AdminContext);
+  const themeContext = useContext(ThemeContext);
 
   const { setAlert } = alertContext;
   const { isAuthenticated, isAdmin, error, clearErrors } = authContext;
-  const { getUsers, users } = adminContext;
+  const { getUsers, setLoader } = adminContext;
+  const { toggle, themeMode } = themeContext;
 
   const navigate = useNavigate();
   // const currLocation = useLocation();
@@ -121,23 +126,16 @@ const Navdrawer = (props) => {
   // );
 
   // useEffect(() => {
-  //   if (!isAuthenticated || currLocation.pathname === "/register") {
-  //     console.log("aaaaaaaaaaa", isAuthenticated);
-  //     return null;
-  //   }
-
-  //   if (error) {
-  //     setAlert(error, "danger");
-  //     clearErrors();
-  //   }
+  //   clearUsersFromState();
 
   //   // eslint-disable-next-line
-  // }, [error, isAuthenticated]);
+  // }, []);
 
   const theme = useTheme();
+
   const [open, setOpen] = useState(false);
 
-  if (!isAuthenticated) {    
+  if (!isAuthenticated) {
     return null;
   }
 
@@ -151,14 +149,21 @@ const Navdrawer = (props) => {
 
   const loadUsers = () => {
     getUsers();
-    
+    setLoader();
+    navigate("/");
   };
 
   // if (!isAuthenticated || currLocation.pathname === "/register") {
   const menuItems = [
     {
+      text: "Toogle theme",
+      icon: themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />,
+      onClick: toggle,
+    },
+    {
       text: "First",
       icon: <PowerIcon />,
+      onClick: () => navigate("/"),
     },
     {
       text: "Second",
@@ -180,6 +185,7 @@ const Navdrawer = (props) => {
       text: "Manage Users",
       icon: <ManageUsersIcon />,
       onClick: loadUsers,
+      // onClick: () => navigate("users"),
     },
   ];
   return (
@@ -226,7 +232,7 @@ const Navdrawer = (props) => {
         <Divider />
         <List>
           {menuItems.map((item) => (
-            <ListItem button key={item.text} onClick={() => navigate("logout")}>
+            <ListItem button key={item.text} onClick={item.onClick}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text}></ListItemText>
             </ListItem>

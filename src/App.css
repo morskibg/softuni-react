@@ -12,14 +12,8 @@
   margin: 0;
   padding: 0;
 }
-.alert {
-  padding: 0.7rem;
-  margin: 1rem 0;
-  opacity: 0.9;
-  background: var(--danger-color-g);
-  color: #333;
-}
-.withDrawer {
+
+.with-drawer {
   margin-left: 15rem;
   /* padding: 20 rem; */
 }

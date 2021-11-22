@@ -15,3 +15,5 @@ export const GET_USER_DATA = "GET_USER_DATA";
 export const GET_ROLE = "GET_ROLE";
 export const USERS_LOADED = "USERS_LOADED";
 export const ADMIN_ERROR = "ADMIN_ERROR";
+export const CLEAR_USERS = "CLEAR_USERS";
+export const START_LOADER = "START_LOADER";

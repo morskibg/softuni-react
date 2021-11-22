@@ -29,30 +29,35 @@ import {
 import "./Auth.css";
 import AlertContext from "../../context/alert/alertContext";
 import AuthContext from "../../context/auth/authContext";
+import AdminContext from "../../context/admin/adminContext";
 import background from "../../assets/login2.jpg";
 
 const Register = () => {
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
+  const adminContext = useContext(AdminContext);
 
   const { setAlert } = alertContext;
-  const { register, error, clearErrors, isAdmin, isAuthenticated } =
-    authContext;
+  const { error, isAdmin, isAuthenticated, getUserData } = authContext;
+  const { register, clearUsersFromState } = adminContext;
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("In register");
+    // clearUsersFromState();
+    if (authContext.error || adminContext.error) {
+      const alert = authContext.error ?? adminContext.error;
+
+      setAlert(alert.msg, alert.type);
+      authContext.clearErrors();
+      adminContext.clearErrors();
+    }
     if (!isAdmin || !isAuthenticated) {
-      console.log("za6toooo");
       navigate("/");
     }
+    getUserData();
 
-    if (error) {
-      setAlert(error, "danger");
-      clearErrors();
-    }
     // eslint-disable-next-line
-  }, [error, isAdmin]);
+  }, [isAdmin, adminContext.error, authContext.error]);
 
   const [user, setUser] = useState({
     fullName: "",
@@ -75,6 +80,7 @@ const Register = () => {
 
   const handleReset = (e) => {
     console.log("in reset");
+    getUserData();
     reset({
       fullname: "",
       email: "",
@@ -86,7 +92,7 @@ const Register = () => {
 
   const onSubmitHandler = (data, e) => {
     e.preventDefault();
-    console.log(data);
+    console.log("submitttting", data);
     const { email, password, rePassword } = data; // because python fastApi names expectations
     const full_name = data.fullname;
     const is_superuser = data.isAdmin;
@@ -102,7 +108,9 @@ const Register = () => {
         is_superuser,
         full_name,
         password,
+        creator_email: authContext.user.email,
       });
+      navigate("/");
     }
   };
   const onError = (errors, e) => console.log(errors, e);

@@ -7,10 +7,7 @@ const ThemeState = (props) => {
   const initialState = {
     themeMode: localStorage.getItem(process.env.REACT_APP_THEME_TOKEN_NAME),
   };
-  console.log(
-    `🚀 ~ file: ThemeState.js ~ line 9 ~ ThemeState ~ localStorage.getItem(${process.env.REACT_APP_THEME_TOKEN_NAME})`,
-    localStorage.getItem(process.env.REACT_APP_THEME_TOKEN_NAME)
-  );
+
   const [state, dispatch] = useReducer(themeReducer, initialState);
 
   const toggle = () => {

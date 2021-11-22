@@ -65,7 +65,7 @@ const authReducer = (state, action) => {
       console.log("in GET_USER_DATA");
       return {
         ...state,
-        user: state.user,
+        user: action.payload,
       };
 
     default:

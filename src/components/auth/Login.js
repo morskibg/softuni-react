@@ -1,7 +1,9 @@
 import React, { useState, useContext, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm, Controller } from "react-hook-form";
 import AuthContext from "../../context/auth/authContext";
 import AlertContext from "../../context/alert/alertContext";
+import AdminContext from "../../context/admin/adminContext";
 import "./Auth.css";
 import background from "../../assets/login.jpg";
 
@@ -17,20 +19,24 @@ import {
   IconButton,
 } from "@mui/material";
 
-import { useForm, Controller } from "react-hook-form";
+// import { useTheme } from "@mui/material/styles";
 import LoginIcon from "@mui/icons-material/Login";
 import GuestIcon from "@mui/icons-material/PersonAddDisabled";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Box } from "@mui/system";
 
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 const Login = () => {
+  // const theme = useTheme();
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
+  // const adminContext = useContext(AdminContext);
 
   const { setAlert } = alertContext;
   const { error, clearErrors, isAuthenticated, login } = authContext;
   const navigate = useNavigate();
+
   // const { state } = useLocation();
 
   const { control, handleSubmit, setValue } = useForm();
@@ -64,9 +70,11 @@ const Login = () => {
       setValue("password", process.env.REACT_APP_GUEST_PASSWORD, {
         shouldValidate: true,
       });
+      // theme.palette.primary = theme.palette.error;
     } else {
       setValue("email", "");
       setValue("password", "");
+      // theme.palette.primary = theme.palette.info;
     }
 
     setChecked(event.target.checked);
@@ -117,6 +125,7 @@ const Login = () => {
                     />
                   }
                   label='Login as Guest'
+                  sx={{ color: checked ? "error.main" : "primary.main" }}
                 />
               </FormGroup>
               <Divider />
@@ -127,6 +136,9 @@ const Login = () => {
                 rules={{ required: "Email is required" }}
                 render={({ field: { onChange, value }, fieldState }) => (
                   <TextField
+                    InputProps={{
+                      readOnly: checked,
+                    }}
                     label='Email'
                     variant='standard'
                     value={value}
@@ -152,13 +164,17 @@ const Login = () => {
                     error={!!fieldState.error}
                     helperText={fieldState.error?.message}
                     InputProps={{
+                      readOnly: checked,
                       endAdornment: (
-                        <InputAdornment position='end'>
+                        <InputAdornment position='start'>
                           <IconButton
                             aria-label='toggle password visibility'
                             onClick={handleClickShowPassword}
                             onMouseDown={handleMouseDownPassword}
                             edge='end'
+                            sx={{
+                              color: checked ? "error.main" : "primary.main",
+                            }}
                           >
                             {values.showPassword ? (
                               <VisibilityOffIcon />
