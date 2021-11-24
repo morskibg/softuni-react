@@ -7,16 +7,18 @@ import setAuthHeader from "../../utils/setAuthHeader";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
-  USER_LOADED,
-  AUTH_ERROR,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  LOGOUT,
+  SET_CURRENT_USER,
   CLEAR_ERRORS,
   USERS_LOADED,
   ADMIN_ERROR,
   CLEAR_USERS,
   START_LOADER,
+  DELETE_USER,
+  CLEAR_CURRENT_USER,
+  STOP_LOADER,
+  SET_MODIFIER,
+  CLEAR_MODIFIER,
+  UPDATE_USER,
 } from "../types";
 
 const AdminState = (props) => {
@@ -26,12 +28,13 @@ const AdminState = (props) => {
     currentUser: null,
     loading: false,
     error: null,
+    isModified: false,
   };
-  console.log("########### in ADMIN State");
+
   const [state, dispatch] = useReducer(adminReducer, initialState);
 
   // Register User
-  const register = async (formData) => {
+  const registerUser = async (formData) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +54,7 @@ const AdminState = (props) => {
 
       // loadUser();
     } catch (err) {
-      console.log("🚀 ~ file: AuthState.js ~ line 68 ~ register ~ err", err);
+      // console.log("🚀 ~ file: AuthState.js ~ line 68 ~ register ~ err", err);
       // console.log(err.response);
       // console.log(err.response.data);
       // console.log(err.response.data.detail[0]["msg"]);
@@ -60,10 +63,10 @@ const AdminState = (props) => {
         ? err.response.data.detail[0]["msg"]
         : err.response.data.detail;
 
-      console.log(
-        "🚀 ~ file: AdminState.js ~ line 59 ~ register ~ errMsg",
-        errMsg
-      );
+      // console.log(
+      //   "🚀 ~ file: AdminState.js ~ line 59 ~ register ~ errMsg",
+      //   errMsg
+      // );
       dispatch({
         type: REGISTER_FAIL,
         payload: { alert: { msg: errMsg, type: "danger" } },
@@ -71,22 +74,84 @@ const AdminState = (props) => {
     }
   };
 
+  //Load all users
   const getUsers = async () => {
-    console.log("in get users");
     setAuthHeader(localStorage.token);
     try {
       const res = await axios.get("/api/v1/users");
-      console.log(
-        "🚀 ~ file: AdminState.js ~ line 34 ~ getUsers ################################## ~ res",
-        res
-      );
 
       dispatch({
         type: USERS_LOADED,
         payload: res.data,
       });
     } catch (err) {
-      // console.log("🚀 ~ file: AdminState.js ~ line 41 ~ getUsers ~ err", err);
+      let errMsg = err;
+      try {
+        errMsg = Array.isArray(err.response.data.detail)
+          ? err.response.data.detail[0]["msg"]
+          : err.response.data.detail;
+      } catch (error) {
+        dispatch({
+          type: ADMIN_ERROR,
+          payload: { alert: { msg: errMsg, type: "danger" } },
+        });
+      }
+    }
+  };
+
+  const deleteUser = async (email) => {
+    setAuthHeader(localStorage.token);
+    try {
+      const res = await axios.delete(`/api/v1/users/${email}`);
+
+      dispatch({
+        type: DELETE_USER,
+        payload: res.data,
+      });
+    } catch (err) {
+      let errMsg = err;
+      try {
+        errMsg = Array.isArray(err.response.data.detail)
+          ? err.response.data.detail[0]["msg"]
+          : err.response.data.detail;
+      } catch (error) {
+        dispatch({
+          type: ADMIN_ERROR,
+          payload: { alert: { msg: errMsg, type: "danger" } },
+        });
+      }
+    }
+  };
+
+  const modifyUser = async (userData) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const userId = Number(userData.id);
+    delete userData.id;
+
+    setAuthHeader(localStorage.token);
+    try {
+      console.log(
+        "🚀 ~ file: AdminState.js ~ line 138 ~ modifyUser ~ userData",
+        userData
+      );
+      const res = await axios.put(`/api/v1/users/${userId}`, userData, config);
+
+      dispatch({
+        type: UPDATE_USER,
+        payload: {
+          data: res.data,
+          alert: { msg: "User update successfully", type: "success" },
+        },
+      });
+    } catch (err) {
+      // console.log(
+      //   "🚀 ~ file: AdminState.js ~ line 145 ~ modifyUser ~ err",
+      //   err
+      // );
       let errMsg = err;
       try {
         errMsg = Array.isArray(err.response.data.detail)
@@ -99,8 +164,22 @@ const AdminState = (props) => {
         // );
       }
 
-      dispatch({ type: ADMIN_ERROR, payload: errMsg });
+      dispatch({
+        type: ADMIN_ERROR,
+        payload: { alert: { msg: errMsg, type: "danger" } },
+      });
     }
+  };
+
+  const setCurrentUser = (user) => {
+    dispatch({
+      type: SET_CURRENT_USER,
+      payload: user,
+    });
+  };
+
+  const clearCurrUser = () => {
+    dispatch({ type: CLEAR_CURRENT_USER });
   };
 
   const clearUsersFromState = () => {
@@ -110,6 +189,9 @@ const AdminState = (props) => {
 
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
   const setLoader = () => dispatch({ type: START_LOADER });
+  const clearLoader = () => dispatch({ type: STOP_LOADER });
+  const setModifier = () => dispatch({ type: SET_MODIFIER });
+  const clearModifier = () => dispatch({ type: CLEAR_MODIFIER });
 
   return (
     <AdminContext.Provider
@@ -118,11 +200,18 @@ const AdminState = (props) => {
         users: state.users,
         error: state.error,
         currentUser: state.currentUser,
+        isModified: state.isModified,
         getUsers,
-        register,
+        registerUser,
         clearUsersFromState,
         clearErrors,
         setLoader,
+        deleteUser,
+        setCurrentUser,
+        clearCurrUser,
+        setModifier,
+        clearModifier,
+        modifyUser,
       }}
     >
       {props.children}

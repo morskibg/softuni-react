@@ -21,6 +21,7 @@ import AdminContext from "../../context/admin/adminContext";
 import "./Home.css";
 
 const Home = (props) => {
+  console.log("entering HOME");
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
   const adminContext = useContext(AdminContext);
@@ -30,26 +31,25 @@ const Home = (props) => {
 
   const { users, clearUsersFromState, loading, getUsers, setLoader } =
     adminContext;
-  console.log("🚀 ~ file: Home.js ~ line 26 ~ Home ~ users", users);
 
   useEffect(() => {
     if (authContext.error || adminContext.error) {
-      // console.log(
-      //   "🚀 ~ file: Home.js ~ line 30 ~ useEffect ~ adminContext.error",
-      //   adminContext.error
-      // );
-      // console.log(
-      //   "🚀 ~ file: Home.js ~ line 30 ~ useEffect ~ authContext.error",
-      //   authContext.error
-      // );
+      console.log(
+        "🚀 ~ file: Home.js ~ line 30 ~ useEffect ~ adminContext.error",
+        adminContext.error
+      );
+      console.log(
+        "🚀 ~ file: Home.js ~ line 30 ~ useEffect ~ authContext.error",
+        authContext.error
+      );
       const alert = authContext.error ?? adminContext.error;
-      // console.log("🚀 ~ file: Home.js ~ line 33 ~ useEffect ~ alert", alert);
+      console.log("🚀 ~ file: Home.js ~ line 33 ~ useEffect ~ alert", alert);
 
       setAlert(alert.msg, alert.type);
       authContext.clearErrors();
       adminContext.clearErrors();
     }
-    getRole();
+    // getRole();
 
     // eslint-disable-next-line
   }, [isAdmin, isGuest, adminContext.error, authContext.error]);
@@ -88,7 +88,6 @@ const Home = (props) => {
   // }, [location]);
 
   if (isAuthenticated) {
-    console.log("in home in is Auth - checking for loading", loading);
     if (loading) {
       return <Spinner />;
     } else {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import Spinner from "../../layout/Spinner";
 import AuthContext from "../../../context/auth/authContext";
@@ -19,29 +19,48 @@ const Users = (props) => {
   const { setAlert } = alertContext;
   const { isAdmin, isGuest, getRole } = authContext;
 
-  const { users, loading, getUsers, setLoader } = adminContext;
-  console.log("🚀 ~ file: Home.js ~ line 26 ~ Home ~ users", users);
+  const { users, loading, getUsers, setLoader, isModified, currentUser } =
+    adminContext;
+
+  // console.log("🚀 ~ file: Users.js ~ line 23 ~ Users ~ isModified", isModified);
 
   useEffect(() => {
+    console.log("Users UEFF");
     if (authContext.error || adminContext.error) {
       const alert = authContext.error ?? adminContext.error;
       setAlert(alert.msg, alert.type);
       authContext.clearErrors();
       adminContext.clearErrors();
     }
-    getRole();
-    setLoader();
-    getUsers();
+    // getRole();
+    // clearModifier();
+    if (users.length === 0) {
+      setLoader();
+      getUsers();
+    }
+    console.log(isModified);
     // eslint-disable-next-line
-  }, [isAdmin, isGuest, adminContext.error, authContext.error]);
+  }, [
+    isAdmin,
+    isGuest,
+    adminContext.error,
+    authContext.error,
+    isModified,
+    users,
+    currentUser,
+  ]);
+
+  const [reload, setReload] = useState(false);
 
   if (isAdmin) {
     if (loading) {
       return <Spinner />;
     } else {
+      console.log("in users just before loading UsersTable");
       return (
         <Box>
           {/* <div style={{ display: "flex", justifyContent: "center" }}></div> */}
+
           <UsersTable />
         </Box>
       );

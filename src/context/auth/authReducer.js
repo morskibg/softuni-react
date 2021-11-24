@@ -12,15 +12,15 @@ import {
 } from "../types";
 
 const authReducer = (state, action) => {
+  console.log("in AUTH reducer", action.type);
   switch (action.type) {
     case USER_LOADED:
-      console.log("in USER_LOADED");
       return {
         ...state,
         isAuthenticated: true,
-        isAdmin: action.payload.is_superuser ? true : false,
+        isAdmin: action.payload.data.is_superuser ? true : false,
         loading: false,
-        user: action.payload,
+        user: action.payload.data,
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
@@ -62,7 +62,6 @@ const authReducer = (state, action) => {
         isGuest: action.payload.is_guest,
       };
     case GET_USER_DATA:
-      console.log("in GET_USER_DATA");
       return {
         ...state,
         user: action.payload,

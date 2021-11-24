@@ -1,22 +1,27 @@
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
-  USER_LOADED,
-  AUTH_ERROR,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  LOGOUT,
   CLEAR_ERRORS,
   USERS_LOADED,
   ADMIN_ERROR,
   CLEAR_USERS,
   START_LOADER,
+  DELETE_USER,
+  SET_CURRENT_USER,
+  CLEAR_CURRENT_USER,
+  SET_MODIFIER,
+  CLEAR_MODIFIER,
+  UPDATE_USER,
 } from "../types";
 
 const adminReducer = (state, action) => {
   switch (action.type) {
     case REGISTER_SUCCESS:
-      console.log("action.payload.alert", action.payload.alert);
+      console.log(
+        "🚀 ~ file: adminReducer.js ~ line 19 ~ adminReducer ~ action.payload",
+        action.payload
+      );
+
       return {
         ...state,
         ...action.payload.data,
@@ -24,11 +29,10 @@ const adminReducer = (state, action) => {
         error: action.payload.alert,
       };
     case USERS_LOADED:
-      console.log("in USERS_LOADED");
       return {
         ...state,
         loading: false,
-        users: action.payload,
+        users: action.payload.sort((a, b) => a.id - b.id),
       };
     case REGISTER_FAIL:
     case ADMIN_ERROR:
@@ -49,11 +53,46 @@ const adminReducer = (state, action) => {
         ...state,
         users: [],
       };
+    case CLEAR_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: null,
+      };
+    case UPDATE_USER:
+      console.log(action.payload.data);
+      console.log(action.payload.alert);
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.alert,
+        users: state.users.map((x) =>
+          x.id === action.payload.data.id ? action.payload.data : x
+        ),
+      };
+    case DELETE_USER:
+      return {
+        ...state,
+        users: state.users.filter((x) => x.email !== action.payload.email),
+      };
+    case SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: action.payload,
+      };
     case START_LOADER:
-      console.log("in START_LOADER");
       return {
         ...state,
         loading: true,
+      };
+    case SET_MODIFIER:
+      return {
+        ...state,
+        isModified: true,
+      };
+    case CLEAR_MODIFIER:
+      return {
+        ...state,
+        isModified: false,
       };
     default:
       return state;

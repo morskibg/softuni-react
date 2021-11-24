@@ -12,6 +12,7 @@ import "./App.css";
 import Login from "./components/pages/auth/Login";
 import Register from "./components/pages/admin/Register";
 import Alerts from "./components/layout/Alerts";
+import Initializer from "./components/Initializer";
 import Logout from "./components/pages/auth/Logout";
 import RequireAuth from "./components/route-guards/RequireAuth";
 import RequireGuest from "./components/route-guards/RequireGuest";

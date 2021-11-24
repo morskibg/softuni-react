@@ -38,8 +38,8 @@ const Register = () => {
   const adminContext = useContext(AdminContext);
 
   const { setAlert } = alertContext;
-  const { error, isAdmin, isAuthenticated, getUserData } = authContext;
-  const { register, clearUsersFromState } = adminContext;
+  const { error, isAdmin, isAuthenticated, getUserData, user } = authContext;
+  const { registerUser, clearUsersFromState } = adminContext;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,21 +54,23 @@ const Register = () => {
     if (!isAdmin || !isAuthenticated) {
       navigate("/");
     }
-    getUserData();
+    if (!user) {
+      getUserData();
+    }
 
     // eslint-disable-next-line
   }, [isAdmin, adminContext.error, authContext.error]);
 
-  const [user, setUser] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    rePassword: "",
-    isSuperuser: false,
-    isActive: true,
-  });
+  // const [user, setUser] = useState({
+  //   fullName: "",
+  //   email: "",
+  //   password: "",
+  //   rePassword: "",
+  //   isSuperuser: false,
+  //   isActive: true,
+  // });
 
-  const { name, email, password, password2, isSuperuser } = user;
+  // const { name, email, password, rePassword, isSuperuser } = user;
 
   const [showPass, setShowPass] = useState(false);
 
@@ -79,8 +81,7 @@ const Register = () => {
   };
 
   const handleReset = (e) => {
-    console.log("in reset");
-    getUserData();
+    // getUserData();
     reset({
       fullname: "",
       email: "",
@@ -92,7 +93,7 @@ const Register = () => {
 
   const onSubmitHandler = (data, e) => {
     e.preventDefault();
-    console.log("submitttting", data);
+
     const { email, password, rePassword } = data; // because python fastApi names expectations
     const full_name = data.fullname;
     const is_superuser = data.isAdmin;
@@ -102,7 +103,7 @@ const Register = () => {
     } else if (password !== rePassword) {
       setAlert("Passwords not match !", "danger");
     } else {
-      register({
+      registerUser({
         email,
         is_active: true,
         is_superuser,
@@ -114,23 +115,6 @@ const Register = () => {
     }
   };
   const onError = (errors, e) => console.log(errors, e);
-
-  // const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
-
-  // const onSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (name === "" || email === "" || password === "") {
-  //     setAlert("Please enter all fields", "danger");
-  //   } else if (password !== password2) {
-  //     setAlert("Passwords do not match", "danger");
-  //   } else {
-  //     register({
-  //       name,
-  //       email,
-  //       password,
-  //     });
-  //   }
-  // };
 
   return (
     <Fragment>
@@ -162,7 +146,13 @@ const Register = () => {
                 name='email'
                 control={control}
                 defaultValue=''
-                rules={{ required: "Email is required" }}
+                rules={{
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address",
+                  },
+                }}
                 render={({ field: { onChange, value }, fieldState }) => (
                   <TextField
                     label='Email'

@@ -7,6 +7,9 @@ import "./Alert.css";
 const Alerts = () => {
   const alertContext = useContext(AlertContext);
 
+  if (alertContext.alerts.length > 0) {
+    alertContext.alerts.map((alert) => console.log("ALEEEEEEEEERT--->", alert));
+  }
   return (
     alertContext.alerts.length > 0 &&
     alertContext.alerts.map((alert) => (

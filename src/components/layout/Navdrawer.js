@@ -115,6 +115,7 @@ const Navdrawer = (props) => {
 
   const { setAlert } = alertContext;
   const { isAuthenticated, isAdmin, error, clearErrors } = authContext;
+
   const { getUsers, setLoader } = adminContext;
   const { toggle, themeMode } = themeContext;
 
@@ -147,11 +148,9 @@ const Navdrawer = (props) => {
     setOpen(false);
   };
 
-  // const loadUsers = () => {
-  //   getUsers();
-  //   setLoader();
-  //   navigate("/");
-  // };
+  const handleManageUsers = () => {
+    navigate("/admin/users");
+  };
 
   // if (!isAuthenticated || currLocation.pathname === "/register") {
   const menuItems = [
@@ -185,7 +184,7 @@ const Navdrawer = (props) => {
       text: "Manage Users",
       icon: <ManageUsersIcon />,
       // onClick: loadUsers,
-      onClick: () => navigate("/admin/users"),
+      onClick: handleManageUsers,
     },
   ];
   return (
@@ -205,14 +204,28 @@ const Navdrawer = (props) => {
             <MenuIcon />
           </IconButton>
           <PowerIcon />
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+          <Typography
+            color='inherit'
+            variant='h6'
+            component='div'
+            sx={{ flexGrow: 1 }}
+          >
             Power App
           </Typography>
           {isAuthenticated ? (
-            <Button color='inherit' component={Link} to='logout'>
+            <Button
+              color='inherit'
+              variant='text'
+              endIcon={<LogoutIcon />}
+              component={Link}
+              to='logout'
+            >
               Logout
             </Button>
           ) : (
+            // <Button color='inherit' alt='logo' component={Link} to='logout'>
+            //   <LogoutIcon />
+            // </Button>
             <Button color='inherit' component={Link} to='login'>
               Login
             </Button>

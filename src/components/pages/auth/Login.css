@@ -74,12 +74,12 @@ img {
 .loginInput {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 50%;
   height: 100%;
   justify-content: center;
   /* margin: 0rem 30rem 40rem 30rem; */
   /* align-items: center; */
   text-align: center;
-  transform: translateX(50%);
+  transform: translateX(150%);
   /* transform: translateY(-9%); */
 }
