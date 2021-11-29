@@ -22,7 +22,9 @@ const AuthState = (props) => {
     isAdmin: localStorage.getItem("token")
       ? jwt_decode(localStorage.getItem("token")).is_admin
       : false,
-    isGuest: false,
+    isGuest: localStorage.getItem("token")
+      ? jwt_decode(localStorage.getItem("token")).is_guest
+      : false,
     loading: true,
     user: null,
     error: null,
@@ -71,9 +73,19 @@ const AuthState = (props) => {
         config
       );
 
+      const decoded = jwt_decode(res.data.access_token);
+
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: { data: res.data, msg: "" },
+        payload: {
+          data: {
+            token: res.data.access_token,
+            isAdmin: decoded.is_admin,
+            isGuest: decoded.is_guest,
+          },
+          msg: "",
+        },
+        // payload: { data: res.data, msg: "" },
       });
 
       loadUser();

@@ -19,8 +19,7 @@ const Users = (props) => {
   const { setAlert } = alertContext;
   const { isAdmin, isGuest, getRole } = authContext;
 
-  const { users, loading, getUsers, setLoader, isModified, currentUser } =
-    adminContext;
+  const { users, loading, getUsers, setLoader, currentUser } = adminContext;
 
   // console.log("🚀 ~ file: Users.js ~ line 23 ~ Users ~ isModified", isModified);
 
@@ -38,14 +37,13 @@ const Users = (props) => {
       setLoader();
       getUsers();
     }
-    console.log(isModified);
+
     // eslint-disable-next-line
   }, [
     isAdmin,
     isGuest,
     adminContext.error,
     authContext.error,
-    isModified,
     users,
     currentUser,
   ]);
@@ -56,7 +54,6 @@ const Users = (props) => {
     if (loading) {
       return <Spinner />;
     } else {
-      console.log("in users just before loading UsersTable");
       return (
         <Box>
           {/* <div style={{ display: "flex", justifyContent: "center" }}></div> */}

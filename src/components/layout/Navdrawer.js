@@ -1,5 +1,6 @@
 import React, { Fragment, useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -20,11 +21,13 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Button from "@mui/material/Button";
 import PowerIcon from "@mui/icons-material/Power";
+import BoltIcon from "@mui/icons-material/Bolt";
 import CreateUserIcon from "@mui/icons-material/PersonAdd";
 import ManageUsersIcon from "@mui/icons-material/PeopleAlt";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DarkModeIcon from "@mui/icons-material/Brightness4";
 import LightModeIcon from "@mui/icons-material/Brightness7";
+import CreateIcon from "@mui/icons-material/Create";
 import {
   BrowserRouter as Router,
   Routes,
@@ -37,6 +40,7 @@ import AuthContext from "../../context/auth/authContext";
 import AlertContext from "../../context/alert/alertContext";
 import AdminContext from "../../context/admin/adminContext";
 import ThemeContext from "../../context/theme/themeContext";
+import MuiAlert from "../layout/MuiAlert";
 
 const drawerWidth = 240;
 
@@ -114,7 +118,7 @@ const Navdrawer = (props) => {
   const themeContext = useContext(ThemeContext);
 
   const { setAlert } = alertContext;
-  const { isAuthenticated, isAdmin, error, clearErrors } = authContext;
+  const { isAuthenticated, isAdmin, error, clearErrors, isGuest } = authContext;
 
   const { getUsers, setLoader } = adminContext;
   const { toggle, themeMode } = themeContext;
@@ -155,22 +159,32 @@ const Navdrawer = (props) => {
   // if (!isAuthenticated || currLocation.pathname === "/register") {
   const menuItems = [
     {
-      text: "Toogle theme",
-      icon: themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />,
-      onClick: toggle,
-    },
-    {
-      text: "First",
-      icon: <PowerIcon />,
-      onClick: () => navigate("/"),
+      text: "Create Contract",
+      icon: <CreateIcon />,
+      isDisabled: isGuest,
+      onClick: () => {
+        if (isGuest) {
+          setAlert("Registered user only !", "danger");
+        } else {
+          navigate("create_contract");
+        }
+      },
     },
     {
       text: "Second",
       icon: <InboxIcon />,
+      isDisabled: false,
     },
     {
       text: "Third",
       icon: <MailIcon />,
+      isDisabled: false,
+    },
+    {
+      text: "Toogle Theme",
+      icon: themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />,
+      onClick: toggle,
+      isDisabled: false,
     },
   ];
 
@@ -203,7 +217,7 @@ const Navdrawer = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <PowerIcon />
+          <BoltIcon />
           <Typography
             color='inherit'
             variant='h6'
@@ -245,7 +259,12 @@ const Navdrawer = (props) => {
         <Divider />
         <List>
           {menuItems.map((item) => (
-            <ListItem button key={item.text} onClick={item.onClick}>
+            <ListItem
+              button
+              disabled={item.isDisabled}
+              key={item.text}
+              onClick={item.onClick}
+            >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text}></ListItemText>
             </ListItem>

@@ -34,7 +34,7 @@ const Login = () => {
   // const adminContext = useContext(AdminContext);
 
   const { setAlert } = alertContext;
-  const { error, clearErrors, isAuthenticated, login } = authContext;
+  const { error, clearErrors, isAuthenticated, login, getRole } = authContext;
   const navigate = useNavigate();
 
   // const { state } = useLocation();

@@ -2,7 +2,8 @@ import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import AuthContext from "../../context/auth/authContext";
 
-function RequireAuth({ children }) {
+function RequireAdmin({ children }) {
+  console.log("in RequireAdmin");
   const authContext = useContext(AuthContext);
   const { isAdmin } = authContext;
 
@@ -14,4 +15,4 @@ function RequireAuth({ children }) {
 
   // return children;
 }
-export default RequireAuth;
+export default RequireAdmin;

@@ -22,16 +22,21 @@ const authReducer = (state, action) => {
         loading: false,
         user: action.payload.data,
       };
-    case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      if (action.type === LOGIN_SUCCESS) {
-        localStorage.setItem("token", action.payload.data.access_token);
-      }
+      localStorage.setItem("token", action.payload.data.token);
+
+      return {
+        ...state,
+        isAuthenticated: true,
+        isAdmin: action.payload.data.isAdmin,
+        isGuest: action.payload.data.isGuest,
+      };
+    case REGISTER_SUCCESS:
       return {
         ...state,
         ...action.payload.data,
         isAuthenticated: true,
-        isAdmin: false,
+        isAdmin: true,
         loading: false,
         error: action.payload.msg,
       };
@@ -56,6 +61,7 @@ const authReducer = (state, action) => {
       };
 
     case GET_ROLE:
+      console.log("GET");
       return {
         ...state,
         isAdmin: action.payload.is_admin,

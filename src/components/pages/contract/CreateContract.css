@@ -1,0 +1,84 @@
+.create-contract-container {
+  margin-left: 16rem;
+  margin-right: 15rem;
+  margin-top: 3rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.create-contract-left {
+  width: 50%;
+  height: 100%;
+}
+.create-contract-right {
+  width: 50%;
+  /* flex-grow: 1; */
+}
+.create-contract-right-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  /* justify-content: center; */
+  /* margin: 0rem 30rem 40rem 30rem; */
+  /* align-items: center; */
+  text-align: center;
+  /* transform: translateX(150%); */
+  /* transfo
+  .rm: translateY(-9%); */
+}
+
+.price-box {
+  flex-grow: 1;
+  text-align: end;
+}
+
+.start-date-box {
+  margin-top: 1rem;
+  /* flex-grow: 1; */
+  text-align: end;
+}
+.first-row-box {
+  display: flex;
+  flex-direction: row;
+}
+.end-date-box {
+  margin-top: 1rem;
+  flex-grow: 1;
+  text-align: end;
+}
+.create-contract-buttons {
+  margin-top: 2rem;
+}
+.create-contract-forms-container {
+  margin-top: 2rem;
+  max-width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.create-contract-forms-container-wide {
+  margin-top: 2rem;
+  max-width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.contract-form {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.summary-table-container {
+  height: 100%;
+  min-height: 40rem;
+  display: flex;
+  flex-direction: column;
+  /* text-align: end; */
+}
+.summary-table {
+  flex-grow: 1;
+  justify-content: center;
+}

@@ -3,6 +3,7 @@ import { Navigate, Route, useLocation } from "react-router-dom";
 import AuthContext from "../../context/auth/authContext";
 
 function RequireAuth({ children }) {
+  console.log("in RequireAuth");
   const authContext = useContext(AuthContext);
   const { isAuthenticated } = authContext;
 

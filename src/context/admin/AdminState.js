@@ -1,6 +1,5 @@
 import React, { useReducer } from "react";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 import AdminContext from "./adminContext";
 import adminReducer from "./adminReducer";
 import setAuthHeader from "../../utils/setAuthHeader";

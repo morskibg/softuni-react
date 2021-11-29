@@ -24,3 +24,6 @@ export const STOP_LOADER = "STOP_LOADER";
 export const SET_MODIFIER = "SET_MODIFIER";
 export const CLEAR_MODIFIER = "CLEAR_MODIFIER";
 export const UPDATE_USER = "UPDATE_USER";
+export const GET_ADDRESSES = "GET_ADDRESSES";
+export const USER_ERROR = "USER_ERROR";
+export const GET_CONTRACTORS = "GET_CONTRACTORS";
