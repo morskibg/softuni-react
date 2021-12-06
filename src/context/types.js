@@ -1,4 +1,5 @@
 export const SET_ALERT = "SET_ALERT";
+export const VERIFY_TOKEN = "VERIFY_TOKEN";
 export const REMOVE_ALERT = "REMOVE_ALERT";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
@@ -27,3 +28,6 @@ export const UPDATE_USER = "UPDATE_USER";
 export const GET_ADDRESSES = "GET_ADDRESSES";
 export const USER_ERROR = "USER_ERROR";
 export const GET_CONTRACTORS = "GET_CONTRACTORS";
+export const CREATE_CONTRACT = "CREATE_CONTRACT";
+export const GET_AVL_ITNS = "GET_AVL_ITNS";
+export const GET_STP = "GET_STP";

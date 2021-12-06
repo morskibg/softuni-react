@@ -3,11 +3,12 @@ import { DataGrid } from "@mui/x-data-grid";
 
 // import AdminContext from "../../context/admin/adminContext";
 import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 import { Box } from "@mui/system";
 
 const columns = [
-  { field: "item", headerName: "Item", width: 290 },
-  { field: "value", headerName: "Value", width: 160 },
+  { field: "item", headerName: "Item", width: 250 },
+  { field: "value", headerName: "Value", width: 300 },
 ];
 
 const SummaryTable = (props) => {
@@ -24,7 +25,7 @@ const SummaryTable = (props) => {
   const [summData, setSummData] = useState([]);
 
   const {
-    companyName,
+    name,
     city,
     postalCode,
     addressLine,
@@ -37,20 +38,26 @@ const SummaryTable = (props) => {
     postalCodeITN,
     addressLineITN,
     loadType,
+    eik,
   } = props.props;
-
-  useEffect(() => {
-    console.log(props);
-  }, []);
 
   const createRows = () => {
     const res = [
-      { item: "Company name", value: companyName, id: 1 },
+      { item: "Company name", value: name, id: 1 },
+      { item: "Company EIK", value: eik, id: 14 },
       { item: "City of registration", value: city, id: 2 },
       { item: "Postal code of registration", value: postalCode, id: 3 },
       { item: "Address of registration", value: addressLine, id: 4 },
-      { item: "Contract start date", value: startDate, id: 5 },
-      { item: "Contract end date", value: endDate, id: 6 },
+      {
+        item: "Contract start date",
+        value: `${format(new Date(startDate), "dd/MM/yyyy")}`,
+        id: 5,
+      },
+      {
+        item: "Contract end date",
+        value: `${format(new Date(endDate), "dd/MM/yyyy")}`,
+        id: 6,
+      },
       { item: "Contract price per MWh in BGN", value: price, id: 7 },
       { item: "ITN", value: itn, id: 8 },
       { item: "Load type", value: loadType, id: 13 },
@@ -71,106 +78,9 @@ const SummaryTable = (props) => {
           columns={columns}
           pageSize={13}
           rowsPerPageOptions={[13]}
-          // checkboxSelection
-          // onSelectionModelChange={handleSelectionModelChange}
         />
       </Box>
     </>
   );
 };
 export default SummaryTable;
-
-//   const reloadAfterModify = () => {
-//     setModUserDialog(false);
-//   };
-
-//   const createRows = () => {
-//     const res = users.map((user) =>
-//       Object.assign({}, user, {
-//         is_active: user.is_active ? "yes" : "no",
-//         is_superuser: user.is_superuser ? "yes" : "no",
-//       })
-//     );
-
-//     return res;
-//   };
-
-//   const handleDelete = () => {
-//     const selectedEmails = selectedRows.map((row) => row.email);
-
-//     selectedEmails.map((x) => deleteUser(x));
-//   };
-
-//   const handleModify = () => {
-//     // const selectedEmail = selectedRows.map((row) => row.email)[0];
-
-//     setModUserDialog(true);
-//   };
-
-//   const handleSelectionModelChange = (ids) => {
-//     const selectedIDs = new Set(ids);
-
-//     const selectedRowData = rows.filter((row) => selectedIDs.has(row.id));
-//     setSelectedRows(selectedRowData);
-//     const selectedUser = users.filter(
-//       (x) => x.id === [...selectedIDs].pop()
-//     )[0];
-
-//     if (selectedIDs.size !== 0) {
-//       setCurrentUser(selectedUser);
-//       setBtnDisabled(false);
-//     } else {
-//       clearCurrUser();
-//       setBtnDisabled(true);
-//     }
-//   };
-
-//   const rows = createRows();
-
-//   if (modUserDialog) {
-//     return <ModifyUser reloadCallback={reloadAfterModify} />;
-//   } else {
-//     console.log("returning from users table");
-//     return (
-//       <Box className='users-table-container'>
-//         <Box className='users-table'>
-//           <Typography variant='h1'> Users Table</Typography>
-//           {/* <div style={{ flexGrow: 1 }}> */}
-//           <DataGrid
-//             rows={rows}
-//             columns={columns}
-//             pageSize={5}
-//             rowsPerPageOptions={[5]}
-//             checkboxSelection
-//             onSelectionModelChange={handleSelectionModelChange}
-//           />
-//           <ButtonGroup
-//             variant='contained'
-//             aria-label='outlined primary button group'
-//           >
-//             <Button startIcon={<ArrowBackIcon />} onClick={() => navigate("/")}>
-//               Cancel
-//             </Button>
-//             <Button
-//               type='submit'
-//               variant='contained'
-//               endIcon={<RegisterIcon />}
-//               color={"primary"}
-//               onClick={handleModify}
-//               disabled={btnDisabled}
-//             >
-//               Modify
-//             </Button>
-//             <Button
-//               startIcon={<ClearIcon />}
-//               onClick={handleDelete}
-//               disabled={btnDisabled}
-//             >
-//               Delete
-//             </Button>
-//           </ButtonGroup>
-//         </Box>
-//       </Box>
-//     );
-//   }
-// };

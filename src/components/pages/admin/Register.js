@@ -38,7 +38,15 @@ const Register = () => {
   const adminContext = useContext(AdminContext);
 
   const { setAlert } = alertContext;
-  const { error, isAdmin, isAuthenticated, getUserData, user } = authContext;
+  const {
+    error,
+    isAdmin,
+    isAuthenticated,
+    getUserData,
+    user,
+    verifyToken,
+    isGuest,
+  } = authContext;
   const { registerUser, clearUsersFromState } = adminContext;
   const navigate = useNavigate();
 
@@ -51,8 +59,10 @@ const Register = () => {
       authContext.clearErrors();
       adminContext.clearErrors();
     }
-    if (!isAdmin || !isAuthenticated) {
+    if (!isAdmin || !isAuthenticated || isGuest) {
       navigate("/");
+    } else {
+      verifyToken();
     }
     if (!user) {
       getUserData();

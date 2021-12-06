@@ -84,7 +84,7 @@ const BasicForm = () => {
     </>
   );
 };
-const ContactForm = () => {
+const ContractForm = () => {
   const { control } = useFormContext();
   return (
     <>
@@ -247,7 +247,7 @@ function getStepContent(step) {
     case 0:
       return <BasicForm />;
     case 1:
-      return <ContactForm />;
+      return <ContractForm />;
     case 2:
       return <PersonalForm />;
     case 3:

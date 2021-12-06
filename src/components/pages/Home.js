@@ -10,6 +10,7 @@ import Spinner from "../layout/Spinner";
 import AuthContext from "../../context/auth/authContext";
 import AlertContext from "../../context/alert/alertContext";
 import AdminContext from "../../context/admin/adminContext";
+import UserContext from "../../context/user/userContext";
 // import ThemeContext from "../../context/theme/themeContext";
 // import { Typography, Button } from "@mui/material";
 // import { Box } from "@mui/system";
@@ -25,6 +26,8 @@ const Home = (props) => {
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
   const adminContext = useContext(AdminContext);
+  const userContext = useContext(UserContext);
+  console.log("🚀 ~ file: Home.js ~ line 30 ~ Home ~ userContext", userContext);
 
   const { setAlert } = alertContext;
   const { isAuthenticated, isAdmin, isGuest, getRole } = authContext;
@@ -33,26 +36,30 @@ const Home = (props) => {
     adminContext;
 
   useEffect(() => {
-    if (authContext.error || adminContext.error) {
-      console.log(
-        "🚀 ~ file: Home.js ~ line 30 ~ useEffect ~ adminContext.error",
-        adminContext.error
-      );
-      console.log(
-        "🚀 ~ file: Home.js ~ line 30 ~ useEffect ~ authContext.error",
-        authContext.error
-      );
-      const alert = authContext.error ?? adminContext.error;
+    console.log(
+      "🚀 ~ file: Home.js ~ line 39 ~ useEffect ~ userContext.erro",
+      userContext.error
+    );
+    if (authContext.error || adminContext.error || userContext.error) {
+      const alert =
+        authContext.error ?? adminContext.error ?? userContext.error;
       console.log("🚀 ~ file: Home.js ~ line 33 ~ useEffect ~ alert", alert);
 
       setAlert(alert.msg, alert.type);
       authContext.clearErrors();
       adminContext.clearErrors();
+      userContext.clearErrors();
     }
     // getRole();
 
     // eslint-disable-next-line
-  }, [isAdmin, isGuest, adminContext.error, authContext.error]);
+  }, [
+    isAdmin,
+    isGuest,
+    adminContext.error,
+    authContext.error,
+    userContext.error,
+  ]);
 
   // const alertUser = (e) => {
   //   e.preventDefault();

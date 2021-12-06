@@ -99,6 +99,8 @@ const UsersTable = () => {
           <Typography variant='h1'> Users Table</Typography>
           {/* <div style={{ flexGrow: 1 }}> */}
           <DataGrid
+            className='user-table-grid'
+            sx={{ color: "primary" }}
             rows={rows}
             columns={columns}
             pageSize={5}

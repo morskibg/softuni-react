@@ -36,6 +36,10 @@ const darkTheme = createTheme({
       primary: "#00ddff",
       // secondary: grey[500],
     },
+    barChart: {
+      primary: "#ec5990",
+      // secondary: grey[500],
+    },
   },
 
   // typography: {
@@ -67,6 +71,10 @@ const lightTheme = createTheme({
     },
     error: {
       main: "#ff0000",
+    },
+    barChart: {
+      primary: "#ec5990",
+      // secondary: grey[500],
     },
   },
 });

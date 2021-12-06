@@ -13,12 +13,20 @@ import {
   CLEAR_ERRORS,
   GET_ROLE,
   GET_USER_DATA,
+  VERIFY_TOKEN,
 } from "../types";
 
 const AuthState = (props) => {
+  console.log("AUTH IS LOADING....");
   const initialState = {
     token: localStorage.getItem("token"),
-    isAuthenticated: localStorage.getItem("token") ? true : false,
+    // isAuthenticated: checkAuthToken(),
+    // isAuthenticated: localStorage.getItem("token") ? true : false,
+    isAuthenticated: localStorage.getItem("token")
+      ? jwt_decode(localStorage.getItem("token")).exp > ~~(Date.now() / 1000)
+        ? true
+        : false
+      : false,
     isAdmin: localStorage.getItem("token")
       ? jwt_decode(localStorage.getItem("token")).is_admin
       : false,
@@ -31,6 +39,33 @@ const AuthState = (props) => {
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
+
+  const verifyToken = () => {
+    console.log(
+      "🚀 ~ file: AuthState.js ~ line 61 ~ verifyToken ~ verifyToken"
+    );
+    try {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+      const isValidToken = decoded.exp > ~~(Date.now() / 1000);
+      // const isValidToken2 = ~~(Date.now() / 1000);
+      const isAdmin = decoded.is_admin;
+      const isGuest = decoded.is_guest;
+      console.log(
+        "🚀 ~ file: AuthState.js ~ line 49 ~ verifyToken ~ isValidToken",
+        isValidToken
+      );
+      dispatch({
+        type: VERIFY_TOKEN,
+        payload: { isValidToken, isAdmin, isGuest },
+      });
+    } catch {
+      dispatch({
+        type: AUTH_ERROR,
+        payload: null,
+      });
+    }
+  };
 
   // Load User
   const loadUser = async () => {
@@ -88,7 +123,7 @@ const AuthState = (props) => {
         // payload: { data: res.data, msg: "" },
       });
 
-      loadUser();
+      // loadUser();
     } catch (err) {
       const errMsg = Array.isArray(err.response.data.detail)
         ? err.response.data.detail[0]["msg"]
@@ -127,7 +162,9 @@ const AuthState = (props) => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      return false;
+      dispatch({
+        type: AUTH_ERROR,
+      });
     }
     try {
       const decoded = jwt_decode(token);
@@ -159,6 +196,7 @@ const AuthState = (props) => {
         clearErrors,
         getRole,
         getUserData,
+        verifyToken,
       }}
     >
       {props.children}

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import Spinner from "../../layout/Spinner";
 import AuthContext from "../../../context/auth/authContext";
 import AlertContext from "../../../context/alert/alertContext";
@@ -17,19 +17,25 @@ const Users = (props) => {
   const adminContext = useContext(AdminContext);
 
   const { setAlert } = alertContext;
-  const { isAdmin, isGuest, getRole } = authContext;
+  const { isAdmin, isGuest, getRole, verifyToken, isAuthenticated } =
+    authContext;
 
   const { users, loading, getUsers, setLoader, currentUser } = adminContext;
+  const navigate = useNavigate();
 
   // console.log("🚀 ~ file: Users.js ~ line 23 ~ Users ~ isModified", isModified);
 
   useEffect(() => {
-    console.log("Users UEFF");
     if (authContext.error || adminContext.error) {
       const alert = authContext.error ?? adminContext.error;
       setAlert(alert.msg, alert.type);
       authContext.clearErrors();
       adminContext.clearErrors();
+    }
+    if (!isAuthenticated | isGuest | !isAdmin) {
+      navigate("/");
+    } else {
+      verifyToken();
     }
     // getRole();
     // clearModifier();

@@ -9,6 +9,7 @@ import {
   CLEAR_ERRORS,
   GET_ROLE,
   GET_USER_DATA,
+  VERIFY_TOKEN,
 } from "../types";
 
 const authReducer = (state, action) => {
@@ -64,6 +65,7 @@ const authReducer = (state, action) => {
       console.log("GET");
       return {
         ...state,
+        isAuthenticated: true,
         isAdmin: action.payload.is_admin,
         isGuest: action.payload.is_guest,
       };
@@ -71,6 +73,14 @@ const authReducer = (state, action) => {
       return {
         ...state,
         user: action.payload,
+      };
+    case VERIFY_TOKEN:
+      console.log(action.payload);
+      return {
+        ...state,
+        isAuthenticated: action.payload.isValidToken,
+        isAdmin: action.payload.isAdmin,
+        isGuest: action.payload.isGuest,
       };
 
     default:

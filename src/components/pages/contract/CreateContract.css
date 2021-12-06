@@ -1,10 +1,14 @@
 .create-contract-container {
   margin-left: 16rem;
-  margin-right: 15rem;
+  margin-right: 1rem;
   margin-top: 3rem;
-  min-height: 100vh;
+  max-width: 80%;
+  height: 100%;
+  min-height: 25rem;
   display: flex;
-  flex-direction: column;
+  /* min-height: 100vh;
+  display: flex;
+  flex-direction: column;*/
   text-align: center;
 }
 
@@ -82,3 +86,6 @@
   flex-grow: 1;
   justify-content: center;
 }
+/* .create-contract-itn input {
+  text-transform: uppercase !important;
+} */
