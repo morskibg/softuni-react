@@ -133,7 +133,7 @@ const AuthState = (props) => {
 
     try {
       const res = await axios.post(
-        "https://backend-react-powerapp.herokuapp.com/api/v1/login/access-token",
+        "/login/access-token",
         // "/api/v1/login/access-token",
         credentials,
         config
