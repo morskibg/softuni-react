@@ -109,7 +109,7 @@ const AdminState = (props) => {
   const getUsers = async () => {
     setAuthHeader(localStorage.token);
     try {
-      const res = await axios.get("/api/v1/users");
+      const res = await axios.get("users");
 
       dispatch({
         type: USERS_LOADED,
