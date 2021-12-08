@@ -47,5 +47,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://backend-react-powerapp.herokuapp.com/api/v1"
+  // "proxy": "https://backend-react-powerapp.herokuapp.com/api/v1"
 }
