@@ -49,7 +49,7 @@ const App = () => {
 
                   <Routes>
                     <Route path='/' element={<Home />} />
-                    <Route
+                    {/* <Route
                       path='admin/register'
                       element={
                         <RequireAdmin>
@@ -69,7 +69,6 @@ const App = () => {
                       path='create_contract'
                       element={
                         <RequireNotGuest>
-                          {/* <StepperRaw /> */}
                           <CreateContract />
                         </RequireNotGuest>
                       }
@@ -98,7 +97,7 @@ const App = () => {
                         </RequireAuth>
                       }
                     />
-                    <Route path='*' element={<NotFound />} />
+                    <Route path='*' element={<NotFound />} /> */}
                   </Routes>
                 </Fragment>
               </Router>
