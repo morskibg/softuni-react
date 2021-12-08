@@ -2,13 +2,14 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 
 module.exports = function (app) {
   app.use(
-    createProxyMiddleware(
-      "https://softuni-react-power-app.herokuapp.com/api/v1",
-      {
-        target: "https://backend-react-powerapp.herokuapp.com",
-        changeOrigin: true,
-      }
-    )
+    createProxyMiddleware(process.env.REACT_APP_FRONTEND_URL, {
+      target: process.env.REACT_APP_BACKEND_URL,
+      changeOrigin: true,
+    })
+    // createProxyMiddleware(process.env.REACT_APP_FRONTEND_URL, {
+    //   target: process.env.REACT_APP_BACKEND_URL,
+    //   changeOrigin: true,
+    // })
     // createProxyMiddleware(process.env.REACT_APP_FRONTEND_URL, {
     //   target: process.env.REACT_APP_BACKEND_URL,
     //   changeOrigin: true,
