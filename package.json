@@ -2,8 +2,7 @@
   "name": "softuni-react",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@date-io/luxon": "^2.11.1",
+  "dependencies": {    
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.1.0",
