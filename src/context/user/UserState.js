@@ -68,7 +68,7 @@ const UserState = (props) => {
   const getContracts = async () => {
     setAuthHeader(localStorage.token);
     try {
-      const res = await axios.get("/api/v1/contracts");
+      const res = await axios.get("contracts");
       console.log("from getContracts", res);
       dispatch({
         type: GET_CONTRACTS,
@@ -84,7 +84,7 @@ const UserState = (props) => {
     setAuthHeader(localStorage.token);
     try {
       const res = await axios.get(
-        `/api/v1/utils/stp/${code}?start_date=${startDate}&end_date=${endDate}`
+        `utils/stp/${code}?start_date=${startDate}&end_date=${endDate}`
       );
       // console.log(
       //   "🚀 ~ file: UserState.js ~ line 71 ~ getStpCoeffs ~ res",
@@ -132,7 +132,7 @@ const UserState = (props) => {
   const getAddresses = async () => {
     setAuthHeader(localStorage.token);
     try {
-      const res = await axios.get("/api/v1/addresses");
+      const res = await axios.get("addresses");
       // console.log("from setAuthHeader", res);
       dispatch({
         type: GET_ADDRESSES,
@@ -154,14 +154,14 @@ const UserState = (props) => {
     try {
       const startDate = kwargs.startDate;
       const endDate = kwargs.endDate;
-      const allMetasRes = await axios.get("/api/v1/itn_metas");
+      const allMetasRes = await axios.get("itn_metas");
       const allItns = allMetasRes.data.map((x) => x.id);
       // let scheduledItns = [];
 
       if (Object.keys(kwargs).length === 3) {
         const itn = kwargs.itn;
         res = await axios.get(
-          `/api/v1/schedules/${itn}?start_date=${startDate}&end_date=${endDate}`
+          `schedules/${itn}?start_date=${startDate}&end_date=${endDate}`
         );
         isFreeItn = res.data.length === 0;
         // console.log(
@@ -170,7 +170,7 @@ const UserState = (props) => {
         // );
       }
       const scheduledRes = await axios.get(
-        `/api/v1/schedules/?startDate=${startDate}&endDate=${endDate}`
+        `schedules/?startDate=${startDate}&endDate=${endDate}`
       );
       const scheduledItns = scheduledRes.data.map((x) => x.itn);
 
@@ -201,7 +201,7 @@ const UserState = (props) => {
   const getContractors = async () => {
     setAuthHeader(localStorage.token);
     try {
-      const res = await axios.get("/api/v1/contractors");
+      const res = await axios.get("contractors");
 
       dispatch({
         type: GET_CONTRACTORS,
@@ -236,11 +236,7 @@ const UserState = (props) => {
         itn_postal_code: formData.postalCodeITN,
         itn_address_line: formData.addressLineITN,
       };
-      const res = await axios.post(
-        "/api/v1/contracts",
-        alginedInputData,
-        config
-      );
+      const res = await axios.post("contracts", alginedInputData, config);
 
       dispatch({
         type: CREATE_CONTRACT,

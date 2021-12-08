@@ -9,7 +9,7 @@ import setAuthHeader from "./setAuthHeader";
 const getStpCodes = async () => {
   setAuthHeader(localStorage.token);
   try {
-    const res = await axios.get("/api/v1/utils/stp-codes");
+    const res = await axios.get("utils/stp-codes");
     return res;
   } catch (err) {
     let errMsg = err;

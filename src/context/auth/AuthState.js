@@ -101,7 +101,7 @@ const AuthState = (props) => {
     setAuthHeader(localStorage.token);
 
     try {
-      const res = await axios.get("/api/v1/users/me");
+      const res = await axios.get("users/me");
       // console.log("🚀 ~ file: AuthState.js ~ line 39 ~ loadUser ~ res", res);
 
       dispatch({
@@ -134,7 +134,7 @@ const AuthState = (props) => {
     try {
       const res = await axios.post(
         // "/login/access-token",
-        "/api/v1/login/access-token",
+        "login/access-token",
         credentials,
         config
       );
@@ -184,7 +184,7 @@ const AuthState = (props) => {
     setAuthHeader(localStorage.token);
 
     try {
-      const res = await axios.get("/api/v1/users/me");
+      const res = await axios.get("users/me");
 
       dispatch({
         type: GET_USER_DATA,

@@ -72,7 +72,7 @@ const AdminState = (props) => {
     };
 
     try {
-      const res = await axios.post("/api/v1/users", formData, config);
+      const res = await axios.post("users", formData, config);
 
       dispatch({
         type: REGISTER_SUCCESS,
@@ -134,7 +134,7 @@ const AdminState = (props) => {
   const deleteUser = async (email) => {
     setAuthHeader(localStorage.token);
     try {
-      const res = await axios.delete(`/api/v1/users/${email}`);
+      const res = await axios.delete(`users/${email}`);
 
       dispatch({
         type: DELETE_USER,
@@ -171,7 +171,7 @@ const AdminState = (props) => {
       //   "🚀 ~ file: AdminState.js ~ line 138 ~ modifyUser ~ userData",
       //   userData
       // );
-      const res = await axios.put(`/api/v1/users/${userId}`, userData, config);
+      const res = await axios.put(`users/${userId}`, userData, config);
 
       dispatch({
         type: UPDATE_USER,
