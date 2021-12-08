@@ -6,7 +6,7 @@ module.exports = function (app) {
       ? process.env.REACT_APP_API_SERVER_DEVELOPMENT
       : process.env.REACT_APP_API_SERVER_PRODUCTION;
   app.use(
-    createProxyMiddleware(process.env.API_VERSION, {
+    createProxyMiddleware(process.env.REACT_APP_API_VERSION, {
       target: process.env.REACT_APP_API_SERVER_PRODUCTION,
       changeOrigin: true,
     })
