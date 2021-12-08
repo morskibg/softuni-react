@@ -31,3 +31,5 @@ export const GET_CONTRACTORS = "GET_CONTRACTORS";
 export const CREATE_CONTRACT = "CREATE_CONTRACT";
 export const GET_AVL_ITNS = "GET_AVL_ITNS";
 export const GET_STP = "GET_STP";
+export const CLEAR_STP = "CLEAR_STP";
+export const GET_CONTRACTS = "GET_CONTRACTS";

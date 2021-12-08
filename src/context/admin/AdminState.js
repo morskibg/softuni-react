@@ -18,6 +18,7 @@ import {
   SET_MODIFIER,
   CLEAR_MODIFIER,
   UPDATE_USER,
+  AUTH_ERROR,
 } from "../types";
 
 const AdminState = (props) => {
@@ -31,6 +32,36 @@ const AdminState = (props) => {
   };
 
   const [state, dispatch] = useReducer(adminReducer, initialState);
+
+  const errorHandler = (error, reducerType) => {
+    if (error.response) {
+      // Request made and server responded
+      if (error.response.status === 403 || error.response.status === 401) {
+        console.log("auth error from ADMIN context DELETING TOKEN");
+        dispatch({
+          type: AUTH_ERROR,
+          payload: { alert: { msg: "Invalid token", type: "danger" } },
+        });
+      }
+      let errMsg = error;
+      try {
+        errMsg = Array.isArray(error.response.data.detail)
+          ? error.response.data.detail[0]["msg"]
+          : error.response.data.detail;
+      } catch (error) {
+        dispatch({
+          type: reducerType,
+          payload: { alert: { msg: errMsg, type: "danger" } },
+        });
+      }
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error", error.message);
+    }
+  };
 
   // Register User
   const registerUser = async (formData) => {
@@ -53,23 +84,24 @@ const AdminState = (props) => {
 
       // loadUser();
     } catch (err) {
-      // console.log("🚀 ~ file: AuthState.js ~ line 68 ~ register ~ err", err);
-      // console.log(err.response);
-      // console.log(err.response.data);
-      // console.log(err.response.data.detail[0]["msg"]);
-      // console.log(err.response.data.detail.isArray);
-      const errMsg = Array.isArray(err.response.data.detail)
-        ? err.response.data.detail[0]["msg"]
-        : err.response.data.detail;
+      errorHandler(err, REGISTER_FAIL);
+      // // console.log("🚀 ~ file: AuthState.js ~ line 68 ~ register ~ err", err);
+      // // console.log(err.response);
+      // // console.log(err.response.data);
+      // // console.log(err.response.data.detail[0]["msg"]);
+      // // console.log(err.response.data.detail.isArray);
+      // const errMsg = Array.isArray(err.response.data.detail)
+      //   ? err.response.data.detail[0]["msg"]
+      //   : err.response.data.detail;
 
-      // console.log(
-      //   "🚀 ~ file: AdminState.js ~ line 59 ~ register ~ errMsg",
-      //   errMsg
-      // );
-      dispatch({
-        type: REGISTER_FAIL,
-        payload: { alert: { msg: errMsg, type: "danger" } },
-      });
+      // // console.log(
+      // //   "🚀 ~ file: AdminState.js ~ line 59 ~ register ~ errMsg",
+      // //   errMsg
+      // // );
+      // dispatch({
+      //   type: REGISTER_FAIL,
+      //   payload: { alert: { msg: errMsg, type: "danger" } },
+      // });
     }
   };
 
@@ -84,17 +116,18 @@ const AdminState = (props) => {
         payload: res.data,
       });
     } catch (err) {
-      let errMsg = err;
-      try {
-        errMsg = Array.isArray(err.response.data.detail)
-          ? err.response.data.detail[0]["msg"]
-          : err.response.data.detail;
-      } catch (error) {
-        dispatch({
-          type: ADMIN_ERROR,
-          payload: { alert: { msg: errMsg, type: "danger" } },
-        });
-      }
+      errorHandler(err, ADMIN_ERROR);
+      // let errMsg = err;
+      // try {
+      //   errMsg = Array.isArray(err.response.data.detail)
+      //     ? err.response.data.detail[0]["msg"]
+      //     : err.response.data.detail;
+      // } catch (error) {
+      //   dispatch({
+      //     type: ADMIN_ERROR,
+      //     payload: { alert: { msg: errMsg, type: "danger" } },
+      //   });
+      // }
     }
   };
 
@@ -108,17 +141,18 @@ const AdminState = (props) => {
         payload: res.data,
       });
     } catch (err) {
-      let errMsg = err;
-      try {
-        errMsg = Array.isArray(err.response.data.detail)
-          ? err.response.data.detail[0]["msg"]
-          : err.response.data.detail;
-      } catch (error) {
-        dispatch({
-          type: ADMIN_ERROR,
-          payload: { alert: { msg: errMsg, type: "danger" } },
-        });
-      }
+      errorHandler(err, ADMIN_ERROR);
+      // let errMsg = err;
+      // try {
+      //   errMsg = Array.isArray(err.response.data.detail)
+      //     ? err.response.data.detail[0]["msg"]
+      //     : err.response.data.detail;
+      // } catch (error) {
+      //   dispatch({
+      //     type: ADMIN_ERROR,
+      //     payload: { alert: { msg: errMsg, type: "danger" } },
+      //   });
+      // }
     }
   };
 
@@ -133,10 +167,10 @@ const AdminState = (props) => {
 
     setAuthHeader(localStorage.token);
     try {
-      console.log(
-        "🚀 ~ file: AdminState.js ~ line 138 ~ modifyUser ~ userData",
-        userData
-      );
+      // console.log(
+      //   "🚀 ~ file: AdminState.js ~ line 138 ~ modifyUser ~ userData",
+      //   userData
+      // );
       const res = await axios.put(`/api/v1/users/${userId}`, userData, config);
 
       dispatch({
@@ -147,26 +181,27 @@ const AdminState = (props) => {
         },
       });
     } catch (err) {
-      // console.log(
-      //   "🚀 ~ file: AdminState.js ~ line 145 ~ modifyUser ~ err",
-      //   err
-      // );
-      let errMsg = err;
-      try {
-        errMsg = Array.isArray(err.response.data.detail)
-          ? err.response.data.detail[0]["msg"]
-          : err.response.data.detail;
-      } catch (error) {
-        // console.log(
-        //   "🚀 ~ file: AdminState.js ~ line 48 ~ getUsers ~ error",
-        //   error
-        // );
-      }
+      errorHandler(err, ADMIN_ERROR);
+      // // console.log(
+      // //   "🚀 ~ file: AdminState.js ~ line 145 ~ modifyUser ~ err",
+      // //   err
+      // // );
+      // let errMsg = err;
+      // try {
+      //   errMsg = Array.isArray(err.response.data.detail)
+      //     ? err.response.data.detail[0]["msg"]
+      //     : err.response.data.detail;
+      // } catch (error) {
+      //   // console.log(
+      //   //   "🚀 ~ file: AdminState.js ~ line 48 ~ getUsers ~ error",
+      //   //   error
+      //   // );
+      // }
 
-      dispatch({
-        type: ADMIN_ERROR,
-        payload: { alert: { msg: errMsg, type: "danger" } },
-      });
+      // dispatch({
+      //   type: ADMIN_ERROR,
+      //   payload: { alert: { msg: errMsg, type: "danger" } },
+      // });
     }
   };
 

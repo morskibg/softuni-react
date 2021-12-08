@@ -11,13 +11,12 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_ERRORS,
-  GET_ROLE,
   GET_USER_DATA,
   VERIFY_TOKEN,
 } from "../types";
 
 const AuthState = (props) => {
-  console.log("AUTH IS LOADING....");
+  // console.log("AUTH STATE IS LOADING....");
   const initialState = {
     token: localStorage.getItem("token"),
     // isAuthenticated: checkAuthToken(),
@@ -40,10 +39,40 @@ const AuthState = (props) => {
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
+  const errorHandler = (error, reducerType) => {
+    if (error.response) {
+      // Request made and server responded
+      if (error.response.status === 403 || error.response.status === 401) {
+        // console.log("auth error from ADMIN context DELETING TOKEN");
+        dispatch({
+          type: AUTH_ERROR,
+          payload: { alert: { msg: "Invalid token", type: "danger" } },
+        });
+      }
+      let errMsg = error;
+      try {
+        errMsg = Array.isArray(error.response.data.detail)
+          ? error.response.data.detail[0]["msg"]
+          : error.response.data.detail;
+      } catch (error) {
+        dispatch({
+          type: reducerType,
+          payload: { alert: { msg: errMsg, type: "danger" } },
+        });
+      }
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error", error.message);
+    }
+  };
+
   const verifyToken = () => {
-    console.log(
-      "🚀 ~ file: AuthState.js ~ line 61 ~ verifyToken ~ verifyToken"
-    );
+    // console.log(
+    //   "🚀 ~ file: AuthState.js ~ line 61 ~ verifyToken ~ verifyToken"
+    // );
     try {
       const token = localStorage.getItem("token");
       const decoded = jwt_decode(token);
@@ -51,10 +80,10 @@ const AuthState = (props) => {
       // const isValidToken2 = ~~(Date.now() / 1000);
       const isAdmin = decoded.is_admin;
       const isGuest = decoded.is_guest;
-      console.log(
-        "🚀 ~ file: AuthState.js ~ line 49 ~ verifyToken ~ isValidToken",
-        isValidToken
-      );
+      // console.log(
+      //   "🚀 ~ file: AuthState.js ~ line 49 ~ verifyToken ~ isValidToken",
+      //   isValidToken
+      // );
       dispatch({
         type: VERIFY_TOKEN,
         payload: { isValidToken, isAdmin, isGuest },
@@ -62,7 +91,7 @@ const AuthState = (props) => {
     } catch {
       dispatch({
         type: AUTH_ERROR,
-        payload: null,
+        payload: { alert: { msg: "Invalid token", type: "danger" } },
       });
     }
   };
@@ -83,10 +112,11 @@ const AuthState = (props) => {
         },
       });
     } catch (err) {
-      const errMsg = Array.isArray(err.response.data.detail)
-        ? err.response.data.detail[0]["msg"]
-        : err.response.data.detail;
-      dispatch({ type: AUTH_ERROR, payload: errMsg });
+      errorHandler(err, AUTH_ERROR);
+      // const errMsg = Array.isArray(err.response.data.detail)
+      //   ? err.response.data.detail[0]["msg"]
+      //   : err.response.data.detail;
+      // dispatch({ type: AUTH_ERROR, payload: errMsg });
     }
   };
 
@@ -125,18 +155,26 @@ const AuthState = (props) => {
 
       // loadUser();
     } catch (err) {
-      const errMsg = Array.isArray(err.response.data.detail)
-        ? err.response.data.detail[0]["msg"]
-        : err.response.data.detail;
-      dispatch({
-        type: LOGIN_FAIL,
-        payload: errMsg,
-      });
+      errorHandler(err, LOGIN_FAIL);
+      // const errMsg = Array.isArray(err.response.data.detail)
+      //   ? err.response.data.detail[0]["msg"]
+      //   : err.response.data.detail;
+      // dispatch({
+      //   type: LOGIN_FAIL,
+      //   payload: errMsg,
+      // });
     }
   };
 
   // Logout
-  const logout = () => dispatch({ type: LOGOUT });
+  const logout = () =>
+    dispatch({
+      type: LOGOUT,
+      payload: {
+        data: null,
+        alert: { msg: "Successfully logged out", type: "success" },
+      },
+    });
 
   // Clear Errors
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
@@ -152,33 +190,35 @@ const AuthState = (props) => {
         payload: res.data,
       });
     } catch (err) {
-      const errMsg = Array.isArray(err.response.data.detail)
-        ? err.response.data.detail[0]["msg"]
-        : err.response.data.detail;
-      dispatch({ type: AUTH_ERROR, payload: errMsg });
+      errorHandler(err, AUTH_ERROR);
+      // const errMsg = Array.isArray(err.response.data.detail)
+      //   ? err.response.data.detail[0]["msg"]
+      //   : err.response.data.detail;
+      // dispatch({ type: AUTH_ERROR, payload: errMsg });
     }
   };
-  const getRole = () => {
-    const token = localStorage.getItem("token");
+  // const getRole = () => {
+  //   const token = localStorage.getItem("token");
 
-    if (!token) {
-      dispatch({
-        type: AUTH_ERROR,
-      });
-    }
-    try {
-      const decoded = jwt_decode(token);
-      dispatch({
-        type: GET_ROLE,
-        payload: decoded,
-      });
-    } catch (error) {
-      dispatch({
-        type: LOGIN_FAIL,
-        payload: error,
-      });
-    }
-  };
+  //   if (!token) {
+  //     dispatch({
+  //       type: AUTH_ERROR,
+  //       payload: { alert: { msg: "Invalid token", type: "danger" } },
+  //     });
+  //   }
+  //   try {
+  //     const decoded = jwt_decode(token);
+  //     dispatch({
+  //       type: GET_ROLE,
+  //       payload: decoded,
+  //     });
+  //   } catch (error) {
+  //     dispatch({
+  //       type: LOGIN_FAIL,
+  //       payload: error,
+  //     });
+  //   }
+  // };
 
   return (
     <AuthContext.Provider
@@ -194,7 +234,7 @@ const AuthState = (props) => {
         login,
         logout,
         clearErrors,
-        getRole,
+        // getRole,
         getUserData,
         verifyToken,
       }}

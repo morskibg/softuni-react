@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  Fragment,
-  PureComponent,
-} from "react";
+import React, { useState, useContext, useEffect, Fragment } from "react";
 import {
   BarChart,
   Bar,
@@ -16,11 +10,15 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import "./CreateContract.css";
+import "./css/CreateContract.css";
 import Spinner from "../../layout/Spinner";
 import AuthContext from "../../../context/auth/authContext";
 import AlertContext from "../../../context/alert/alertContext";
 import UserContext from "../../../context/user/userContext";
+import CounterpartyForm from "./forms/CounterpartyForm";
+import ContractForm from "./forms/ContractForm";
+import ItnForm from "./forms/ItnForm";
+import ConfirmForm from "./forms/ConfirmForm";
 
 import { Typography, Button, Stepper, Step, StepLabel } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
@@ -31,8 +29,6 @@ import { Box } from "@mui/system";
 
 import { useNavigate } from "react-router-dom";
 
-import { CounterpartyForm, ContractForm, ItnForm, ConfirmForm } from "./Forms";
-
 const CreateContract = () => {
   const authContext = useContext(AuthContext);
   const alertContext = useContext(AlertContext);
@@ -40,26 +36,49 @@ const CreateContract = () => {
 
   const { isGuest, isAuthenticated, verifyToken } = authContext;
   const { setAlert } = alertContext;
-  const { createContract, loading, stpCoeffs } = userContext;
+  const {
+    createContract,
+    loading,
+    stpCoeffs,
+    avgMonthlyStp,
+    avgMonthlyStpWeekEnd,
+  } = userContext;
 
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState();
+  const [monthAggrGraph, setMonthAggrGraph] = useState();
+  const [monthAggrWeekGraph, setMonthAggrWeekGraph] = useState();
   const [dataGraph, setDataGraph] = useState();
 
   const theme = useTheme();
 
   useEffect(() => {
+    // console.log(
+    //   "🚀 ~ file: CreateContract.js ~ line 72 ~ useEffect ~  userContext.error",
+    //   userContext.error
+    // );
     if (!isAuthenticated | isGuest) {
       navigate("/");
     } else {
       verifyToken();
     }
+    return () => {
+      console.log("from MASTER form unmounting");
+    };
   }, [isAuthenticated, isGuest]);
 
   useEffect(() => {
+    // console.log(
+    //   "🚀 ~ file: CreateContract.js ~ line 63 ~ useEffect ~  userContext.error",
+    //   userContext.error
+    // );
     if (authContext.error || userContext.error) {
       const alert = authContext.error ?? userContext.error;
+      // console.log(
+      //   "🚀 ~ file: CreateContract.js ~ line 69 ~ useEffect ~ alert",
+      //   alert
+      // );
       setAlert(alert.msg, alert.type);
       authContext.clearErrors();
       userContext.clearErrors();
@@ -69,7 +88,9 @@ const CreateContract = () => {
     // }
 
     setDataGraph(stpCoeffs);
-  }, [isGuest, loading, stpCoeffs]);
+    setMonthAggrGraph(avgMonthlyStp);
+    setMonthAggrWeekGraph(avgMonthlyStpWeekEnd);
+  }, [isGuest, loading, stpCoeffs, avgMonthlyStp, avgMonthlyStpWeekEnd]);
 
   const getStepContent = (step) => {
     switch (step) {
@@ -107,10 +128,10 @@ const CreateContract = () => {
 
   const handleNext = (data, err) => {
     if (activeStep === getSteps().length - 1) {
-      console.log(
-        "🚀 ~ file: CreateContract.js ~ line 83 ~ handleNext ~ formData",
-        formData
-      );
+      // console.log(
+      //   "🚀 ~ file: CreateContract.js ~ line 83 ~ handleNext ~ formData",
+      //   formData
+      // );
       createContract(formData);
       navigate("/");
 
@@ -157,42 +178,19 @@ const CreateContract = () => {
                 }
               >
                 <form onSubmit={methods.handleSubmit(handleNext)}>
-                  {/* <FormControl> */}
                   {getStepContent(activeStep)}
                   {!loading && (
                     <Box className='create-contract-buttons'>
-                      <Button
-                        // className={classes.button}
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                      >
+                      <Button disabled={activeStep === 0} onClick={handleBack}>
                         back
                       </Button>
-                      {/* {steps[activeStep] ===
-                        "Entry measurement point (ITN)" && (
-                        <Button
-                          // className={classes.button}
-
-                          onClick={handleBack}
-                        >
-                          add another itn
-                        </Button>
-                      )} */}
-
-                      <Button
-                        // className={classes.button}
-                        variant='contained'
-                        color='primary'
-                        // onClick={handleNext}
-                        type='submit'
-                      >
+                      <Button variant='contained' color='primary' type='submit'>
                         {activeStep === steps.length - 1 ? "Finish" : "Next"}
                       </Button>
                     </Box>
                   )}
                 </form>
               </Box>
-              {/* </FormControl> */}
             </FormProvider>
           </Fragment>
         )}
@@ -201,19 +199,19 @@ const CreateContract = () => {
         <Box className='create-contract-right-container'>
           {loading ? (
             <>
-              <Typography>Loading Load Profile .....</Typography>
+              <Typography variant='h3' align='center'>
+                Loading Load Profile .....
+              </Typography>
               <Spinner />
             </>
           ) : (
             steps[activeStep] === "Entry measurement point (ITN)" && (
               <Fragment>
+                <Typography>Coefficients for whole period.</Typography>
                 <ResponsiveContainer width='100%' height='100%'>
-                  {/* <BarChart width={150} height={40} data={dataGraph ?? []}>
-                  <Bar dataKey='data' fill='#8884d8' />
-                </BarChart> */}
                   <BarChart
                     width={500}
-                    height={300}
+                    height={500}
                     data={dataGraph ?? []}
                     margin={{
                       top: 5,
@@ -226,19 +224,21 @@ const CreateContract = () => {
                     <XAxis dataKey='eet' />
                     <YAxis />
                     <Tooltip />
-                    <Legend />
-                    {/* <Bar dataKey='pv' fill='#8884d8' /> */}
-                    <Bar dataKey='data' fill={theme.palette.barChart.primary} />
+                    {/* <Legend /> */}
+                    <Bar
+                      dataKey='FullPeriod'
+                      fill={theme.palette.barChart.primary}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
+                <Typography className='create-contract-graph_'>
+                  Aggregated monthly coefficients for working days.
+                </Typography>
                 <ResponsiveContainer width='100%' height='100%'>
-                  {/* <BarChart width={150} height={40} data={dataGraph ?? []}>
-                  <Bar dataKey='data' fill='#8884d8' />
-                </BarChart> */}
                   <BarChart
                     width={500}
-                    height={300}
-                    data={dataGraph ?? []}
+                    height={500}
+                    data={monthAggrGraph ?? []}
                     margin={{
                       top: 5,
                       right: 30,
@@ -247,12 +247,40 @@ const CreateContract = () => {
                     }}
                   >
                     <CartesianGrid strokeDasharray='3 3' />
-                    <XAxis dataKey='eet' />
+                    <XAxis dataKey='hour' />
                     <YAxis />
                     <Tooltip />
-                    <Legend />
-                    {/* <Bar dataKey='pv' fill='#8884d8' /> */}
-                    <Bar dataKey='data' fill={theme.palette.barChart.primary} />
+                    {/* <Legend /> */}
+                    <Bar
+                      dataKey='MonthlyAggregationWorkDays'
+                      fill={theme.palette.barChart.secondary}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+                <Typography className='create-contract-graph_'>
+                  Aggregated monthly coefficients for non working days.
+                </Typography>
+                <ResponsiveContainer width='100%' height='100%'>
+                  <BarChart
+                    width={500}
+                    height={300}
+                    data={monthAggrWeekGraph ?? []}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='hour' />
+                    <YAxis />
+                    <Tooltip />
+                    {/* <Legend /> */}
+                    <Bar
+                      dataKey='MonthlyAggregationWeekDays'
+                      fill={theme.palette.barChart.third}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </Fragment>

@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import { Navigate, Route, useLocation } from "react-router-dom";
+import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
 import AuthContext from "../../context/auth/authContext";
 
 function RequireAnonymous({ children }) {

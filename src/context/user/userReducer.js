@@ -8,15 +8,19 @@ import {
   GET_AVL_ITNS,
   GET_STP,
   AUTH_ERROR,
+  CLEAR_STP,
+  GET_CONTRACTS,
 } from "../types";
 
 const userReducer = (state, action) => {
   switch (action.type) {
     case AUTH_ERROR:
+      //console.log("in user AUTH ERROR reducer ---> ", action.payload);
       localStorage.removeItem("token");
       return {
         ...state,
         loading: false,
+        error: action.payload.alert,
       };
     case GET_ADDRESSES:
       return {
@@ -24,8 +28,16 @@ const userReducer = (state, action) => {
         loading: false,
         addresses: action.payload.sort((a, b) => a.city - b.city),
       };
+    case GET_CONTRACTS:
+      return {
+        ...state,
+        loading: false,
+        contracts: action.payload.sort(
+          (a, b) => a.contractor.name - b.contractor.name
+        ),
+      };
     case GET_AVL_ITNS:
-      console.log("in available ", action.payload);
+      //console.log("in available ", action.payload);
 
       return {
         ...state,
@@ -37,7 +49,9 @@ const userReducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        stpCoeffs: action.payload,
+        stpCoeffs: action.payload.wholePeriodData,
+        avgMonthlyStp: action.payload.monthlyAgrrWorkDays,
+        avgMonthlyStpWeekEnd: action.payload.monthlyAgrrWeekDays,
       };
     case GET_CONTRACTORS:
       return {
@@ -46,10 +60,10 @@ const userReducer = (state, action) => {
         contractors: action.payload.sort((a, b) => a.name - b.name),
       };
     case CREATE_CONTRACT:
-      console.log(
-        "🚀 ~ file: userReducer.js ~ line 27 ~ userReducer ~ action.payload.alert",
-        action.payload.alert
-      );
+      // //console.log(
+      //   "🚀 ~ file: userReducer.js ~ line 27 ~ userReducer ~ action.payload.alert",
+      //   action.payload.alert
+      // );
       return {
         ...state,
         error: action.payload.alert,
@@ -67,6 +81,13 @@ const userReducer = (state, action) => {
       return {
         ...state,
         error: null,
+      };
+    case CLEAR_STP:
+      return {
+        ...state,
+        stpCoeffs: [],
+        avgMonthlyStp: [],
+        avgMonthlyStpWeekEnd: [],
       };
     case START_LOADER:
       return {

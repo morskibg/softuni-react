@@ -4,7 +4,8 @@
   margin-top: 3rem;
   max-width: 80%;
   height: 100%;
-  min-height: 25rem;
+  /* min-height: 50vh; */
+  min-height: 50rem;
   display: flex;
   /* min-height: 100vh;
   display: flex;
@@ -18,7 +19,6 @@
 }
 .create-contract-right {
   width: 50%;
-  /* flex-grow: 1; */
 }
 .create-contract-right-container {
   display: flex;
@@ -58,7 +58,7 @@
 }
 .create-contract-forms-container {
   margin-top: 2rem;
-  max-width: 60%;
+  max-width: 80%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -85,6 +85,9 @@
 .summary-table {
   flex-grow: 1;
   justify-content: center;
+}
+.create-contract-graph {
+  margin: 2rem;
 }
 /* .create-contract-itn input {
   text-transform: uppercase !important;

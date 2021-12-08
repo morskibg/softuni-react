@@ -13,7 +13,7 @@ import {
 } from "../types";
 
 const authReducer = (state, action) => {
-  console.log("in AUTH reducer", action.type);
+  // console.log("in AUTH reducer", action.type);
   switch (action.type) {
     case USER_LOADED:
       return {
@@ -53,7 +53,7 @@ const authReducer = (state, action) => {
         isAuthenticated: false,
         loading: false,
         user: null,
-        error: action.payload,
+        error: action.payload.alert,
       };
     case CLEAR_ERRORS:
       return {
@@ -62,7 +62,7 @@ const authReducer = (state, action) => {
       };
 
     case GET_ROLE:
-      console.log("GET");
+      // console.log("GET");
       return {
         ...state,
         isAuthenticated: true,
@@ -75,7 +75,7 @@ const authReducer = (state, action) => {
         user: action.payload,
       };
     case VERIFY_TOKEN:
-      console.log(action.payload);
+      // console.log(action.payload);
       return {
         ...state,
         isAuthenticated: action.payload.isValidToken,

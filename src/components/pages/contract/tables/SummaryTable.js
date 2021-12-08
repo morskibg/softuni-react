@@ -58,7 +58,7 @@ const SummaryTable = (props) => {
         value: `${format(new Date(endDate), "dd/MM/yyyy")}`,
         id: 6,
       },
-      { item: "Contract price per MWh in BGN", value: price, id: 7 },
+      { item: "Contract price per kWh in BGN", value: price, id: 7 },
       { item: "ITN", value: itn, id: 8 },
       { item: "Load type", value: loadType, id: 13 },
       { item: "ERP", value: erp, id: 9 },

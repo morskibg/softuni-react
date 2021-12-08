@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import AuthContext from "../../../context/auth/authContext";
 import AlertContext from "../../../context/alert/alertContext";
-// import AdminContext from "../../context/admin/adminContext";
+import AdminContext from "../../../context/admin/adminContext";
+import UserContext from "../../../context/user/userContext";
+
 import "./Login.css";
 import background from "../../../assets/login.jpg";
 
@@ -31,10 +33,11 @@ const Login = () => {
   // const theme = useTheme();
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
-  // const adminContext = useContext(AdminContext);
+  const adminContext = useContext(AdminContext);
+  const userContext = useContext(UserContext);
 
   const { setAlert } = alertContext;
-  const { error, clearErrors, isAuthenticated, login, getRole } = authContext;
+  const { error, clearErrors, isAuthenticated, login } = authContext;
   const navigate = useNavigate();
 
   // const { state } = useLocation();
@@ -48,6 +51,7 @@ const Login = () => {
   // const onSubmit = (data) => console.log(data);
 
   useEffect(() => {
+    console.log("in LOGIN use effect");
     if (isAuthenticated) {
       navigate("/");
     }
@@ -56,9 +60,37 @@ const Login = () => {
       setAlert(error, "danger");
       clearErrors();
     }
+    if (authContext.error || adminContext.error || userContext.error) {
+      console.log(
+        "🚀 ~ file: Login.js ~ line 63 ~ useEffect ~ userContext.error",
+        userContext.error
+      );
+      console.log(
+        "🚀 ~ file: Login.js ~ line 63 ~ useEffect ~ adminContext.error",
+        adminContext.error
+      );
+      console.log(
+        "🚀 ~ file: Login.js ~ line 63 ~ useEffect ~ authContext.error",
+        authContext.error
+      );
+      const alert =
+        authContext.error ?? adminContext.error ?? userContext.error;
+      console.log("🚀 ~ file: LOGIN.js ~ line 77 ~ useEffect ~ alert", alert);
+
+      setAlert(alert.msg, alert.type);
+      authContext.clearErrors();
+      adminContext.clearErrors();
+      userContext.clearErrors();
+    }
 
     // eslint-disable-next-line
-  }, [error, isAuthenticated]);
+  }, [
+    error,
+    isAuthenticated,
+    authContext.error,
+    adminContext.error,
+    userContext.error,
+  ]);
 
   const [checked, setChecked] = useState(false);
 

@@ -38,16 +38,9 @@ const Register = () => {
   const adminContext = useContext(AdminContext);
 
   const { setAlert } = alertContext;
-  const {
-    error,
-    isAdmin,
-    isAuthenticated,
-    getUserData,
-    user,
-    verifyToken,
-    isGuest,
-  } = authContext;
-  const { registerUser, clearUsersFromState } = adminContext;
+  const { isAdmin, isAuthenticated, getUserData, user, verifyToken, isGuest } =
+    authContext;
+  const { registerUser } = adminContext;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,30 +54,23 @@ const Register = () => {
     }
     if (!isAdmin || !isAuthenticated || isGuest) {
       navigate("/");
-    } else {
-      verifyToken();
-    }
+    }     
     if (!user) {
       getUserData();
     }
 
     // eslint-disable-next-line
-  }, [isAdmin, adminContext.error, authContext.error]);
+  }, [
+    isAdmin,
+    isAuthenticated,
+    isGuest,
+    adminContext.error,
+    authContext.error,
+  ]);
 
-  // const [user, setUser] = useState({
-  //   fullName: "",
-  //   email: "",
-  //   password: "",
-  //   rePassword: "",
-  //   isSuperuser: false,
-  //   isActive: true,
-  // });
+  // const [showPass, setShowPass] = useState(false);
 
-  // const { name, email, password, rePassword, isSuperuser } = user;
-
-  const [showPass, setShowPass] = useState(false);
-
-  const { control, handleSubmit, setValue, reset } = useForm();
+  const { control, handleSubmit, reset } = useForm();
 
   const handleCancel = () => {
     navigate("/");
@@ -104,7 +90,7 @@ const Register = () => {
   const onSubmitHandler = (data, e) => {
     e.preventDefault();
 
-    const { email, password, rePassword } = data; // because python fastApi names expectations
+    const { email, password, rePassword } = data;
     const full_name = data.fullname;
     const is_superuser = data.isAdmin;
 

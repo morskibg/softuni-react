@@ -12,15 +12,16 @@ import {
   SET_MODIFIER,
   CLEAR_MODIFIER,
   UPDATE_USER,
+  AUTH_ERROR,
 } from "../types";
 
 const adminReducer = (state, action) => {
   switch (action.type) {
     case REGISTER_SUCCESS:
-      console.log(
-        "🚀 ~ file: adminReducer.js ~ line 19 ~ adminReducer ~ action.payload",
-        action.payload
-      );
+      // console.log(
+      //   "🚀 ~ file: adminReducer.js ~ line 19 ~ adminReducer ~ action.payload",
+      //   action.payload
+      // );
 
       return {
         ...state,
@@ -36,6 +37,7 @@ const adminReducer = (state, action) => {
       };
     case REGISTER_FAIL:
     case ADMIN_ERROR:
+      // console.log("in ADMIN_ERROR");
       return {
         ...state,
         error: action.payload.alert,
@@ -59,8 +61,8 @@ const adminReducer = (state, action) => {
         currentUser: null,
       };
     case UPDATE_USER:
-      console.log(action.payload.data);
-      console.log(action.payload.alert);
+      // console.log(action.payload.data);
+      // console.log(action.payload.alert);
       return {
         ...state,
         loading: false,
@@ -93,6 +95,18 @@ const adminReducer = (state, action) => {
       return {
         ...state,
         isModified: false,
+      };
+
+    case AUTH_ERROR:
+      // console.log("in AUTH ERROR Reduer - will delete token !!!!");
+      localStorage.removeItem("token");
+
+      return {
+        ...state,
+        token: null,
+        loading: false,
+        users: [],
+        error: action.payload.alert,
       };
     default:
       return state;

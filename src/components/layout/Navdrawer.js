@@ -28,6 +28,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import DarkModeIcon from "@mui/icons-material/Brightness4";
 import LightModeIcon from "@mui/icons-material/Brightness7";
 import CreateIcon from "@mui/icons-material/Create";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
 import {
   BrowserRouter as Router,
   Routes,
@@ -160,7 +162,7 @@ const Navdrawer = (props) => {
   const menuItems = [
     {
       text: "Create Contract",
-      icon: <CreateIcon />,
+      icon: <AddIcon />,
       isDisabled: isGuest,
       onClick: () => {
         if (isGuest) {
@@ -171,9 +173,16 @@ const Navdrawer = (props) => {
       },
     },
     {
-      text: "Second",
-      icon: <InboxIcon />,
-      isDisabled: false,
+      text: "Edit Contract",
+      icon: <EditIcon />,
+      isDisabled: isGuest,
+      onClick: () => {
+        if (isGuest) {
+          setAlert("Registered user only !", "danger");
+        } else {
+          navigate("redact_contract");
+        }
+      },
     },
     {
       text: "Third",

@@ -13,6 +13,7 @@ import Login from "./components/pages/auth/Login";
 import Register from "./components/pages/admin/Register";
 import Alerts from "./components/layout/Alerts";
 import CreateContract from "./components/pages/contract/CreateContract";
+import RedactContract from "./components/pages/contract/RedactContract";
 
 import Logout from "./components/pages/auth/Logout";
 import NotFound from "./components/pages/NotFound";
@@ -70,6 +71,14 @@ const App = () => {
                         <RequireNotGuest>
                           {/* <StepperRaw /> */}
                           <CreateContract />
+                        </RequireNotGuest>
+                      }
+                    />
+                    <Route
+                      path='redact_contract'
+                      element={
+                        <RequireNotGuest>
+                          <RedactContract />
                         </RequireNotGuest>
                       }
                     />

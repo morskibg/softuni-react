@@ -27,7 +27,12 @@ const Home = (props) => {
   const authContext = useContext(AuthContext);
   const adminContext = useContext(AdminContext);
   const userContext = useContext(UserContext);
-  console.log("🚀 ~ file: Home.js ~ line 30 ~ Home ~ userContext", userContext);
+  // console.log("🚀 ~ file: Home.js ~ line 30 ~ Home ~ userContext", userContext);
+  // console.log("🚀 ~ file: Home.js ~ line 30 ~ Home ~ authContext", authContext);
+  // console.log(
+  //   "🚀 ~ file: Home.js ~ line 30 ~ Home ~ adminContext",
+  //   adminContext
+  // );
 
   const { setAlert } = alertContext;
   const { isAuthenticated, isAdmin, isGuest, getRole } = authContext;
@@ -36,22 +41,17 @@ const Home = (props) => {
     adminContext;
 
   useEffect(() => {
-    console.log(
-      "🚀 ~ file: Home.js ~ line 39 ~ useEffect ~ userContext.erro",
-      userContext.error
-    );
+    console.log("in HOME use effect");
     if (authContext.error || adminContext.error || userContext.error) {
       const alert =
         authContext.error ?? adminContext.error ?? userContext.error;
-      console.log("🚀 ~ file: Home.js ~ line 33 ~ useEffect ~ alert", alert);
+      // console.log("🚀 ~ file: Home.js ~ line 33 ~ useEffect ~ alert", alert);
 
       setAlert(alert.msg, alert.type);
       authContext.clearErrors();
       adminContext.clearErrors();
       userContext.clearErrors();
     }
-    // getRole();
-
     // eslint-disable-next-line
   }, [
     isAdmin,

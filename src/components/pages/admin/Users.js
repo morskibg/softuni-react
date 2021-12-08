@@ -35,6 +35,7 @@ const Users = (props) => {
     if (!isAuthenticated | isGuest | !isAdmin) {
       navigate("/");
     } else {
+      console.log("SHOUL VERIFY TOKEN");
       verifyToken();
     }
     // getRole();

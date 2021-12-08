@@ -38,6 +38,8 @@ const darkTheme = createTheme({
     },
     barChart: {
       primary: "#ec5990",
+      secondary: "#aa4446",
+      third: "#ff7139",
       // secondary: grey[500],
     },
   },
@@ -74,6 +76,8 @@ const lightTheme = createTheme({
     },
     barChart: {
       primary: "#ec5990",
+      secondary: "#115990",
+      third: "#ff7139",
       // secondary: grey[500],
     },
   },

@@ -14,6 +14,8 @@ import {
   GET_AVL_ITNS,
   GET_STP,
   AUTH_ERROR,
+  CLEAR_STP,
+  GET_CONTRACTS,
 } from "../types";
 
 const UserState = (props) => {
@@ -22,7 +24,10 @@ const UserState = (props) => {
     addresses: [],
     contractors: [],
     availableITNs: [],
+    contracts: [],
     stpCoeffs: [],
+    avgMonthlyStp: [],
+    avgMonthlyStpWeekEnd: [],
     isFreeItn: true,
     error: null,
   };
@@ -32,10 +37,11 @@ const UserState = (props) => {
   const errorHandler = (error) => {
     if (error.response) {
       // Request made and server responded
-      if (error.response.status === 403) {
-        console.log("auth error DELETING TOKEN");
+      if (error.response.status === 403 || error.response.status === 401) {
+        // console.log("auth from USER STATE error DELETING TOKEN");
         dispatch({
           type: AUTH_ERROR,
+          payload: { alert: { msg: "Invalid token", type: "danger" } },
         });
       }
       let errMsg = error;
@@ -58,6 +64,21 @@ const UserState = (props) => {
     }
   };
 
+  //Get Contracts
+  const getContracts = async () => {
+    setAuthHeader(localStorage.token);
+    try {
+      const res = await axios.get("/api/v1/contracts");
+      console.log("from getContracts", res);
+      dispatch({
+        type: GET_CONTRACTS,
+        payload: res.data,
+      });
+    } catch (error) {
+      errorHandler(error);
+    }
+  };
+
   // Get stp coeffs
   const getStpCoeffs = async (code, startDate, endDate) => {
     setAuthHeader(localStorage.token);
@@ -65,17 +86,42 @@ const UserState = (props) => {
       const res = await axios.get(
         `/api/v1/utils/stp/${code}?start_date=${startDate}&end_date=${endDate}`
       );
+      // console.log(
+      //   "🚀 ~ file: UserState.js ~ line 71 ~ getStpCoeffs ~ res",
+      //   res
+      // );
 
-      const dataObj = JSON.parse(res.data[code]);
-      const d = Object.keys(dataObj).map((idx) => ({
+      const dataObj = JSON.parse(res.data[0][code]);
+
+      const wholePeriodData = Object.keys(dataObj).map((idx) => ({
         utc: dataObj[idx]["utc"],
-        data: dataObj[idx]["value"],
+        FullPeriod: dataObj[idx]["value"],
         eet: dataObj[idx]["eet"],
+      }));
+      // console.log(
+      //   "🚀 ~ file: UserState.js ~ line 84 ~ wholePeriodData ~ wholePeriodData",
+      //   wholePeriodData
+      // );
+
+      const dataObjM = JSON.parse(res.data[1][Object.keys(res.data[1])[0]]);
+
+      const monthlyAgrrWorkDays = Object.keys(dataObjM).map((idx) => ({
+        hour: dataObjM[idx]["hour"],
+        MonthlyAggregationWorkDays: dataObjM[idx]["value"],
+      }));
+
+      const dataObjMWeekend = JSON.parse(
+        res.data[2][Object.keys(res.data[2])[0]]
+      );
+
+      const monthlyAgrrWeekDays = Object.keys(dataObjMWeekend).map((idx) => ({
+        hour: dataObjMWeekend[idx]["hour"],
+        MonthlyAggregationWeekDays: dataObjMWeekend[idx]["value"],
       }));
 
       dispatch({
         type: GET_STP,
-        payload: d,
+        payload: { wholePeriodData, monthlyAgrrWorkDays, monthlyAgrrWeekDays },
       });
     } catch (error) {
       errorHandler(error);
@@ -87,7 +133,7 @@ const UserState = (props) => {
     setAuthHeader(localStorage.token);
     try {
       const res = await axios.get("/api/v1/addresses");
-      console.log("from setAuthHeader", res);
+      // console.log("from setAuthHeader", res);
       dispatch({
         type: GET_ADDRESSES,
         payload: res.data,
@@ -98,10 +144,10 @@ const UserState = (props) => {
   };
   // Get available itns
   const getAvlItns = async (kwargs) => {
-    console.log(
-      "🚀 ~ file: UserState.js ~ line 91 ~ getAvlItns ~ kwargs",
-      kwargs
-    );
+    // console.log(
+    //   "🚀 ~ file: UserState.js ~ line 91 ~ getAvlItns ~ kwargs",
+    //   kwargs
+    // );
     setAuthHeader(localStorage.token);
     var res = "";
     var isFreeItn = true;
@@ -110,29 +156,37 @@ const UserState = (props) => {
       const endDate = kwargs.endDate;
       const allMetasRes = await axios.get("/api/v1/itn_metas");
       const allItns = allMetasRes.data.map((x) => x.id);
+      // let scheduledItns = [];
 
       if (Object.keys(kwargs).length === 3) {
         const itn = kwargs.itn;
         res = await axios.get(
-          `/api/v1/schedules/${itn}?startDate=${startDate}&endDate=${endDate}`
+          `/api/v1/schedules/${itn}?start_date=${startDate}&end_date=${endDate}`
         );
-        isFreeItn = res.data.length > 0;
-        console.log(
-          "🚀 ~ file: UserState.js ~ line 108 ~ getAvlItns ~ res",
-          res.data
-        );
-      } else {
-        res = await axios.get(
-          `/api/v1/schedules/?startDate=${startDate}&endDate=${endDate}`
-        );
+        isFreeItn = res.data.length === 0;
+        // console.log(
+        //   "🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        //   res.data.length
+        // );
       }
-
-      const scheduledItns = res.data.map((x) => x.itn);
-      const availableItns = allItns.filter((x) => !scheduledItns.includes(x));
-      console.log(
-        "🚀 ~ file: UserState.js ~ line 113 ~ getAvlItns ~ availableItns",
-        availableItns
+      const scheduledRes = await axios.get(
+        `/api/v1/schedules/?startDate=${startDate}&endDate=${endDate}`
       );
+      const scheduledItns = scheduledRes.data.map((x) => x.itn);
+
+      // console.log(
+      //   "🚀 ~ file: UserState.js ~ line 160 ~ getAvlItns ~ scheduledItns",
+      //   scheduledItns
+      // );
+      const availableItns = allItns.filter((x) => !scheduledItns.includes(x));
+      // console.log(
+      //   "🚀 ~ file: UserState.js ~ line 113 ~ getAvlItns ~ availableItns",
+      //   availableItns
+      // );
+      // console.log(
+      //   "🚀 ~ file: UserState.js ~ line 149 ~ getAvlItns ~ isFreeItn",
+      //   isFreeItn
+      // );
 
       dispatch({
         type: GET_AVL_ITNS,
@@ -207,6 +261,7 @@ const UserState = (props) => {
 
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
   const startLoader = () => dispatch({ type: START_LOADER });
+  const clearStp = () => dispatch({ type: CLEAR_STP });
 
   return (
     <UserContext.Provider
@@ -214,17 +269,23 @@ const UserState = (props) => {
         loading: state.loading,
         addresses: state.addresses,
         contractors: state.contractors,
+        contracts: state.contracts,
         error: state.error,
         availableITNs: state.availableITNs,
         stpCoeffs: state.stpCoeffs,
         isFreeItn: state.isFreeItn,
+        avgMonthlyStp: state.avgMonthlyStp,
+        // monthlyAgrrWorkDays: state.monthlyAgrrWorkDays,
+        avgMonthlyStpWeekEnd: state.avgMonthlyStpWeekEnd,
         getAddresses,
+        getContracts,
         getContractors,
         clearErrors,
         createContract,
         startLoader,
         getAvlItns,
         getStpCoeffs,
+        clearStp,
       }}
     >
       {props.children}
