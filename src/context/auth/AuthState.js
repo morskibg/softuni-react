@@ -133,8 +133,8 @@ const AuthState = (props) => {
 
     try {
       const res = await axios.post(
-        "/login/access-token",
-        // "/api/v1/login/access-token",
+        // "/login/access-token",
+        "/api/v1/login/access-token",
         credentials,
         config
       );
