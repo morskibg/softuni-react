@@ -1,6 +1,10 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 module.exports = function (app) {
+  console.log(
+    "from proxy middleware REACT_APP_BACKEND_URL  ---> ",
+    process.env.REACT_APP_FRONTEND_URL
+  );
   app.use(
     createProxyMiddleware(process.env.REACT_APP_FRONTEND_URL, {
       target: process.env.REACT_APP_BACKEND_URL,
