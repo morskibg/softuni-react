@@ -2,12 +2,10 @@ import React, { useState, useContext, useEffect, Fragment } from "react";
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import "./css/CreateContract.css";
@@ -21,7 +19,7 @@ import ItnForm from "./forms/ItnForm";
 import ConfirmForm from "./forms/ConfirmForm";
 
 import { Typography, Button, Stepper, Step, StepLabel } from "@mui/material";
-import { styled, useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 
 import { useForm, FormProvider } from "react-hook-form";
 
@@ -54,10 +52,6 @@ const CreateContract = () => {
   const theme = useTheme();
 
   useEffect(() => {
-    // console.log(
-    //   "🚀 ~ file: CreateContract.js ~ line 72 ~ useEffect ~  userContext.error",
-    //   userContext.error
-    // );
     if (!isAuthenticated | isGuest) {
       navigate("/");
     } else {
@@ -66,30 +60,21 @@ const CreateContract = () => {
     return () => {
       console.log("from MASTER form unmounting");
     };
+    // eslint-disable-next-line
   }, [isAuthenticated, isGuest]);
 
   useEffect(() => {
-    // console.log(
-    //   "🚀 ~ file: CreateContract.js ~ line 63 ~ useEffect ~  userContext.error",
-    //   userContext.error
-    // );
     if (authContext.error || userContext.error) {
       const alert = authContext.error ?? userContext.error;
-      // console.log(
-      //   "🚀 ~ file: CreateContract.js ~ line 69 ~ useEffect ~ alert",
-      //   alert
-      // );
       setAlert(alert.msg, alert.type);
       authContext.clearErrors();
       userContext.clearErrors();
     }
-    // if (isGuest || !isAuthenticated) {
-    //   navigate("/login");
-    // }
 
     setDataGraph(stpCoeffs);
     setMonthAggrGraph(avgMonthlyStp);
     setMonthAggrWeekGraph(avgMonthlyStpWeekEnd);
+    // eslint-disable-next-line
   }, [isGuest, loading, stpCoeffs, avgMonthlyStp, avgMonthlyStpWeekEnd]);
 
   const getStepContent = (step) => {
@@ -117,26 +102,19 @@ const CreateContract = () => {
   };
 
   const methods = useForm();
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = methods;
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   control,
+  //   formState: { errors },
+  // } = methods;
 
   const steps = getSteps();
 
   const handleNext = (data, err) => {
     if (activeStep === getSteps().length - 1) {
-      // console.log(
-      //   "🚀 ~ file: CreateContract.js ~ line 83 ~ handleNext ~ formData",
-      //   formData
-      // );
       createContract(formData);
       navigate("/");
-
-      // setActiveStep(0);
-      // setFormData({});
     } else {
       setFormData((prevData) => ({ ...prevData, ...data }));
       setActiveStep((prevState) => prevState + 1);
@@ -200,7 +178,7 @@ const CreateContract = () => {
           {loading ? (
             <>
               <Typography variant='h3' align='center'>
-                Loading Load Profile .....
+                Loading .....
               </Typography>
               <Spinner />
             </>

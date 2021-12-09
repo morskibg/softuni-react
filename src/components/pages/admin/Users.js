@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useLocation, Navigate, useNavigate } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import Spinner from "../../layout/Spinner";
 import AuthContext from "../../../context/auth/authContext";
 import AlertContext from "../../../context/alert/alertContext";
 import AdminContext from "../../../context/admin/adminContext";
 
-import { Typography, Button } from "@mui/material";
 import { Box } from "@mui/system";
 
 import UsersTable from "../../admin/UsersTable";
@@ -17,13 +16,10 @@ const Users = (props) => {
   const adminContext = useContext(AdminContext);
 
   const { setAlert } = alertContext;
-  const { isAdmin, isGuest, getRole, verifyToken, isAuthenticated } =
-    authContext;
+  const { isAdmin, isGuest, verifyToken, isAuthenticated } = authContext;
 
   const { users, loading, getUsers, setLoader, currentUser } = adminContext;
   const navigate = useNavigate();
-
-  // console.log("🚀 ~ file: Users.js ~ line 23 ~ Users ~ isModified", isModified);
 
   useEffect(() => {
     if (authContext.error || adminContext.error) {
@@ -35,11 +31,9 @@ const Users = (props) => {
     if (!isAuthenticated | isGuest | !isAdmin) {
       navigate("/");
     } else {
-      console.log("SHOUL VERIFY TOKEN");
       verifyToken();
     }
-    // getRole();
-    // clearModifier();
+
     if (users.length === 0) {
       setLoader();
       getUsers();
@@ -55,16 +49,12 @@ const Users = (props) => {
     currentUser,
   ]);
 
-  const [reload, setReload] = useState(false);
-
   if (isAdmin) {
     if (loading) {
       return <Spinner />;
     } else {
       return (
         <Box>
-          {/* <div style={{ display: "flex", justifyContent: "center" }}></div> */}
-
           <UsersTable />
         </Box>
       );

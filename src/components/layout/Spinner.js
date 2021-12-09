@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import spinner from "../../assets/spinner.gif";
 import { Box } from "@mui/system";
 import "./Spinner.css";

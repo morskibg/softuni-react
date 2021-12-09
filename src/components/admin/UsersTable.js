@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
 import AdminContext from "../../context/admin/adminContext";
@@ -29,18 +29,9 @@ const UsersTable = () => {
   const adminContext = useContext(AdminContext);
   const { users, deleteUser, setCurrentUser, clearCurrUser } = adminContext;
 
-  const [reload, setReload] = useState(false);
-
   const [selectedRows, setSelectedRows] = useState();
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [modUserDialog, setModUserDialog] = useState(false);
-
-  // useEffect(() => {
-  //   console.log("in USERS TABLE USE EFF");
-  //   if (modUserDialog) {
-  //     setModUserDialog(false);
-  //   }
-  // }, []);
 
   const reloadAfterModify = () => {
     setModUserDialog(false);
@@ -64,8 +55,6 @@ const UsersTable = () => {
   };
 
   const handleModify = () => {
-    // const selectedEmail = selectedRows.map((row) => row.email)[0];
-
     setModUserDialog(true);
   };
 

@@ -17,7 +17,6 @@ import RedactContract from "./components/pages/contract/RedactContract";
 
 import Logout from "./components/pages/auth/Logout";
 import NotFound from "./components/pages/NotFound";
-import MuiAlert from "./components/layout/MuiAlert";
 import RequireAuth from "./components/route-guards/RequireAuth";
 import RequireAnonymous from "./components/route-guards/RequireAnonymous";
 import RequireAdmin from "./components/route-guards/RequireAdmin";

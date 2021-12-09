@@ -1,24 +1,11 @@
-import React, { useState, useContext, useEffect, Fragment } from "react";
-import {
-  useNavigate,
-  useLocation,
-  Navigate,
-  Routes,
-  Route,
-} from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 import Spinner from "../layout/Spinner";
 import AuthContext from "../../context/auth/authContext";
 import AlertContext from "../../context/alert/alertContext";
 import AdminContext from "../../context/admin/adminContext";
 import UserContext from "../../context/user/userContext";
-// import ThemeContext from "../../context/theme/themeContext";
-// import { Typography, Button } from "@mui/material";
-// import { Box } from "@mui/system";
 
-// import DarkModeIcon from "@mui/icons-material/Brightness4";
-// import LightModeIcon from "@mui/icons-material/Brightness7";
-
-// import DataTable from "../layout/UsersTable";
 import "./Home.css";
 
 const Home = (props) => {
@@ -27,18 +14,11 @@ const Home = (props) => {
   const authContext = useContext(AuthContext);
   const adminContext = useContext(AdminContext);
   const userContext = useContext(UserContext);
-  // console.log("🚀 ~ file: Home.js ~ line 30 ~ Home ~ userContext", userContext);
-  // console.log("🚀 ~ file: Home.js ~ line 30 ~ Home ~ authContext", authContext);
-  // console.log(
-  //   "🚀 ~ file: Home.js ~ line 30 ~ Home ~ adminContext",
-  //   adminContext
-  // );
 
   const { setAlert } = alertContext;
-  const { isAuthenticated, isAdmin, isGuest, getRole } = authContext;
+  const { isAuthenticated, isAdmin, isGuest } = authContext;
 
-  const { users, clearUsersFromState, loading, getUsers, setLoader } =
-    adminContext;
+  const { loading } = adminContext;
 
   useEffect(() => {
     console.log("in HOME use effect");
@@ -60,39 +40,6 @@ const Home = (props) => {
     authContext.error,
     userContext.error,
   ]);
-
-  // const alertUser = (e) => {
-  //   e.preventDefault();
-  //   e.returnValue = "";
-  //   console.log("fired"); //console.log is present on F5, not when leaving the page
-  // };
-
-  // useEffect(() => {
-  //   console.log("kokoko");
-  //   window.addEventListener("beforeunload", alertUser);
-  //   return () => {
-  //     window.removeEventListener("beforeunload", alertUser);
-  //   };
-  // }, []);
-
-  // const location = useLocation();
-
-  // useEffect(() => {
-  //   console.log("Location changed", location);
-  //   if (location.pathname === "/admin/users") {
-  //     setLoader();
-  //     getUsers();
-  //   } else {
-  //     clearUsersFromState();
-  //   }
-  // }, [location]);
-
-  // useEffect(() => {
-  //   console.log("Location changed", location);
-  //   if (users.length > 0) {
-  //     clearUsersFromState();
-  //   }
-  // }, [location]);
 
   if (isAuthenticated) {
     if (loading) {

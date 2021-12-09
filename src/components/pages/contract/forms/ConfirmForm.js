@@ -22,6 +22,7 @@ const ConfirmForm = (props) => {
     } else {
       verifyToken();
     }
+    // eslint-disable-next-line
   }, [isAuthenticated, isGuest]);
   return (
     <Fragment>

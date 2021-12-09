@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect } from "react";
+import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
 // import AdminContext from "../../context/admin/adminContext";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { Box } from "@mui/system";
 
@@ -12,17 +12,8 @@ const columns = [
 ];
 
 const SummaryTable = (props) => {
-  const navigate = useNavigate();
   //   const adminContext = useContext(AdminContext);
   //   const { users, deleteUser, setCurrentUser, clearCurrUser } = adminContext;
-
-  const [reload, setReload] = useState(false);
-
-  const [selectedRows, setSelectedRows] = useState();
-  const [btnDisabled, setBtnDisabled] = useState(true);
-  const [modUserDialog, setModUserDialog] = useState(false);
-
-  const [summData, setSummData] = useState([]);
 
   const {
     name,

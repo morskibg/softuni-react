@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Controller, useFormContext } from "react-hook-form";
 
-import { TextField, Typography } from "@mui/material";
+import { TextField } from "@mui/material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { addDays, format, isAfter, isBefore, isValid } from "date-fns";
@@ -19,9 +19,9 @@ const ContractForm = () => {
   // const { city, postalCode, addressLine } = props.data;
   const userContext = useContext(UserContext);
 
-  const { getAvlItns, loading, startLoader, clearStp } = userContext;
+  const { getAvlItns } = userContext;
 
-  const { control, getValues, setValue, trigger, watch } = useFormContext();
+  const { control, getValues, trigger, watch } = useFormContext();
   const authContext = useContext(AuthContext);
   const { isAuthenticated, verifyToken, isGuest } = authContext;
   const navigate = useNavigate();
@@ -32,18 +32,16 @@ const ContractForm = () => {
     } else {
       verifyToken();
     }
+    // eslint-disable-next-line
   }, [isAuthenticated, isGuest]);
 
   useEffect(() => {
-    // getAvlItns({
-    //   startDate: `${format(new Date(getValues()["startDate"]), "dd/MM/yyyy")}`,
-    //   endDate: `${format(new Date(getValues()["endDate"]), "dd/MM/yyyy")}`,
-    // });
     if (getValues()["startDate"] && getValues()["endDate"]) {
       dateChangeHandler();
       trigger("startDate");
       trigger("endDate");
     }
+    // eslint-disable-next-line
   }, [watch("endDate"), watch("startDate")]);
 
   const dateChangeHandler = (date) => {
@@ -52,11 +50,6 @@ const ContractForm = () => {
       endDate: `${format(new Date(getValues()["endDate"]), "dd/MM/yyyy")}`,
     });
   };
-
-  // const sdateChangeHandler = (date) => {
-  //   console.log("in sdateChangeHandler");
-  //   setValue("endDate", "", {});
-  // };
 
   return (
     <Fragment>

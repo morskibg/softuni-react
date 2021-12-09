@@ -46,6 +46,7 @@ const ModifyUser = ({ reloadCallback }) => {
     if (!user) {
       getUserData();
     }
+    // eslint-disable-next-line
   }, [user]);
 
   const [open, setOpen] = useState(true);

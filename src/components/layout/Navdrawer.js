@@ -1,5 +1,5 @@
-import React, { Fragment, useContext, useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { Fragment, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -17,32 +17,25 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+
 import MailIcon from "@mui/icons-material/Mail";
 import Button from "@mui/material/Button";
-import PowerIcon from "@mui/icons-material/Power";
+// import PowerIcon from "@mui/icons-material/Power";
 import BoltIcon from "@mui/icons-material/Bolt";
 import CreateUserIcon from "@mui/icons-material/PersonAdd";
 import ManageUsersIcon from "@mui/icons-material/PeopleAlt";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DarkModeIcon from "@mui/icons-material/Brightness4";
 import LightModeIcon from "@mui/icons-material/Brightness7";
-import CreateIcon from "@mui/icons-material/Create";
+// import CreateIcon from "@mui/icons-material/Create";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Redirect,
-  Route,
-  Link,
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import AuthContext from "../../context/auth/authContext";
 import AlertContext from "../../context/alert/alertContext";
-import AdminContext from "../../context/admin/adminContext";
+// import AdminContext from "../../context/admin/adminContext";
 import ThemeContext from "../../context/theme/themeContext";
-import MuiAlert from "../layout/MuiAlert";
 
 const drawerWidth = 240;
 
@@ -116,27 +109,16 @@ const Drawer = styled(MuiDrawer, {
 const Navdrawer = (props) => {
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
-  const adminContext = useContext(AdminContext);
+  // const adminContext = useContext(AdminContext);
   const themeContext = useContext(ThemeContext);
 
   const { setAlert } = alertContext;
-  const { isAuthenticated, isAdmin, error, clearErrors, isGuest } = authContext;
+  const { isAuthenticated, isAdmin, isGuest } = authContext;
 
-  const { getUsers, setLoader } = adminContext;
+  // const { getUsers, setLoader } = adminContext;
   const { toggle, themeMode } = themeContext;
 
   const navigate = useNavigate();
-  // const currLocation = useLocation();
-  // console.log(
-  //   "🚀 ~ file: Navdrawer.js ~ line 115 ~ Navdrawer ~ currLocation",
-  //   currLocation
-  // );
-
-  // useEffect(() => {
-  //   clearUsersFromState();
-
-  //   // eslint-disable-next-line
-  // }, []);
 
   const theme = useTheme();
 

@@ -16,11 +16,8 @@ import {
 } from "../types";
 
 const AuthState = (props) => {
-  // console.log("AUTH STATE IS LOADING....");
   const initialState = {
     token: localStorage.getItem("token"),
-    // isAuthenticated: checkAuthToken(),
-    // isAuthenticated: localStorage.getItem("token") ? true : false,
     isAuthenticated: localStorage.getItem("token")
       ? jwt_decode(localStorage.getItem("token")).exp > ~~(Date.now() / 1000)
         ? true
@@ -43,7 +40,6 @@ const AuthState = (props) => {
     if (error.response) {
       // Request made and server responded
       if (error.response.status === 403 || error.response.status === 401) {
-        // console.log("auth error from ADMIN context DELETING TOKEN");
         dispatch({
           type: AUTH_ERROR,
           payload: { alert: { msg: "Invalid token", type: "danger" } },
@@ -70,20 +66,12 @@ const AuthState = (props) => {
   };
 
   const verifyToken = () => {
-    // console.log(
-    //   "🚀 ~ file: AuthState.js ~ line 61 ~ verifyToken ~ verifyToken"
-    // );
     try {
       const token = localStorage.getItem("token");
       const decoded = jwt_decode(token);
       const isValidToken = decoded.exp > ~~(Date.now() / 1000);
-      // const isValidToken2 = ~~(Date.now() / 1000);
       const isAdmin = decoded.is_admin;
       const isGuest = decoded.is_guest;
-      // console.log(
-      //   "🚀 ~ file: AuthState.js ~ line 49 ~ verifyToken ~ isValidToken",
-      //   isValidToken
-      // );
       dispatch({
         type: VERIFY_TOKEN,
         payload: { isValidToken, isAdmin, isGuest },
@@ -102,7 +90,6 @@ const AuthState = (props) => {
 
     try {
       const res = await axios.get("users/me");
-      // console.log("🚀 ~ file: AuthState.js ~ line 39 ~ loadUser ~ res", res);
 
       dispatch({
         type: USER_LOADED,
@@ -113,10 +100,6 @@ const AuthState = (props) => {
       });
     } catch (err) {
       errorHandler(err, AUTH_ERROR);
-      // const errMsg = Array.isArray(err.response.data.detail)
-      //   ? err.response.data.detail[0]["msg"]
-      //   : err.response.data.detail;
-      // dispatch({ type: AUTH_ERROR, payload: errMsg });
     }
   };
 
@@ -132,12 +115,7 @@ const AuthState = (props) => {
     credentials.append("password", formData.password);
 
     try {
-      const res = await axios.post(
-        // "/login/access-token",
-        "login/access-token",
-        credentials,
-        config
-      );
+      const res = await axios.post("login/access-token", credentials, config);
 
       const decoded = jwt_decode(res.data.access_token);
 
@@ -151,19 +129,9 @@ const AuthState = (props) => {
           },
           msg: "",
         },
-        // payload: { data: res.data, msg: "" },
       });
-
-      // loadUser();
     } catch (err) {
       errorHandler(err, LOGIN_FAIL);
-      // const errMsg = Array.isArray(err.response.data.detail)
-      //   ? err.response.data.detail[0]["msg"]
-      //   : err.response.data.detail;
-      // dispatch({
-      //   type: LOGIN_FAIL,
-      //   payload: errMsg,
-      // });
     }
   };
 
@@ -192,34 +160,8 @@ const AuthState = (props) => {
       });
     } catch (err) {
       errorHandler(err, AUTH_ERROR);
-      // const errMsg = Array.isArray(err.response.data.detail)
-      //   ? err.response.data.detail[0]["msg"]
-      //   : err.response.data.detail;
-      // dispatch({ type: AUTH_ERROR, payload: errMsg });
     }
   };
-  // const getRole = () => {
-  //   const token = localStorage.getItem("token");
-
-  //   if (!token) {
-  //     dispatch({
-  //       type: AUTH_ERROR,
-  //       payload: { alert: { msg: "Invalid token", type: "danger" } },
-  //     });
-  //   }
-  //   try {
-  //     const decoded = jwt_decode(token);
-  //     dispatch({
-  //       type: GET_ROLE,
-  //       payload: decoded,
-  //     });
-  //   } catch (error) {
-  //     dispatch({
-  //       type: LOGIN_FAIL,
-  //       payload: error,
-  //     });
-  //   }
-  // };
 
   return (
     <AuthContext.Provider
@@ -235,7 +177,6 @@ const AuthState = (props) => {
         login,
         logout,
         clearErrors,
-        // getRole,
         getUserData,
         verifyToken,
       }}

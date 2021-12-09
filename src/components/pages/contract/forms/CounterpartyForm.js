@@ -1,41 +1,36 @@
-import React, { useState, useContext, useEffect, Fragment } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useContext, useEffect, Fragment } from "react";
+// import { useNavigate } from "react-router-dom";
 
 import { Controller, useFormContext } from "react-hook-form";
 import Spinner from "../../../layout/Spinner";
-import { TextField, Typography } from "@mui/material";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { addDays, format, isAfter, isBefore, isValid } from "date-fns";
+import { TextField } from "@mui/material";
+// import AdapterDateFns from "@mui/lab/AdapterDateFns";
+// import LocalizationProvider from "@mui/lab/LocalizationProvider";
+// import { addDays, format, isAfter, isBefore, isValid } from "date-fns";
 
-import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
-import { Box } from "@mui/system";
+// import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+// import { Box } from "@mui/system";
 
 import AuthContext from "../../../../context/auth/authContext";
-import AlertContext from "../../../../context/alert/alertContext";
+// import AlertContext from "../../../../context/alert/alertContext";
 
 import UserContext from "../../../../context/user/userContext";
 import Autocomplete from "@mui/material/Autocomplete";
 
-import { stpCodes } from "../../../../utils/Constants";
-import SummaryTable from "../tables/ContractsTable";
+// import { stpCodes } from "../../../../utils/Constants";
+// import SummaryTable from "../tables/ContractsTable";
 
 const CounterpartyForm = () => {
-  const { control, getValues, setValue, reset } = useFormContext();
+  const { control, setValue, reset } = useFormContext();
 
   const userContext = useContext(UserContext);
   const { getAddresses, getContractors, contractors, loading, startLoader } =
     userContext;
   const authContext = useContext(AuthContext);
-  const { isAuthenticated, verifyToken, isGuest } = authContext;
-  const navigate = useNavigate();
+  const { isAuthenticated, isGuest } = authContext;
+  // const navigate = useNavigate();
 
   useEffect(() => {
-    // if (!isAuthenticated | isGuest) {
-    //   navigate("/");
-    // } else {
-    //   verifyToken();
-    // }
     startLoader();
     getContractors();
     startLoader();
@@ -48,10 +43,6 @@ const CounterpartyForm = () => {
 
   const companyChangeHandlerGeneric = (itemName, item, newValueName) => {
     const selectedCompany = contractors.filter((x) => x[itemName] === item);
-    // console.log(
-    //   "🚀 ~ file: Forms.js ~ line 30 ~ companyChangeHandlerGeneric ~ selectedCompany",
-    //   selectedCompany
-    // );
     let newValue = null;
     if (selectedCompany.length > 0) {
       newValue = selectedCompany[0][newValueName];

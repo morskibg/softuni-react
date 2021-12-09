@@ -1,15 +1,10 @@
-import React, { useState, useContext, useEffect, Fragment } from "react";
+import React, { useContext, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import Typography from "@mui/material/Typography";
 
 import { Box } from "@mui/system";
-import LoginIcon from "@mui/icons-material/Login";
-import GuestIcon from "@mui/icons-material/PersonAddDisabled";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ClearIcon from "@mui/icons-material/LayersClear";
-// import RegisterIcon from "@mui/icons-material/ExitToApp";
+
 import RegisterIcon from "@mui/icons-material/Storage";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
@@ -20,7 +15,6 @@ import {
   FormControlLabel,
   FormGroup,
   Switch,
-  Divider,
   InputAdornment,
   IconButton,
   ButtonGroup,
@@ -38,13 +32,11 @@ const Register = () => {
   const adminContext = useContext(AdminContext);
 
   const { setAlert } = alertContext;
-  const { isAdmin, isAuthenticated, getUserData, user, verifyToken, isGuest } =
-    authContext;
+  const { isAdmin, isAuthenticated, getUserData, user, isGuest } = authContext;
   const { registerUser } = adminContext;
   const navigate = useNavigate();
 
   useEffect(() => {
-    // clearUsersFromState();
     if (authContext.error || adminContext.error) {
       const alert = authContext.error ?? adminContext.error;
 
@@ -54,7 +46,7 @@ const Register = () => {
     }
     if (!isAdmin || !isAuthenticated || isGuest) {
       navigate("/");
-    }     
+    }
     if (!user) {
       getUserData();
     }
@@ -68,8 +60,6 @@ const Register = () => {
     authContext.error,
   ]);
 
-  // const [showPass, setShowPass] = useState(false);
-
   const { control, handleSubmit, reset } = useForm();
 
   const handleCancel = () => {
@@ -77,7 +67,6 @@ const Register = () => {
   };
 
   const handleReset = (e) => {
-    // getUserData();
     reset({
       fullname: "",
       email: "",
@@ -117,11 +106,7 @@ const Register = () => {
       <div className='register-form-container'>
         <div className='register-rightSide'>
           <div className='register-loginInput'>
-            {/* <h1>
-              Account <span className='text-primary'>Login</span>
-            </h1> */}
             <FormControl>
-              {/* <Divider /> */}
               <Controller
                 name='fullname'
                 control={control}

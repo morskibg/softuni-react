@@ -1,12 +1,12 @@
 import { createTheme } from "@mui/material/styles";
 
-const baseTheme = createTheme({
-  typography: {
-    fontFamily: "'Work Sans', sans-serif",
-    fontSize: 14,
-    fontFamilySecondary: "'Roboto Condensed', sans-serif",
-  },
-});
+// const baseTheme = createTheme({
+//   typography: {
+//     fontFamily: "'Work Sans', sans-serif",
+//     fontSize: 14,
+//     fontFamilySecondary: "'Roboto Condensed', sans-serif",
+//   },
+// });
 
 const darkTheme = createTheme({
   // ...baseTheme,
@@ -43,12 +43,6 @@ const darkTheme = createTheme({
       // secondary: grey[500],
     },
   },
-
-  // typography: {
-  //   allVariants: {
-  //     color: "#00ff99",
-  //   },
-  // },
 });
 
 const lightTheme = createTheme({
