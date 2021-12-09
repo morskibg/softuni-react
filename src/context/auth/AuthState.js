@@ -37,6 +37,7 @@ const AuthState = (props) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   const errorHandler = (error, reducerType) => {
+    console.log("EEEERRRRRRRRRRR", error.response);
     if (error.response) {
       // Request made and server responded
       if (error.response.status === 403 || error.response.status === 401) {
@@ -50,10 +51,19 @@ const AuthState = (props) => {
         errMsg = Array.isArray(error.response.data.detail)
           ? error.response.data.detail[0]["msg"]
           : error.response.data.detail;
-      } catch (error) {
         dispatch({
           type: reducerType,
           payload: { alert: { msg: errMsg, type: "danger" } },
+        });
+      } catch (error) {
+        dispatch({
+          type: reducerType,
+          payload: {
+            alert: {
+              msg: "Something went wrong. Try again later !",
+              type: "danger",
+            },
+          },
         });
       }
     } else if (error.request) {
@@ -116,6 +126,7 @@ const AuthState = (props) => {
 
     try {
       const res = await axios.post("login/access-token", credentials, config);
+      // console.log("🚀 ~ file: AuthState.js ~ line 119 ~ login ~ res", res);
 
       const decoded = jwt_decode(res.data.access_token);
 
@@ -131,6 +142,7 @@ const AuthState = (props) => {
         },
       });
     } catch (err) {
+      // console.log("🚀 ~ file: AuthState.js ~ line 134 ~ login ~ err", err);
       errorHandler(err, LOGIN_FAIL);
     }
   };

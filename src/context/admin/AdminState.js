@@ -48,10 +48,19 @@ const AdminState = (props) => {
         errMsg = Array.isArray(error.response.data.detail)
           ? error.response.data.detail[0]["msg"]
           : error.response.data.detail;
-      } catch (error) {
         dispatch({
           type: reducerType,
           payload: { alert: { msg: errMsg, type: "danger" } },
+        });
+      } catch (error) {
+        dispatch({
+          type: reducerType,
+          payload: {
+            alert: {
+              msg: "Something went wrong. Try again later !",
+              type: "danger",
+            },
+          },
         });
       }
     } else if (error.request) {

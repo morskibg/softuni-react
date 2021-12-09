@@ -5,8 +5,8 @@ import App from "./App";
 import ThemeState from "./context/theme/ThemeState";
 import axios from "axios";
 
-if (process.env.REACT_APP_ENV === "development") {
-  console.log("DEEEEV", process.env.NODE_ENV);
+// if (process.env.NODE_ENV === "development") {
+if (true) {
   // development URL
   axios.defaults.baseURL = `${process.env.REACT_APP_API_SERVER_DEVELOPMENT}${process.env.REACT_APP_API_VERSION}`;
 } else {

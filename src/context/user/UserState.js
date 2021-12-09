@@ -49,10 +49,19 @@ const UserState = (props) => {
         errMsg = Array.isArray(error.response.data.detail)
           ? error.response.data.detail[0]["msg"]
           : error.response.data.detail;
-      } catch (error) {
         dispatch({
           type: USER_ERROR,
           payload: { alert: { msg: errMsg, type: "danger" } },
+        });
+      } catch (error) {
+        dispatch({
+          type: USER_ERROR,
+          payload: {
+            alert: {
+              msg: "Something went wrong. Please try again later.",
+              type: "danger",
+            },
+          },
         });
       }
     } else if (error.request) {
