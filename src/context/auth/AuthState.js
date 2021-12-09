@@ -37,7 +37,6 @@ const AuthState = (props) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   const errorHandler = (error, reducerType) => {
-    console.log("EEEERRRRRRRRRRR", error.response);
     if (error.response) {
       // Request made and server responded
       if (error.response.status === 403 || error.response.status === 401) {
