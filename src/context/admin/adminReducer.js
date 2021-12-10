@@ -61,8 +61,6 @@ const adminReducer = (state, action) => {
         currentUser: null,
       };
     case UPDATE_USER:
-      // console.log(action.payload.data);
-      // console.log(action.payload.alert);
       return {
         ...state,
         loading: false,

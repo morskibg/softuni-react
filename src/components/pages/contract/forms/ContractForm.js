@@ -19,12 +19,33 @@ const ContractForm = () => {
   // const { city, postalCode, addressLine } = props.data;
   const userContext = useContext(UserContext);
 
-  const { getAvlItns } = userContext;
+  const { getAvlItns, selectedContract } = userContext;
 
-  const { control, getValues, trigger, watch } = useFormContext();
+  const { control, getValues, trigger, watch, setValue } = useFormContext();
   const authContext = useContext(AuthContext);
   const { isAuthenticated, verifyToken, isGuest } = authContext;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!selectedContract) {
+      setValue("price", "");
+    } else {
+      const { start_date, end_date, price } = selectedContract.sub_contracts[0];
+
+      const startDate = new Date(start_date);
+      const endDate = new Date(end_date);
+
+      setValue("startDate", startDate, {
+        shouldValidate: true,
+      });
+      setValue("endDate", endDate, {
+        shouldValidate: true,
+      });
+      setValue("price", price, {
+        shouldValidate: true,
+      });
+    }
+  }, [selectedContract]);
 
   useEffect(() => {
     if (!isAuthenticated | isGuest) {
@@ -98,7 +119,6 @@ const ContractForm = () => {
             </LocalizationProvider>
           )}
         />
-
         <Controller
           control={control}
           name='endDate'

@@ -33,3 +33,6 @@ export const GET_AVL_ITNS = "GET_AVL_ITNS";
 export const GET_STP = "GET_STP";
 export const CLEAR_STP = "CLEAR_STP";
 export const GET_CONTRACTS = "GET_CONTRACTS";
+export const SELECT_CONTRACT = "SELECT_CONTRACT";
+export const CLEAR_CONTRACT = "CLEAR_CONTRACT";
+export const DELETE_CONTRACT = "DELETE_CONTRACT";

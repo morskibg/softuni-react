@@ -10,9 +10,16 @@ import {
   AUTH_ERROR,
   CLEAR_STP,
   GET_CONTRACTS,
+  SELECT_CONTRACT,
+  CLEAR_CONTRACT,
+  DELETE_CONTRACT,
 } from "../types";
 
 const userReducer = (state, action) => {
+  // console.log(
+  //   "🚀 ~ file: userReducer.js ~ line 18 ~ userReducer ~ action",
+  //   action.type
+  // );
   switch (action.type) {
     case AUTH_ERROR:
       //console.log("in user AUTH ERROR reducer ---> ", action.payload);
@@ -60,15 +67,21 @@ const userReducer = (state, action) => {
         contractors: action.payload.sort((a, b) => a.name - b.name),
       };
     case CREATE_CONTRACT:
-      // //console.log(
-      //   "🚀 ~ file: userReducer.js ~ line 27 ~ userReducer ~ action.payload.alert",
-      //   action.payload.alert
-      // );
       return {
         ...state,
         error: action.payload.alert,
         loading: false,
         // addresses: action.payload.sort((a, b) => a.city - b.city),
+      };
+    case SELECT_CONTRACT:
+      return {
+        ...state,
+        selectedContract: action.payload,
+      };
+    case DELETE_CONTRACT:
+      return {
+        ...state,
+        contracts: state.contracts.filter((x) => x.id !== action.payload.id),
       };
     case USER_ERROR:
       return {
@@ -81,6 +94,11 @@ const userReducer = (state, action) => {
       return {
         ...state,
         error: null,
+      };
+    case CLEAR_CONTRACT:
+      return {
+        ...state,
+        selectedContract: null,
       };
     case CLEAR_STP:
       return {

@@ -3,6 +3,11 @@ import { useForm, FormProvider } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Container } from "@mui/material";
 import { Box } from "@mui/system";
+import { Button, ButtonGroup } from "@mui/material";
+import { Typography } from "@mui/material";
+import RegisterIcon from "@mui/icons-material/Storage";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ClearIcon from "@mui/icons-material/LayersClear";
 import AuthContext from "../../../context/auth/authContext";
 import UserContext from "../../../context/user/userContext";
 
@@ -13,6 +18,7 @@ import ContractsTable from "./tables/ContractsTable";
 
 const RedactContract = () => {
   const { formData, setFormData } = useState({});
+  const [btnDisabled, setBtnDisabled] = useState(true);
   const methods = useForm();
   const {
     register,
@@ -35,16 +41,16 @@ const RedactContract = () => {
   useEffect(() => {
     getContracts();
   }, []);
+
   return (
     <FormProvider {...methods}>
       <Box className='redact-contract-container'>
         <Box className='redacting-contract-left-container'>
-          <CounterpartyForm />
-
-          <ContractForm />
+          <ContractsTable />
         </Box>
         <Box className='redacting-contract-right-container'>
-          <ContractsTable />
+          <CounterpartyForm />
+          <ContractForm />
         </Box>
       </Box>
     </FormProvider>

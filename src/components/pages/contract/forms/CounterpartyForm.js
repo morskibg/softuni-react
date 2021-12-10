@@ -24,11 +24,45 @@ const CounterpartyForm = () => {
   const { control, setValue, reset } = useFormContext();
 
   const userContext = useContext(UserContext);
-  const { getAddresses, getContractors, contractors, loading, startLoader } =
-    userContext;
+  const {
+    getAddresses,
+    getContractors,
+    contractors,
+    loading,
+    startLoader,
+    selectedContract,
+  } = userContext;
   const authContext = useContext(AuthContext);
   const { isAuthenticated, isGuest } = authContext;
   // const navigate = useNavigate();
+  useEffect(() => {
+    if (!selectedContract) {
+      setValue("name", "");
+      setValue("eik", "");
+      setValue("city", "");
+      setValue("postalCode", "");
+      setValue("addressLine", "");
+    } else {
+      const { name, eik } = selectedContract.contractor;
+      const { city, postal_code, address_line } =
+        selectedContract.contractor.address;
+      setValue("name", name, {
+        shouldValidate: true,
+      });
+      setValue("eik", eik, {
+        shouldValidate: true,
+      });
+      setValue("city", city, {
+        shouldValidate: true,
+      });
+      setValue("postalCode", postal_code, {
+        shouldValidate: true,
+      });
+      setValue("addressLine", address_line, {
+        shouldValidate: true,
+      });
+    }
+  }, [selectedContract]);
 
   useEffect(() => {
     startLoader();

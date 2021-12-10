@@ -16,6 +16,9 @@ import {
   AUTH_ERROR,
   CLEAR_STP,
   GET_CONTRACTS,
+  SELECT_CONTRACT,
+  CLEAR_CONTRACT,
+  DELETE_CONTRACT,
 } from "../types";
 
 const UserState = (props) => {
@@ -28,6 +31,7 @@ const UserState = (props) => {
     stpCoeffs: [],
     avgMonthlyStp: [],
     avgMonthlyStpWeekEnd: [],
+    selectedContract: null,
     isFreeItn: true,
     error: null,
   };
@@ -78,7 +82,7 @@ const UserState = (props) => {
     setAuthHeader(localStorage.token);
     try {
       const res = await axios.get("contracts");
-      console.log("from getContracts", res);
+
       dispatch({
         type: GET_CONTRACTS,
         payload: res.data,
@@ -264,9 +268,30 @@ const UserState = (props) => {
     }
   };
 
+  const setSelectedContract = (contract) => {
+    dispatch({
+      type: SELECT_CONTRACT,
+      payload: contract,
+    });
+  };
+  const deleteContract = async (contractId) => {
+    setAuthHeader(localStorage.token);
+    try {
+      const res = await axios.delete(`contracts/${contractId}`);
+
+      dispatch({
+        type: DELETE_CONTRACT,
+        payload: res.data,
+      });
+    } catch (error) {
+      errorHandler(error);
+    }
+  };
+
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
   const startLoader = () => dispatch({ type: START_LOADER });
   const clearStp = () => dispatch({ type: CLEAR_STP });
+  const clearSelectedContract = () => dispatch({ type: CLEAR_CONTRACT });
 
   return (
     <UserContext.Provider
@@ -280,8 +305,8 @@ const UserState = (props) => {
         stpCoeffs: state.stpCoeffs,
         isFreeItn: state.isFreeItn,
         avgMonthlyStp: state.avgMonthlyStp,
-        // monthlyAgrrWorkDays: state.monthlyAgrrWorkDays,
         avgMonthlyStpWeekEnd: state.avgMonthlyStpWeekEnd,
+        selectedContract: state.selectedContract,
         getAddresses,
         getContracts,
         getContractors,
@@ -291,6 +316,9 @@ const UserState = (props) => {
         getAvlItns,
         getStpCoeffs,
         clearStp,
+        setSelectedContract,
+        clearSelectedContract,
+        deleteContract,
       }}
     >
       {props.children}
