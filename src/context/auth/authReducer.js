@@ -10,6 +10,7 @@ import {
   GET_ROLE,
   GET_USER_DATA,
   VERIFY_TOKEN,
+  START_LOADER,
 } from "../types";
 
 const authReducer = (state, action) => {
@@ -82,7 +83,11 @@ const authReducer = (state, action) => {
         isAdmin: action.payload.isAdmin,
         isGuest: action.payload.isGuest,
       };
-
+    case START_LOADER:
+      return {
+        ...state,
+        loading: true,
+      };
     default:
       return state;
   }

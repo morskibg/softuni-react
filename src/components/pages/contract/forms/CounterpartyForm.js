@@ -4,21 +4,11 @@ import React, { useContext, useEffect, Fragment } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import Spinner from "../../../layout/Spinner";
 import { TextField } from "@mui/material";
-// import AdapterDateFns from "@mui/lab/AdapterDateFns";
-// import LocalizationProvider from "@mui/lab/LocalizationProvider";
-// import { addDays, format, isAfter, isBefore, isValid } from "date-fns";
-
-// import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
-// import { Box } from "@mui/system";
 
 import AuthContext from "../../../../context/auth/authContext";
-// import AlertContext from "../../../../context/alert/alertContext";
 
 import UserContext from "../../../../context/user/userContext";
 import Autocomplete from "@mui/material/Autocomplete";
-
-// import { stpCodes } from "../../../../utils/Constants";
-// import SummaryTable from "../tables/ContractsTable";
 
 const CounterpartyForm = () => {
   const { control, setValue, reset } = useFormContext();
@@ -95,10 +85,6 @@ const CounterpartyForm = () => {
       setValue("addressLine", selectedCompany[0].address.address_line, {
         shouldValidate: true,
       });
-    } else {
-      console.log("mamamamamam");
-
-      // resetForm();
     }
   };
 

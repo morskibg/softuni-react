@@ -5,6 +5,7 @@ import AuthContext from "../../../context/auth/authContext";
 import AlertContext from "../../../context/alert/alertContext";
 import AdminContext from "../../../context/admin/adminContext";
 import UserContext from "../../../context/user/userContext";
+import Spinner from "../../layout/Spinner";
 
 import "./Login.css";
 import background from "../../../assets/login.jpg";
@@ -37,7 +38,8 @@ const Login = () => {
   const userContext = useContext(UserContext);
 
   const { setAlert } = alertContext;
-  const { error, clearErrors, isAuthenticated, login } = authContext;
+  const { error, clearErrors, isAuthenticated, login, startLoader, loading } =
+    authContext;
   const navigate = useNavigate();
 
   // const { state } = useLocation();
@@ -119,6 +121,7 @@ const Login = () => {
     if (email === "" || password === "") {
       setAlert("Please fill in all fields", "danger");
     } else {
+      startLoader();
       login({
         email,
         password,
@@ -137,112 +140,115 @@ const Login = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
-  return (
-    <Fragment>
-      <div className='form-container'>
-        <div className='leftSide'>
-          <div className='loginInput'>
-            <FormControl>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={checked}
-                      onChange={onGuestSliderChange}
-                      color='error'
+  if (loading) {
+    return <Spinner />;
+  } else {
+    return (
+      <Fragment>
+        <div className='form-container'>
+          <div className='leftSide'>
+            <div className='loginInput'>
+              <FormControl>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={checked}
+                        onChange={onGuestSliderChange}
+                        color='error'
+                      />
+                    }
+                    label='Login as Guest'
+                    sx={{ color: checked ? "error.main" : "primary.main" }}
+                  />
+                </FormGroup>
+                <Divider />
+                <Controller
+                  name='email'
+                  control={control}
+                  defaultValue=''
+                  rules={{ required: "Email is required" }}
+                  render={({ field: { onChange, value }, fieldState }) => (
+                    <TextField
+                      InputProps={{
+                        readOnly: checked,
+                      }}
+                      label='Email'
+                      variant='standard'
+                      value={value}
+                      onChange={onChange}
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
                     />
-                  }
-                  label='Login as Guest'
-                  sx={{ color: checked ? "error.main" : "primary.main" }}
+                  )}
                 />
-              </FormGroup>
-              <Divider />
-              <Controller
-                name='email'
-                control={control}
-                defaultValue=''
-                rules={{ required: "Email is required" }}
-                render={({ field: { onChange, value }, fieldState }) => (
-                  <TextField
-                    InputProps={{
-                      readOnly: checked,
-                    }}
-                    label='Email'
-                    variant='standard'
-                    value={value}
-                    onChange={onChange}
-                    error={!!fieldState.error}
-                    helperText={fieldState.error?.message}
-                  />
-                )}
-              />
-              <Controller
-                name='password'
-                control={control}
-                defaultValue=''
-                rules={{ required: "Password is required" }}
-                render={({ field: { onChange, value }, fieldState }) => (
-                  <TextField
-                    label='Password'
-                    variant='standard'
-                    type={values.showPassword ? "text" : "password"}
-                    value={value}
-                    name='password'
-                    onChange={onChange}
-                    error={!!fieldState.error}
-                    helperText={fieldState.error?.message}
-                    InputProps={{
-                      readOnly: checked,
-                      endAdornment: (
-                        <InputAdornment position='start'>
-                          <IconButton
-                            aria-label='toggle password visibility'
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge='end'
-                            sx={{
-                              color: checked ? "error.main" : "primary.main",
-                            }}
-                          >
-                            {values.showPassword ? (
-                              <VisibilityOffIcon />
-                            ) : (
-                              <VisibilityIcon />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                )}
-              />
+                <Controller
+                  name='password'
+                  control={control}
+                  defaultValue=''
+                  rules={{ required: "Password is required" }}
+                  render={({ field: { onChange, value }, fieldState }) => (
+                    <TextField
+                      label='Password'
+                      variant='standard'
+                      type={values.showPassword ? "text" : "password"}
+                      value={value}
+                      name='password'
+                      onChange={onChange}
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
+                      InputProps={{
+                        readOnly: checked,
+                        endAdornment: (
+                          <InputAdornment position='start'>
+                            <IconButton
+                              aria-label='toggle password visibility'
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge='end'
+                              sx={{
+                                color: checked ? "error.main" : "primary.main",
+                              }}
+                            >
+                              {values.showPassword ? (
+                                <VisibilityOffIcon />
+                              ) : (
+                                <VisibilityIcon />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  )}
+                />
 
-              <Box m={2} pt={3}>
-                <Button
-                  type='submit'
-                  variant='contained'
-                  endIcon={checked ? <GuestIcon /> : <LoginIcon />}
-                  color={checked ? "error" : "primary"}
-                  onClick={handleSubmit(onSubmitHandler, onError)}
-                >
-                  Login
-                </Button>
-              </Box>
-            </FormControl>
+                <Box m={2} pt={3}>
+                  <Button
+                    type='submit'
+                    variant='contained'
+                    endIcon={checked ? <GuestIcon /> : <LoginIcon />}
+                    color={checked ? "error" : "primary"}
+                    onClick={handleSubmit(onSubmitHandler, onError)}
+                  >
+                    Login
+                  </Button>
+                </Box>
+              </FormControl>
+            </div>
           </div>
+          <div
+            className='rightSide'
+            style={{
+              backgroundImage: `url(${background})`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+            }}
+          ></div>
         </div>
-        <div
-          className='rightSide'
-          style={{
-            backgroundImage: `url(${background})`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-          }}
-        ></div>
-      </div>
-    </Fragment>
-  );
+      </Fragment>
+    );
+  }
 };
 export default Login;

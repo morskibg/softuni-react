@@ -13,6 +13,7 @@ import {
   CLEAR_ERRORS,
   GET_USER_DATA,
   VERIFY_TOKEN,
+  START_LOADER,
 } from "../types";
 
 const AuthState = (props) => {
@@ -29,7 +30,7 @@ const AuthState = (props) => {
     isGuest: localStorage.getItem("token")
       ? jwt_decode(localStorage.getItem("token")).is_guest
       : false,
-    loading: true,
+    loading: false,
     user: null,
     error: null,
   };
@@ -174,6 +175,7 @@ const AuthState = (props) => {
     }
   };
 
+  const startLoader = () => dispatch({ type: START_LOADER });
   return (
     <AuthContext.Provider
       value={{
@@ -190,6 +192,7 @@ const AuthState = (props) => {
         clearErrors,
         getUserData,
         verifyToken,
+        startLoader,
       }}
     >
       {props.children}
