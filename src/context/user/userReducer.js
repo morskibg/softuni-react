@@ -13,6 +13,7 @@ import {
   SELECT_CONTRACT,
   CLEAR_CONTRACT,
   DELETE_CONTRACT,
+  UPDATE_CONTRACT,
 } from "../types";
 
 const userReducer = (state, action) => {
@@ -44,7 +45,7 @@ const userReducer = (state, action) => {
         ),
       };
     case GET_AVL_ITNS:
-      //console.log("in available ", action.payload);
+      console.log("in available ", action.payload);
 
       return {
         ...state,
@@ -73,6 +74,21 @@ const userReducer = (state, action) => {
         loading: false,
         // addresses: action.payload.sort((a, b) => a.city - b.city),
       };
+    case UPDATE_CONTRACT:
+      console.log("in update contract", action.payload.data);
+      console.log("in update contract", state.contracts);
+      return {
+        ...state,
+        error: action.payload.alert,
+        loading: false,
+        contracts: state.contracts.map((x) =>
+          x.id === state.selectedContract.id
+            ? { ...x, ...action.payload.data }
+            : x
+        ),
+        selectedContract: null,
+        // addresses: action.payload.sort((a, b) => a.city - b.city),
+      };
     case SELECT_CONTRACT:
       return {
         ...state,
@@ -84,6 +100,10 @@ const userReducer = (state, action) => {
         contracts: state.contracts.filter((x) => x.id !== action.payload.id),
       };
     case USER_ERROR:
+      console.log(
+        "🚀 ~ file: userReducer.js ~ line 127 ~ userReducer ~ USER_ERROR",
+        USER_ERROR
+      );
       return {
         ...state,
         error: action.payload.alert,

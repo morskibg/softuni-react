@@ -50,7 +50,7 @@ const lightTheme = createTheme({
   palette: {
     type: "light",
     background: {
-      default: " #E6E6FA",
+      default: "#E6E6FA",
       paper: "#B0C4DE",
     },
     primary: {

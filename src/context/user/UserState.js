@@ -19,6 +19,7 @@ import {
   SELECT_CONTRACT,
   CLEAR_CONTRACT,
   DELETE_CONTRACT,
+  UPDATE_CONTRACT,
 } from "../types";
 
 const UserState = (props) => {
@@ -177,29 +178,13 @@ const UserState = (props) => {
           `schedules/${itn}?start_date=${startDate}&end_date=${endDate}`
         );
         isFreeItn = res.data.length === 0;
-        // console.log(
-        //   "🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        //   res.data.length
-        // );
       }
       const scheduledRes = await axios.get(
         `schedules/?startDate=${startDate}&endDate=${endDate}`
       );
       const scheduledItns = scheduledRes.data.map((x) => x.itn);
 
-      // console.log(
-      //   "🚀 ~ file: UserState.js ~ line 160 ~ getAvlItns ~ scheduledItns",
-      //   scheduledItns
-      // );
       const availableItns = allItns.filter((x) => !scheduledItns.includes(x));
-      // console.log(
-      //   "🚀 ~ file: UserState.js ~ line 113 ~ getAvlItns ~ availableItns",
-      //   availableItns
-      // );
-      // console.log(
-      //   "🚀 ~ file: UserState.js ~ line 149 ~ getAvlItns ~ isFreeItn",
-      //   isFreeItn
-      // );
 
       dispatch({
         type: GET_AVL_ITNS,
@@ -258,11 +243,6 @@ const UserState = (props) => {
           alert: { msg: "Contract create successfully", type: "success" },
         },
       });
-
-      // dispatch({
-      //   type: CREATE_CONTRACT,
-      //   payload: res.data,
-      // });
     } catch (error) {
       errorHandler(error);
     }
@@ -274,6 +254,8 @@ const UserState = (props) => {
       payload: contract,
     });
   };
+
+  //Delete contract
   const deleteContract = async (contractId) => {
     setAuthHeader(localStorage.token);
     try {
@@ -282,6 +264,50 @@ const UserState = (props) => {
       dispatch({
         type: DELETE_CONTRACT,
         payload: res.data,
+      });
+    } catch (error) {
+      errorHandler(error);
+    }
+  };
+
+  //Update contract
+  const updateContract = async (contract) => {
+    setAuthHeader(localStorage.token);
+
+    const updateData = {
+      start_date: format(contract.startDate, "yyyy-MM-dd"),
+      end_date: format(contract.endDate, "yyyy-MM-dd"),
+      id: contract.id,
+      contractor_name: contract.name,
+      contractor_eik: contract.eik,
+      contractor_city: contract.city,
+      contractor_postal_code: contract.postalCode,
+      contractor_address_line: contract.addressLine,
+      price: contract.price,
+    };
+    console.log(
+      "🚀 ~ file: UserState.js ~ line 310 ~ updateContract ~ updateData",
+      updateData
+    );
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const res = await axios.put(
+        `contracts/${contract.id}`,
+        updateData,
+        config
+      );
+
+      dispatch({
+        type: UPDATE_CONTRACT,
+        payload: {
+          data: res.data,
+          alert: { msg: "Contract update successfully", type: "success" },
+        },
       });
     } catch (error) {
       errorHandler(error);
@@ -319,6 +345,7 @@ const UserState = (props) => {
         setSelectedContract,
         clearSelectedContract,
         deleteContract,
+        updateContract,
       }}
     >
       {props.children}

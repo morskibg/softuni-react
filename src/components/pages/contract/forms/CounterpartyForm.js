@@ -76,7 +76,12 @@ const CounterpartyForm = () => {
   }, [isAuthenticated, isGuest]);
 
   const companyChangeHandlerGeneric = (itemName, item, newValueName) => {
+    console.log("in companyChangeHandlerGeneric");
     const selectedCompany = contractors.filter((x) => x[itemName] === item);
+    console.log(
+      "🚀 ~ file: CounterpartyForm.js ~ line 82 ~ companyChangeHandlerGeneric ~ selectedCompany",
+      selectedCompany
+    );
     let newValue = null;
     if (selectedCompany.length > 0) {
       newValue = selectedCompany[0][newValueName];
@@ -91,7 +96,9 @@ const CounterpartyForm = () => {
         shouldValidate: true,
       });
     } else {
-      resetForm();
+      console.log("mamamamamam");
+
+      // resetForm();
     }
   };
 
@@ -112,7 +119,7 @@ const CounterpartyForm = () => {
         <Controller
           control={control}
           name='name'
-          defaultValue=''
+          defaultValue={selectedContract?.name || ""}
           rules={{ required: "Company name is required" }}
           render={({ field, fieldState }) => (
             <Autocomplete
@@ -123,7 +130,9 @@ const CounterpartyForm = () => {
               }}
               value={field.value}
               freeSolo
-              options={contractors.map((x) => x.name)}
+              options={contractors
+                .map((x) => x.name)
+                .filter((name, index, arr) => arr.indexOf(name) === index)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -162,7 +171,9 @@ const CounterpartyForm = () => {
               }}
               value={field.value}
               freeSolo
-              options={contractors.map((x) => x.eik)}
+              options={contractors
+                .map((x) => x.eik)
+                .filter((eik, index, arr) => arr.indexOf(eik) === index)}
               renderInput={(params) => (
                 <TextField
                   {...params}

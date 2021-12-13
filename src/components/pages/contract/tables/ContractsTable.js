@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useFormContext } from "react-hook-form";
 import { DataGrid } from "@mui/x-data-grid";
 
 import AuthContext from "../../../../context/auth/authContext";
@@ -13,6 +14,7 @@ import RegisterIcon from "@mui/icons-material/Storage";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ClearIcon from "@mui/icons-material/LayersClear";
 import { Button, ButtonGroup } from "@mui/material";
+
 // import ModifyUser from "./ModifyUser";
 
 // const columns = [
@@ -39,6 +41,7 @@ const ContractsTable = () => {
     clearSelectedContract,
     selectedContract,
     deleteContract,
+    updateContract,
   } = userContext;
   const navigate = useNavigate();
 
@@ -47,10 +50,17 @@ const ContractsTable = () => {
   const [selectedRows, setSelectedRows] = useState();
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [modUserDialog, setModUserDialog] = useState(false);
+  const { handleSubmit } = useFormContext();
+
+  const [selectionModel, setSelectionModel] = useState([]);
 
   useEffect(() => {
     getContracts();
   }, []);
+
+  // useEffect(() =>{
+
+  // },[selectedContract])
 
   // const reloadAfterModify = () => {
   //   setModUserDialog(false);
@@ -75,20 +85,29 @@ const ContractsTable = () => {
   };
 
   const handleDelete = () => {
-    console.log("in handleDelete");
     selectedRows.map((row) => deleteContract(row.id));
   };
 
-  const handleModify = () => {
+  const handleModify = (data) => {
     console.log("in handleModify");
-    // const selectedEmail = selectedRows.map((row) => row.email)[0];
 
-    // setModUserDialog(true);
+    console.log(
+      "🚀 ~ file: ContractsTable.js ~ line 85 ~ handleModify ~ data",
+      data
+    );
+    updateContract(data);
+    setSelectionModel([]);
+    setBtnDisabled(true);
   };
 
   const handleSelectionModelChange = (ids) => {
     const selectedIDs = new Set(ids);
+    setSelectionModel(selectedIDs.values().next().value);
 
+    console.log(
+      "🚀 ~ file: ContractsTable.js ~ line 103 ~ handleSelectionModelChange ~ rows",
+      ids
+    );
     const selectedRowData = rows.filter((row) => selectedIDs.has(row.id));
     setSelectedRows(selectedRowData);
     const selectedContract = contracts.filter(
@@ -103,9 +122,10 @@ const ContractsTable = () => {
       setBtnDisabled(true);
     }
   };
+
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
-    { field: "contractor", headerName: "Contractor name", width: 230 },
+    { field: "contractor", headerName: "Company name", width: 230 },
     { field: "contractorEik", headerName: "Eik", width: 130 },
     { field: "startDate", headerName: "Start date", width: 130 },
     { field: "endDate", headerName: "End date", width: 130 },
@@ -124,6 +144,7 @@ const ContractsTable = () => {
         rowsPerPageOptions={[5]}
         checkboxSelection
         onSelectionModelChange={handleSelectionModelChange}
+        selectionModel={selectionModel}
       />
       <ButtonGroup
         variant='contained'
@@ -137,7 +158,7 @@ const ContractsTable = () => {
           variant='contained'
           endIcon={<RegisterIcon />}
           color={"primary"}
-          onClick={handleModify}
+          onClick={handleSubmit(handleModify)}
           disabled={btnDisabled}
         >
           Modify

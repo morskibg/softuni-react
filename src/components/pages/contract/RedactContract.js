@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Container } from "@mui/material";
+import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { Button, ButtonGroup } from "@mui/material";
 import { Typography } from "@mui/material";
@@ -17,12 +17,12 @@ import "./css/RedactContract.css";
 import ContractsTable from "./tables/ContractsTable";
 
 const RedactContract = () => {
-  const { formData, setFormData } = useState({});
   const [btnDisabled, setBtnDisabled] = useState(true);
   const methods = useForm();
   const {
     register,
     handleSubmit,
+    setValue,
     control,
     formState: { errors },
   } = methods;
@@ -36,11 +36,17 @@ const RedactContract = () => {
     clearStp,
     getContracts,
     contracts,
+    selectedContract,
   } = userContext;
   const navigate = useNavigate();
+
   useEffect(() => {
     getContracts();
   }, []);
+
+  useEffect(() => {
+    setValue("id", selectedContract?.id || "");
+  }, [selectedContract]);
 
   return (
     <FormProvider {...methods}>
@@ -48,10 +54,22 @@ const RedactContract = () => {
         <Box className='redacting-contract-left-container'>
           <ContractsTable />
         </Box>
-        <Box className='redacting-contract-right-container'>
-          <CounterpartyForm />
-          <ContractForm />
-        </Box>
+        <form onSubmit={handleSubmit()}>
+          <Box className='redacting-contract-right-container'>
+            <TextField
+              fullWidth
+              value={selectedContract?.id || ""}
+              id='contractId'
+              label='Contract id'
+              variant='standard'
+              {...register("id")}
+            />
+
+            <CounterpartyForm />
+            <ContractForm />
+            {/* <Button type='submit'>click</Button> */}
+          </Box>
+        </form>
       </Box>
     </FormProvider>
   );
