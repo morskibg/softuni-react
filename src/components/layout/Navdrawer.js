@@ -208,12 +208,13 @@ const Navdrawer = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <BoltIcon />
+          <BoltIcon sx={{ cursor: "pointer" }} onClick={() => navigate("/")} />
           <Typography
+            onClick={() => navigate("/")}
             color='inherit'
             variant='h6'
             component='div'
-            sx={{ flexGrow: 1 }}
+            sx={{ flexGrow: 1, cursor: "pointer" }}
           >
             Power App
           </Typography>

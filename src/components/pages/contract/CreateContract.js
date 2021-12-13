@@ -48,6 +48,7 @@ const CreateContract = () => {
   const [monthAggrGraph, setMonthAggrGraph] = useState();
   const [monthAggrWeekGraph, setMonthAggrWeekGraph] = useState();
   const [dataGraph, setDataGraph] = useState();
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   const theme = useTheme();
 
@@ -62,6 +63,10 @@ const CreateContract = () => {
     };
     // eslint-disable-next-line
   }, [isAuthenticated, isGuest]);
+
+  useEffect(() => {
+    setBtnDisabled(loading);
+  }, [loading]);
 
   useEffect(() => {
     if (authContext.error || userContext.error) {
@@ -162,7 +167,12 @@ const CreateContract = () => {
                       <Button disabled={activeStep === 0} onClick={handleBack}>
                         back
                       </Button>
-                      <Button variant='contained' color='primary' type='submit'>
+                      <Button
+                        variant='contained'
+                        color='primary'
+                        type='submit'
+                        disabled={btnDisabled}
+                      >
                         {activeStep === steps.length - 1 ? "Finish" : "Next"}
                       </Button>
                     </Box>

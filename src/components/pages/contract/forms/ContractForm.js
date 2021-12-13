@@ -45,6 +45,7 @@ const ContractForm = () => {
         shouldValidate: true,
       });
     }
+    // eslint-disable-next-line
   }, [selectedContract]);
 
   useEffect(() => {

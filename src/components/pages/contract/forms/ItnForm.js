@@ -55,9 +55,9 @@ const ItnForm = (props) => {
     setValue("itn", "");
   };
   const itnChangeHandler = (itn) => {
-    const cezPattern = /^32Z1.{12}$/i;
-    const eproPattern = /^32Z4.{12}$/i;
-    const evnPattern = /^BG.{31}$/i;
+    const cezPattern = /^32Z1[A-Za-z0-9]{12}$/i;
+    const eproPattern = /^32Z4[A-Za-z0-9]{12}$/i;
+    const evnPattern = /^BG[A-Za-z0-9]{31}$/i;
     if (itn.match(cezPattern)) {
       setValue("erp", "CEZ", { shouldValidate: true });
       setValue("loadType", "CEZ_B1", { shouldValidate: true });
@@ -99,7 +99,7 @@ const ItnForm = (props) => {
           required: "ITN is required",
 
           pattern: {
-            value: /^32Z(?:1|4).{12}$|^BG.{31}$/i,
+            value: /^32Z(?:1|4)[A-Za-z0-9]{12}$|^BG[A-Za-z0-9]{31}$/i,
             message: "Itn is not valid.",
           },
           validate: (value) =>
