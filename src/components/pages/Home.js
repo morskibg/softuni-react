@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import Spinner from "../layout/Spinner";
 import AuthContext from "../../context/auth/authContext";
 import AlertContext from "../../context/alert/alertContext";
@@ -47,13 +47,14 @@ const MenuProps = {
 const Home = (props) => {
   console.log("entering HOME");
   const theme = useTheme();
+  const navigate = useNavigate();
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
   const adminContext = useContext(AdminContext);
   const userContext = useContext(UserContext);
 
   const { setAlert } = alertContext;
-  const { isAdmin, isGuest } = authContext;
+  const { isAdmin, isGuest, isAuthenticated, verifyToken } = authContext;
 
   const { loading } = adminContext;
   const { getSpotData, spots } = userContext;
@@ -63,7 +64,15 @@ const Home = (props) => {
   const [eValue, setEValue] = useState(addDays(Date.now(), 2));
 
   useEffect(() => {
-    console.log("in HOME use effect");
+    if (!isAuthenticated && !isGuest) {
+      navigate("login");
+    } else {
+      verifyToken();
+    }
+    // eslint-disable-next-line
+  }, [isAuthenticated, isGuest]);
+
+  useEffect(() => {
     if (authContext.error || adminContext.error || userContext.error) {
       const alert =
         authContext.error ?? adminContext.error ?? userContext.error;
