@@ -177,10 +177,7 @@ const ContractForm = () => {
             required: "Price is required",
             min: { value: 0.01, message: "Min price is 0.01 BGN/kWh " },
             max: { value: 2, message: "Max price is 2 BGN/kWh " },
-            validate: (value) => {
-              console.log("DDDDDDDDDDDDDDDDD", Number(value));
-              return Number(value) > 0 || "Invalid price";
-            },
+            validate: (value) => Number(value) > 0 || "Invalid price",
           }}
           render={({ field, fieldState }) => (
             <TextField

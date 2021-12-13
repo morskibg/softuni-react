@@ -166,11 +166,11 @@ const Navdrawer = (props) => {
         }
       },
     },
-    {
-      text: "Third",
-      icon: <MailIcon />,
-      isDisabled: false,
-    },
+    // {
+    //   text: "Third",
+    //   icon: <MailIcon />,
+    //   isDisabled: false,
+    // },
     {
       text: "Toogle Theme",
       icon: themeMode === "light" ? <DarkModeIcon /> : <LightModeIcon />,

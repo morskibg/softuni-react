@@ -24,10 +24,11 @@ const darkTheme = createTheme({
       main: "#00ddff",
     },
     secondary: {
-      main: "#FFFF8D",
+      // main: "#FFFF8D",
+      main: "#a7499f",
     },
     success: {
-      main: "#c2ff70",
+      main: "#1982c4",
     },
     error: {
       main: "#9932CC",
@@ -40,6 +41,14 @@ const darkTheme = createTheme({
       primary: "#ec5990",
       secondary: "#aa4446",
       third: "#ff7139",
+      // secondary: grey[500],
+    },
+    lineChart: {
+      first: "a23a44",
+      second: "#aa4446",
+      third: "#ff7139",
+      fourth: "#29BF12",
+      fifth: "#ff3964 ",
       // secondary: grey[500],
     },
   },
@@ -72,6 +81,14 @@ const lightTheme = createTheme({
       primary: "#ec5990",
       secondary: "#115990",
       third: "#ff7139",
+      // secondary: grey[500],
+    },
+    lineChart: {
+      first: "a23a44",
+      second: "#fff",
+      third: "#ff7139",
+      fourth: "#29BF12",
+      fifth: "#ff3964 ",
       // secondary: grey[500],
     },
   },

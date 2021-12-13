@@ -20,6 +20,7 @@ import {
   CLEAR_CONTRACT,
   DELETE_CONTRACT,
   UPDATE_CONTRACT,
+  GET_SPOT_DATA,
 } from "../types";
 
 const UserState = (props) => {
@@ -32,6 +33,7 @@ const UserState = (props) => {
     stpCoeffs: [],
     avgMonthlyStp: [],
     avgMonthlyStpWeekEnd: [],
+    spots: [],
     selectedContract: null,
     isFreeItn: true,
     error: null,
@@ -314,6 +316,34 @@ const UserState = (props) => {
     }
   };
 
+  const getSpotData = async (sDate, eDate) => {
+    setAuthHeader(localStorage.token);
+    try {
+      const startDate = format(new Date(sDate), "yyyy-MM-dd");
+      const endDate = format(new Date(eDate), "yyyy-MM-dd");
+      const res = await axios.get(
+        `utils/spots?start_date=${startDate}&end_date=${endDate}`
+      );
+      const dataObj = JSON.parse(res.data[0]["data"]);
+
+      const spots = Object.keys(dataObj).map((idx) => ({
+        utc: dataObj[idx]["utc"],
+        BG_Pr: dataObj[idx]["BG_Pr"],
+        GR_Pr: dataObj[idx]["GR_Pr"],
+        RO_Pr: dataObj[idx]["RO_Pr"],
+        HU_Pr: dataObj[idx]["HU_Pr"],
+        DE_Pr: dataObj[idx]["DE_Pr"],
+        eet: dataObj[idx]["eet"],
+      }));
+      dispatch({
+        type: GET_SPOT_DATA,
+        payload: spots,
+      });
+    } catch (error) {
+      errorHandler(error);
+    }
+  };
+
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
   const startLoader = () => dispatch({ type: START_LOADER });
   const clearStp = () => dispatch({ type: CLEAR_STP });
@@ -333,6 +363,7 @@ const UserState = (props) => {
         avgMonthlyStp: state.avgMonthlyStp,
         avgMonthlyStpWeekEnd: state.avgMonthlyStpWeekEnd,
         selectedContract: state.selectedContract,
+        spots: state.spots,
         getAddresses,
         getContracts,
         getContractors,
@@ -346,6 +377,7 @@ const UserState = (props) => {
         clearSelectedContract,
         deleteContract,
         updateContract,
+        getSpotData,
       }}
     >
       {props.children}

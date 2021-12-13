@@ -14,6 +14,7 @@ import {
   CLEAR_CONTRACT,
   DELETE_CONTRACT,
   UPDATE_CONTRACT,
+  GET_SPOT_DATA,
 } from "../types";
 
 const userReducer = (state, action) => {
@@ -66,6 +67,12 @@ const userReducer = (state, action) => {
         ...state,
         loading: false,
         contractors: action.payload.sort((a, b) => a.name - b.name),
+      };
+    case GET_SPOT_DATA:
+      return {
+        ...state,
+        loading: false,
+        spots: action.payload,
       };
     case CREATE_CONTRACT:
       return {
