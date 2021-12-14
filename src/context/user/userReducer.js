@@ -47,8 +47,6 @@ const userReducer = (state, action) => {
         ),
       };
     case GET_AVL_ITNS:
-      console.log("in available ", action.payload);
-
       return {
         ...state,
         loading: false,
@@ -83,8 +81,6 @@ const userReducer = (state, action) => {
         // addresses: action.payload.sort((a, b) => a.city - b.city),
       };
     case UPDATE_CONTRACT:
-      console.log("in update contract", action.payload.data);
-      console.log("in update contract", state.contracts);
       return {
         ...state,
         error: action.payload.alert,
@@ -105,7 +101,10 @@ const userReducer = (state, action) => {
     case DELETE_CONTRACT:
       return {
         ...state,
-        contracts: state.contracts.filter((x) => x.id !== action.payload.id),
+        contracts: state.contracts.filter(
+          (x) => x.id !== action.payload.data.id
+        ),
+        error: action.payload.alert,
         selectedContract: null,
       };
     case USER_ERROR:

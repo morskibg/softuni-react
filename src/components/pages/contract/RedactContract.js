@@ -6,6 +6,7 @@ import { Box } from "@mui/system";
 
 import AuthContext from "../../../context/auth/authContext";
 import UserContext from "../../../context/user/userContext";
+import AlertContext from "../../../context/alert/alertContext";
 
 import CounterpartyForm from "./forms/CounterpartyForm";
 import ContractForm from "./forms/ContractForm";
@@ -28,6 +29,8 @@ const RedactContract = () => {
 
     selectedContract,
   } = userContext;
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,6 +42,17 @@ const RedactContract = () => {
 
     // eslint-disable-next-line
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (authContext.error || userContext.error) {
+      const alert = authContext.error ?? userContext.error;
+      setAlert(alert.msg, alert.type);
+      authContext.clearErrors();
+      userContext.clearErrors();
+    }
+
+    // eslint-disable-next-line
+  }, [authContext.error, userContext.error]);
 
   useEffect(() => {
     getContracts();

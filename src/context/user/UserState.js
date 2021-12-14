@@ -267,7 +267,10 @@ const UserState = (props) => {
 
       dispatch({
         type: DELETE_CONTRACT,
-        payload: res.data,
+        payload: {
+          data: res.data,
+          alert: { msg: "Contract delete successfully", type: "success" },
+        },
       });
     } catch (error) {
       errorHandler(error);
