@@ -6,7 +6,6 @@ import AuthContext from "../../../../context/auth/authContext";
 import UserContext from "../../../../context/user/userContext";
 
 import { useNavigate } from "react-router-dom";
-import { Box } from "@mui/system";
 
 import "../css/CreateContract.css";
 import { Typography } from "@mui/material";
@@ -15,56 +14,43 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ClearIcon from "@mui/icons-material/LayersClear";
 import { Button, ButtonGroup } from "@mui/material";
 
-// import ModifyUser from "./ModifyUser";
-
-// const columns = [
-//   { field: "id", headerName: "ID", width: 70 },
-//   { field: "email", headerName: "Email", width: 160 },
-//   // { field: "full_name", headerName: "Full name", width: 150 },
-//   // { field: "is_active", headerName: "Is active", width: 130 },
-//   // { field: "is_superuser", headerName: "Is Admin", width: 130 },
-//   // { field: "creator_email", headerName: "Creator email", width: 130 },
-//   // { field: "last_seen", headerName: "Last seen", width: 130 },
-//   // { field: "last_updated", headerName: "Last updated", width: 130 },
-// ];
-
 const ContractsTable = () => {
-  // const authContext = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
   const userContext = useContext(UserContext);
-  // const { isAuthenticated, verifyToken, isGuest } = authContext;
+  const { isAuthenticated, verifyToken } = authContext;
   const {
     contracts,
-    loading,
-    startLoader,
     getContracts,
     setSelectedContract,
     clearSelectedContract,
-    selectedContract,
     deleteContract,
     updateContract,
+    // modClean,
   } = userContext;
   const navigate = useNavigate();
 
-  // const [reload, setReload] = useState(false);
-
   const [selectedRows, setSelectedRows] = useState();
   const [btnDisabled, setBtnDisabled] = useState(true);
-  const [modUserDialog, setModUserDialog] = useState(false);
+
   const { handleSubmit } = useFormContext();
 
   const [selectionModel, setSelectionModel] = useState([]);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/");
+    } else {
+      verifyToken();
+    }
+    return clearSelectedContract;
+    // eslint-disable-next-line
+  }, [isAuthenticated]);
+
+  useEffect(() => {
     getContracts();
+    return clearSelectedContract;
+    // eslint-disable-next-line
   }, []);
-
-  // useEffect(() =>{
-
-  // },[selectedContract])
-
-  // const reloadAfterModify = () => {
-  //   setModUserDialog(false);
-  // };
 
   const createRows = () => {
     const rows = contracts.map((x) =>
@@ -89,25 +75,30 @@ const ContractsTable = () => {
   };
 
   const handleModify = (data) => {
-    console.log("in handleModify");
+    // console.log("in handleModify");
 
-    console.log(
-      "🚀 ~ file: ContractsTable.js ~ line 85 ~ handleModify ~ data",
-      data
-    );
+    // console.log(
+    //   "🚀 ~ file: ContractsTable.js ~ line 85 ~ handleModify ~ data",
+    //   data
+    // );
     updateContract(data);
     setSelectionModel([]);
     setBtnDisabled(true);
+  };
+
+  const handleCancel = () => {
+    // modClean(true);
+    navigate("/");
   };
 
   const handleSelectionModelChange = (ids) => {
     const selectedIDs = new Set(ids);
     setSelectionModel(selectedIDs.values().next().value);
 
-    console.log(
-      "🚀 ~ file: ContractsTable.js ~ line 103 ~ handleSelectionModelChange ~ rows",
-      ids
-    );
+    // console.log(
+    //   "🚀 ~ file: ContractsTable.js ~ line 103 ~ handleSelectionModelChange ~ rows",
+    //   ids
+    // );
     const selectedRowData = rows.filter((row) => selectedIDs.has(row.id));
     setSelectedRows(selectedRowData);
     const selectedContract = contracts.filter(
@@ -150,7 +141,7 @@ const ContractsTable = () => {
         variant='contained'
         aria-label='outlined primary button group'
       >
-        <Button startIcon={<ArrowBackIcon />} onClick={() => navigate("/")}>
+        <Button startIcon={<ArrowBackIcon />} onClick={handleCancel}>
           Cancel
         </Button>
         <Button

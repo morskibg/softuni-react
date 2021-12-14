@@ -14,7 +14,6 @@ import {
   START_LOADER,
   DELETE_USER,
   CLEAR_CURRENT_USER,
-  STOP_LOADER,
   SET_MODIFIER,
   CLEAR_MODIFIER,
   UPDATE_USER,
@@ -232,7 +231,7 @@ const AdminState = (props) => {
 
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
   const setLoader = () => dispatch({ type: START_LOADER });
-  const clearLoader = () => dispatch({ type: STOP_LOADER });
+
   const setModifier = () => dispatch({ type: SET_MODIFIER });
   const clearModifier = () => dispatch({ type: CLEAR_MODIFIER });
 

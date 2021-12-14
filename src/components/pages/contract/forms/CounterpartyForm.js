@@ -11,7 +11,7 @@ import UserContext from "../../../../context/user/userContext";
 import Autocomplete from "@mui/material/Autocomplete";
 
 const CounterpartyForm = () => {
-  const { control, setValue, reset } = useFormContext();
+  const { control, setValue } = useFormContext();
 
   const userContext = useContext(UserContext);
   const {
@@ -24,7 +24,7 @@ const CounterpartyForm = () => {
   } = userContext;
   const authContext = useContext(AuthContext);
   const { isAuthenticated, isGuest } = authContext;
-  // const navigate = useNavigate();
+
   useEffect(() => {
     if (!selectedContract) {
       setValue("name", "");
@@ -52,6 +52,7 @@ const CounterpartyForm = () => {
         shouldValidate: true,
       });
     }
+    // eslint-disable-next-line
   }, [selectedContract]);
 
   useEffect(() => {
@@ -59,9 +60,7 @@ const CounterpartyForm = () => {
     getContractors();
     startLoader();
     getAddresses();
-    return () => {
-      console.log("from first form unmounting");
-    };
+
     // eslint-disable-next-line
   }, [isAuthenticated, isGuest]);
 
@@ -88,15 +87,6 @@ const CounterpartyForm = () => {
     }
   };
 
-  const resetForm = () => {
-    reset({
-      name: "",
-      eik: "",
-      city: "",
-      postalCode: "",
-      addressLine: "",
-    });
-  };
   if (loading) {
     return <Spinner />;
   } else {

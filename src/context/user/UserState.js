@@ -21,11 +21,13 @@ import {
   DELETE_CONTRACT,
   UPDATE_CONTRACT,
   GET_SPOT_DATA,
+  // NEED_CLEAN,
 } from "../types";
 
 const UserState = (props) => {
   const initialState = {
     loading: false,
+    // needClean: false,
     addresses: [],
     contractors: [],
     availableITNs: [],
@@ -346,7 +348,8 @@ const UserState = (props) => {
 
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
   const startLoader = () => dispatch({ type: START_LOADER });
-  const clearStp = () => dispatch({ type: CLEAR_STP });
+  // const modClean = () => dispatch({ type: NEED_CLEAN });
+  const clearStp = (status) => dispatch({ type: CLEAR_STP, payload: status });
   const clearSelectedContract = () => dispatch({ type: CLEAR_CONTRACT });
 
   return (
@@ -364,6 +367,7 @@ const UserState = (props) => {
         avgMonthlyStpWeekEnd: state.avgMonthlyStpWeekEnd,
         selectedContract: state.selectedContract,
         spots: state.spots,
+        // needClean: state.needClean,
         getAddresses,
         getContracts,
         getContractors,
@@ -378,6 +382,7 @@ const UserState = (props) => {
         deleteContract,
         updateContract,
         getSpotData,
+        // modClean,
       }}
     >
       {props.children}

@@ -109,18 +109,11 @@ const ItnForm = (props) => {
           <Autocomplete
             disableClearable={true}
             freeSolo
-            // onPaste={(item) => {
-            //   //console.log(
-            //     "🚀 ~ file: Forms.js ~ line 412 ~ ItnForm ~ item",
-            //     item.target.defaultValue
-            //   );
-            //   itnChangeHandler(item.target.defaultValue);
-            // }}
             onBlurCapture={(item) => {
-              //console.log(
-              //   "🚀 ~ file: Forms.js ~ line 412 ~ ItnForm ~ item",
-              //   item.target.defaultValue
-              // );
+              console.log(
+                "🚀 ~ onBlurCapture ~ ItnForm ~ item",
+                item.target.defaultValue
+              );
               itnChangeHandler(item.target.defaultValue);
             }}
             onChange={(event, item) => {

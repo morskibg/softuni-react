@@ -18,7 +18,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 
-import MailIcon from "@mui/icons-material/Mail";
 import Button from "@mui/material/Button";
 // import PowerIcon from "@mui/icons-material/Power";
 import BoltIcon from "@mui/icons-material/Bolt";

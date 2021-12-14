@@ -1,13 +1,9 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useForm, FormProvider, Controller } from "react-hook-form";
+import React, { useContext, useEffect } from "react";
+import { useForm, FormProvider } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { Button, ButtonGroup } from "@mui/material";
-import { Typography } from "@mui/material";
-import RegisterIcon from "@mui/icons-material/Storage";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ClearIcon from "@mui/icons-material/LayersClear";
+
 import AuthContext from "../../../context/auth/authContext";
 import UserContext from "../../../context/user/userContext";
 
@@ -17,35 +13,41 @@ import "./css/RedactContract.css";
 import ContractsTable from "./tables/ContractsTable";
 
 const RedactContract = () => {
-  const [btnDisabled, setBtnDisabled] = useState(true);
   const methods = useForm();
   const {
     register,
     handleSubmit,
     setValue,
-    control,
     formState: { errors },
   } = methods;
   const authContext = useContext(AuthContext);
-  const { isAuthenticated, verifyToken, isGuest } = authContext;
+  const { isAuthenticated, verifyToken } = authContext;
   const userContext = useContext(UserContext);
   const {
-    getAvlItns,
-    loading,
-    startLoader,
-    clearStp,
     getContracts,
-    contracts,
+
     selectedContract,
   } = userContext;
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/");
+    } else {
+      verifyToken();
+    }
+
+    // eslint-disable-next-line
+  }, [isAuthenticated]);
+
+  useEffect(() => {
     getContracts();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     setValue("id", selectedContract?.id || "");
+    // eslint-disable-next-line
   }, [selectedContract]);
 
   return (

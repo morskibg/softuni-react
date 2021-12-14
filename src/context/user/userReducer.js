@@ -15,6 +15,7 @@ import {
   DELETE_CONTRACT,
   UPDATE_CONTRACT,
   GET_SPOT_DATA,
+  // NEED_CLEAN,
 } from "../types";
 
 const userReducer = (state, action) => {
@@ -105,6 +106,7 @@ const userReducer = (state, action) => {
       return {
         ...state,
         contracts: state.contracts.filter((x) => x.id !== action.payload.id),
+        selectedContract: null,
       };
     case USER_ERROR:
       console.log(
@@ -139,6 +141,11 @@ const userReducer = (state, action) => {
         ...state,
         loading: true,
       };
+    // case NEED_CLEAN:
+    //   return {
+    //     ...state,
+    //     needClean: action.payload,
+    //   };
     default:
       return state;
   }

@@ -45,7 +45,6 @@ const MenuProps = {
 };
 
 const Home = (props) => {
-  console.log("entering HOME");
   const theme = useTheme();
   const navigate = useNavigate();
   const alertContext = useContext(AlertContext);
