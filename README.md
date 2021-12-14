@@ -1,8 +1,10 @@
 # PowerApp - basic application for electricity trading. 
-## https://softuni-react-powerapp.herokuapp.com/
-## or
-## https://softuni-react-powerapp.vercel.app/
-
+## Frontend:
+### https://softuni-react-powerapp.herokuapp.com/
+### or
+### https://softuni-react-powerapp.vercel.app/
+## Backend:
+### https://backend-react-powerapp.herokuapp.com/docs
 
 ## Preloaded initial administrator account: 
 ### username : admin@aol.com
