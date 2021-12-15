@@ -292,10 +292,10 @@ const UserState = (props) => {
       contractor_address_line: contract.addressLine,
       price: contract.price,
     };
-    console.log(
-      "🚀 ~ file: UserState.js ~ line 310 ~ updateContract ~ updateData",
-      updateData
-    );
+    // console.log(
+    //   "🚀 ~ file: UserState.js ~ line 310 ~ updateContract ~ updateData",
+    //   updateData
+    // );
     const config = {
       headers: {
         "Content-Type": "application/json",

@@ -108,10 +108,10 @@ const userReducer = (state, action) => {
         selectedContract: null,
       };
     case USER_ERROR:
-      console.log(
-        "🚀 ~ file: userReducer.js ~ line 127 ~ userReducer ~ USER_ERROR",
-        USER_ERROR
-      );
+      // console.log(
+      //   "🚀 ~ file: userReducer.js ~ line 127 ~ userReducer ~ USER_ERROR",
+      //   USER_ERROR
+      // );
       return {
         ...state,
         error: action.payload.alert,

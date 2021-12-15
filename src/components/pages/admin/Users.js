@@ -35,6 +35,7 @@ const Users = (props) => {
     }
 
     if (users.length === 0) {
+      console.log("from user use effect");
       setLoader();
       getUsers();
     }

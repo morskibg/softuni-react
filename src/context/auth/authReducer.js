@@ -14,7 +14,7 @@ import {
 } from "../types";
 
 const authReducer = (state, action) => {
-  // console.log("in AUTH reducer", action.type);
+  console.log("in AUTH reducer", action.type);
   switch (action.type) {
     case USER_LOADED:
       return {
@@ -32,6 +32,7 @@ const authReducer = (state, action) => {
         isAuthenticated: true,
         isAdmin: action.payload.data.isAdmin,
         isGuest: action.payload.data.isGuest,
+        loading: false,
       };
     case REGISTER_SUCCESS:
       return {

@@ -36,7 +36,7 @@ const AdminState = (props) => {
     if (error.response) {
       // Request made and server responded
       if (error.response.status === 403 || error.response.status === 401) {
-        console.log("auth error from ADMIN context DELETING TOKEN");
+        // console.log("auth error from ADMIN context DELETING TOKEN");
         dispatch({
           type: AUTH_ERROR,
           payload: { alert: { msg: "Invalid token", type: "danger" } },

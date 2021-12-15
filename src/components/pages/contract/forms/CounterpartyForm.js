@@ -65,12 +65,12 @@ const CounterpartyForm = () => {
   }, [isAuthenticated, isGuest]);
 
   const companyChangeHandlerGeneric = (itemName, item, newValueName) => {
-    console.log("in companyChangeHandlerGeneric");
+    // console.log("in companyChangeHandlerGeneric");
     const selectedCompany = contractors.filter((x) => x[itemName] === item);
-    console.log(
-      "🚀 ~ file: CounterpartyForm.js ~ line 82 ~ companyChangeHandlerGeneric ~ selectedCompany",
-      selectedCompany
-    );
+    // console.log(
+    //   "🚀 ~ file: CounterpartyForm.js ~ line 82 ~ companyChangeHandlerGeneric ~ selectedCompany",
+    //   selectedCompany
+    // );
     let newValue = null;
     if (selectedCompany.length > 0) {
       newValue = selectedCompany[0][newValueName];

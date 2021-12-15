@@ -53,7 +53,7 @@ const Login = () => {
   // const onSubmit = (data) => console.log(data);
 
   useEffect(() => {
-    console.log("in LOGIN use effect");
+    // console.log("in LOGIN use effect", isAuthenticated);
     if (isAuthenticated) {
       navigate("/");
     }
@@ -63,21 +63,21 @@ const Login = () => {
       clearErrors();
     }
     if (authContext.error || adminContext.error || userContext.error) {
-      console.log(
-        "🚀 ~ file: Login.js ~ line 63 ~ useEffect ~ userContext.error",
-        userContext.error
-      );
-      console.log(
-        "🚀 ~ file: Login.js ~ line 63 ~ useEffect ~ adminContext.error",
-        adminContext.error
-      );
-      console.log(
-        "🚀 ~ file: Login.js ~ line 63 ~ useEffect ~ authContext.error",
-        authContext.error
-      );
+      // console.log(
+      //   "🚀 ~ file: Login.js ~ line 63 ~ useEffect ~ userContext.error",
+      //   userContext.error
+      // );
+      // console.log(
+      //   "🚀 ~ file: Login.js ~ line 63 ~ useEffect ~ adminContext.error",
+      //   adminContext.error
+      // );
+      // console.log(
+      //   "🚀 ~ file: Login.js ~ line 63 ~ useEffect ~ authContext.error",
+      //   authContext.error
+      // );
       const alert =
         authContext.error ?? adminContext.error ?? userContext.error;
-      console.log("🚀 ~ file: LOGIN.js ~ line 77 ~ useEffect ~ alert", alert);
+      // console.log("🚀 ~ file: LOGIN.js ~ line 77 ~ useEffect ~ alert", alert);
 
       setAlert(alert.msg, alert.type);
       authContext.clearErrors();
@@ -121,6 +121,7 @@ const Login = () => {
     if (email === "" || password === "") {
       setAlert("Please fill in all fields", "danger");
     } else {
+      
       startLoader();
       login({
         email,

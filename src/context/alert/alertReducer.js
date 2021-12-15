@@ -4,17 +4,17 @@ const alertReducer = (state, action) => {
   switch (action.type) {
     case SET_ALERT:
       const rawAlerts = [...state, action.payload];
-      console.log(
-        "🚀 ~ file: alertReducer.js ~ line 7 ~ alertReducer ~ rawAlerts",
-        rawAlerts
-      );
+      // console.log(
+      //   "🚀 ~ file: alertReducer.js ~ line 7 ~ alertReducer ~ rawAlerts",
+      //   rawAlerts
+      // );
       const mustBeFiltered = [
         ...new Map(rawAlerts.map((x) => [x["msg"], x])).values(),
       ];
-      console.log(
-        "🚀 ~ file: alertReducer.js ~ line 9 ~ alertReducer ~ mustBeFiltered",
-        mustBeFiltered
-      );
+      // console.log(
+      //   "🚀 ~ file: alertReducer.js ~ line 9 ~ alertReducer ~ mustBeFiltered",
+      //   mustBeFiltered
+      // );
       return mustBeFiltered;
     case REMOVE_ALERT:
       return state.filter((alert) => alert.id !== action.payload);

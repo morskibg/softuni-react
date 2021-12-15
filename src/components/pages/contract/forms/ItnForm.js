@@ -110,10 +110,10 @@ const ItnForm = (props) => {
             disableClearable={true}
             freeSolo
             onBlurCapture={(item) => {
-              console.log(
-                "🚀 ~ onBlurCapture ~ ItnForm ~ item",
-                item.target.defaultValue
-              );
+              // console.log(
+              //   "🚀 ~ onBlurCapture ~ ItnForm ~ item",
+              //   item.target.defaultValue
+              // );
               itnChangeHandler(item.target.defaultValue);
             }}
             onChange={(event, item) => {

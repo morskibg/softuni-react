@@ -1,7 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
 import AdminContext from "../../context/admin/adminContext";
+import AuthContext from "../../context/auth/authContext";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 
@@ -28,10 +29,21 @@ const UsersTable = () => {
   const navigate = useNavigate();
   const adminContext = useContext(AdminContext);
   const { users, deleteUser, setCurrentUser, clearCurrUser } = adminContext;
+  const authContext = useContext(AuthContext);
+  const { isAdmin, isGuest, verifyToken, isAuthenticated } = authContext;
 
   const [selectedRows, setSelectedRows] = useState();
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [modUserDialog, setModUserDialog] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated | isGuest | !isAdmin) {
+      navigate("/");
+    } else {
+      verifyToken();
+    }
+    // eslint-disable-next-line
+  }, [isAdmin, isGuest, isAuthenticated]);
 
   const reloadAfterModify = () => {
     setModUserDialog(false);
@@ -81,7 +93,6 @@ const UsersTable = () => {
   if (modUserDialog) {
     return <ModifyUser reloadCallback={reloadAfterModify} />;
   } else {
-    console.log("returning from users table");
     return (
       <Box className='users-table-container'>
         <Box className='users-table'>
