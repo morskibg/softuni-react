@@ -35,6 +35,8 @@ import AuthContext from "../../context/auth/authContext";
 import AlertContext from "../../context/alert/alertContext";
 // import AdminContext from "../../context/admin/adminContext";
 import ThemeContext from "../../context/theme/themeContext";
+import useAdminGuard from "../../hooks/useAdminGuard";
+import useUserGuard from "../../hooks/useUserGuard";
 
 const drawerWidth = 240;
 
@@ -106,13 +108,15 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const Navdrawer = (props) => {
+  const hasUserPermission = useUserGuard();
+  const hasAdminPermission = useAdminGuard();
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
   // const adminContext = useContext(AdminContext);
   const themeContext = useContext(ThemeContext);
 
   const { setAlert } = alertContext;
-  const { isAuthenticated, isAdmin, isGuest } = authContext;
+  const { isAuthenticated } = authContext;
 
   // const { getUsers, setLoader } = adminContext;
   const { toggle, themeMode } = themeContext;
@@ -122,10 +126,6 @@ const Navdrawer = (props) => {
   const theme = useTheme();
 
   const [open, setOpen] = useState(false);
-
-  if (!isAuthenticated) {
-    return null;
-  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -139,14 +139,13 @@ const Navdrawer = (props) => {
     navigate("/admin/users");
   };
 
-  // if (!isAuthenticated || currLocation.pathname === "/register") {
   const menuItems = [
     {
       text: "Create Contract",
       icon: <AddIcon />,
-      isDisabled: isGuest,
+      isDisabled: !(hasUserPermission || hasAdminPermission),
       onClick: () => {
-        if (isGuest) {
+        if (!hasUserPermission) {
           setAlert("Registered user only !", "danger");
         } else {
           navigate("create_contract");
@@ -156,9 +155,9 @@ const Navdrawer = (props) => {
     {
       text: "Edit Contract",
       icon: <EditIcon />,
-      isDisabled: isGuest,
+      isDisabled: !(hasUserPermission || hasAdminPermission),
       onClick: () => {
-        if (isGuest) {
+        if (!hasUserPermission) {
           setAlert("Registered user only !", "danger");
         } else {
           navigate("redact_contract");
@@ -191,6 +190,9 @@ const Navdrawer = (props) => {
       onClick: handleManageUsers,
     },
   ];
+  if (!isAuthenticated) {
+    return null;
+  }
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar position='sticky' open={open} enableColorOnDark>
@@ -263,7 +265,7 @@ const Navdrawer = (props) => {
         </List>
 
         <Divider />
-        {isAdmin && (
+        {hasAdminPermission && (
           <Fragment>
             <Typography variant='h7' mt={2} ml={1}>
               Admin

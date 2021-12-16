@@ -60,6 +60,7 @@ const ModifyUser = ({ reloadCallback }) => {
   };
 
   const onSubmitHandler = (data, e) => {
+    
     const fullData = { ...currentUser, ...data };
     fullData.creator_email = user.email;
     modifyUser(fullData);

@@ -50,7 +50,6 @@ const RedactContract = () => {
       authContext.clearErrors();
       userContext.clearErrors();
     }
-
     // eslint-disable-next-line
   }, [authContext.error, userContext.error]);
 

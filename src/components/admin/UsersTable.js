@@ -1,8 +1,5 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-
-import AdminContext from "../../context/admin/adminContext";
-import AuthContext from "../../context/auth/authContext";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 
@@ -12,6 +9,10 @@ import RegisterIcon from "@mui/icons-material/Storage";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ClearIcon from "@mui/icons-material/LayersClear";
 import { Button, ButtonGroup } from "@mui/material";
+
+import AdminContext from "../../context/admin/adminContext";
+import AuthContext from "../../context/auth/authContext";
+
 import ModifyUser from "./ModifyUser";
 
 const columns = [
@@ -30,20 +31,26 @@ const UsersTable = () => {
   const adminContext = useContext(AdminContext);
   const { users, deleteUser, setCurrentUser, clearCurrUser } = adminContext;
   const authContext = useContext(AuthContext);
-  const { isAdmin, isGuest, verifyToken, isAuthenticated } = authContext;
+  const { verifyToken } = authContext;
 
   const [selectedRows, setSelectedRows] = useState();
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [modUserDialog, setModUserDialog] = useState(false);
 
-  useEffect(() => {
-    if (!isAuthenticated | isGuest | !isAdmin) {
-      navigate("/");
-    } else {
-      verifyToken();
-    }
-    // eslint-disable-next-line
-  }, [isAdmin, isGuest, isAuthenticated]);
+  // useEffect(() => {
+  //   console.log("in user table , hasPermission --->", hasPermission);
+  //   if (!hasPermission) {
+  //     navigate("/");
+  //   }
+  //   // eslint-disable-next-line
+  // }, [hasPermission]);
+
+  // useEffect(() => {
+  //   if (!isAuthenticated | isGuest | !isAdmin) {
+  //     navigate("/");
+  //   }
+  //   // eslint-disable-next-line
+  // }, [isAdmin, isGuest, isAuthenticated]);
 
   const reloadAfterModify = () => {
     setModUserDialog(false);
@@ -71,6 +78,7 @@ const UsersTable = () => {
   };
 
   const handleSelectionModelChange = (ids) => {
+    verifyToken();
     const selectedIDs = new Set(ids);
 
     const selectedRowData = rows.filter((row) => selectedIDs.has(row.id));

@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Spinner from "../../layout/Spinner";
 import AuthContext from "../../../context/auth/authContext";
 import AlertContext from "../../../context/alert/alertContext";
 import AdminContext from "../../../context/admin/adminContext";
+import useAdminGuard from "../../../hooks/useAdminGuard";
 
 import { Box } from "@mui/system";
 
@@ -16,10 +17,18 @@ const Users = (props) => {
   const adminContext = useContext(AdminContext);
 
   const { setAlert } = alertContext;
-  const { isAdmin, isGuest, verifyToken, isAuthenticated } = authContext;
+
+  const hasPermission = useAdminGuard();
 
   const { users, loading, getUsers, setLoader, currentUser } = adminContext;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!hasPermission) {
+      navigate("/");
+    }
+    // eslint-disable-next-line
+  }, [hasPermission]);
 
   useEffect(() => {
     if (authContext.error || adminContext.error) {
@@ -27,11 +36,6 @@ const Users = (props) => {
       setAlert(alert.msg, alert.type);
       authContext.clearErrors();
       adminContext.clearErrors();
-    }
-    if (!isAuthenticated | isGuest | !isAdmin) {
-      navigate("/");
-    } else {
-      verifyToken();
     }
 
     if (users.length === 0) {
@@ -41,27 +45,16 @@ const Users = (props) => {
     }
 
     // eslint-disable-next-line
-  }, [
-    isAdmin,
-    isGuest,
-    adminContext.error,
-    authContext.error,
-    users,
-    currentUser,
-  ]);
+  }, [adminContext.error, authContext.error, users, currentUser]);
 
-  if (isAdmin) {
-    if (loading) {
-      return <Spinner />;
-    } else {
-      return (
-        <Box>
-          <UsersTable />
-        </Box>
-      );
-    }
+  if (loading) {
+    return <Spinner />;
   } else {
-    return <Navigate to='/login' />;
+    return (
+      <Box>
+        <UsersTable />
+      </Box>
+    );
   }
 };
 

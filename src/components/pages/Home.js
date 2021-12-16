@@ -53,7 +53,7 @@ const Home = (props) => {
   const userContext = useContext(UserContext);
 
   const { setAlert } = alertContext;
-  const { isAdmin, isGuest, isAuthenticated, verifyToken } = authContext;
+  const { isGuest, isAuthenticated } = authContext;
 
   const { loading } = adminContext;
   const { getSpotData, spots } = userContext;
@@ -63,10 +63,10 @@ const Home = (props) => {
   const [eValue, setEValue] = useState(addDays(Date.now(), 2));
 
   useEffect(() => {
-    if (!isAuthenticated && !isGuest) {
+    if (!(isAuthenticated || isGuest)) {
       navigate("login");
-    } else {
-      verifyToken();
+      // } else {
+      //   verifyToken();
     }
     // eslint-disable-next-line
   }, [isAuthenticated, isGuest]);
@@ -82,13 +82,7 @@ const Home = (props) => {
       userContext.clearErrors();
     }
     // eslint-disable-next-line
-  }, [
-    isAdmin,
-    isGuest,
-    adminContext.error,
-    authContext.error,
-    userContext.error,
-  ]);
+  }, [adminContext.error, authContext.error, userContext.error]);
 
   useEffect(() => {
     getSpotData(sValue, eValue);

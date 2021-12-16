@@ -37,4 +37,4 @@ export const CLEAR_CONTRACT = "CLEAR_CONTRACT";
 export const DELETE_CONTRACT = "DELETE_CONTRACT";
 export const UPDATE_CONTRACT = "UPDATE_CONTRACT";
 export const GET_SPOT_DATA = "GET_SPOT_DATA";
-export const NEED_CLEAN = "NEED_CLEAN";
+export const SET_AUTH_ALERT = "SET_AUTH_ALERT";

@@ -3,9 +3,14 @@ import { Navigate } from "react-router-dom";
 import AuthContext from "../../context/auth/authContext";
 
 function RequireAdmin({ children }) {
-  // console.log("in RequireAdmin");
   const authContext = useContext(AuthContext);
-  const { isAdmin } = authContext;
-  return isAdmin ? children : <Navigate to='/' />;
+  const { isAdmin, setAuthAlert } = authContext;
+  console.log("in RequireAdmin", isAdmin);
+  if (!isAdmin) {
+    setAuthAlert("Admin only !", "danger");
+    return <Navigate to='/' />;
+  } else {
+    return children;
+  }
 }
 export default RequireAdmin;

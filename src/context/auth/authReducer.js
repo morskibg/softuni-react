@@ -11,6 +11,7 @@ import {
   GET_USER_DATA,
   VERIFY_TOKEN,
   START_LOADER,
+  SET_AUTH_ALERT,
 } from "../types";
 
 const authReducer = (state, action) => {
@@ -29,6 +30,7 @@ const authReducer = (state, action) => {
 
       return {
         ...state,
+        token: action.payload.data.token,
         isAuthenticated: true,
         isAdmin: action.payload.data.isAdmin,
         isGuest: action.payload.data.isGuest,
@@ -53,6 +55,7 @@ const authReducer = (state, action) => {
         ...state,
         token: null,
         isAuthenticated: false,
+        isGuest: false,
         loading: false,
         user: null,
         error: action.payload.alert,
@@ -61,6 +64,11 @@ const authReducer = (state, action) => {
       return {
         ...state,
         error: null,
+      };
+    case SET_AUTH_ALERT:
+      return {
+        ...state,
+        error: action.payload.alert,
       };
 
     case GET_ROLE:

@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import AuthContext from "./authContext";
@@ -14,6 +14,7 @@ import {
   GET_USER_DATA,
   VERIFY_TOKEN,
   START_LOADER,
+  SET_AUTH_ALERT,
 } from "../types";
 
 const AuthState = (props) => {
@@ -36,6 +37,18 @@ const AuthState = (props) => {
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
+  const [currentStorage, SyncWithLocalStorage] = useState(localStorage || {});
+
+  const handleStorageChange = (e) => {
+    console.log("from local storage event handler");
+    verifyToken();
+    SyncWithLocalStorage({ ...localStorage });
+  };
+
+  useEffect(() => {
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   const errorHandler = (error, reducerType) => {
     if (error.response) {
@@ -77,11 +90,14 @@ const AuthState = (props) => {
 
   const verifyToken = () => {
     try {
+      getUserData();
       const token = localStorage.getItem("token");
       const decoded = jwt_decode(token);
       const isValidToken = decoded.exp > ~~(Date.now() / 1000);
       const isAdmin = decoded.is_admin;
       const isGuest = decoded.is_guest;
+      // console.log("in verify token", token);
+      // console.log("in verify token", decoded);
       dispatch({
         type: VERIFY_TOKEN,
         payload: { isValidToken, isAdmin, isGuest },
@@ -176,6 +192,11 @@ const AuthState = (props) => {
   };
 
   const startLoader = () => dispatch({ type: START_LOADER });
+  const setAuthAlert = (msg, type) => {
+    setTimeout(() => {
+      dispatch({ type: SET_AUTH_ALERT, payload: { alert: { msg, type } } });
+    }, 1000);
+  };
   return (
     <AuthContext.Provider
       value={{
@@ -193,6 +214,7 @@ const AuthState = (props) => {
         getUserData,
         verifyToken,
         startLoader,
+        setAuthAlert,
       }}
     >
       {props.children}
