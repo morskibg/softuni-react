@@ -48,14 +48,14 @@ const ContractForm = () => {
     // eslint-disable-next-line
   }, [selectedContract]);
 
-  useEffect(() => {
-    if (!isAuthenticated | isGuest) {
-      navigate("/");
-    } else {
-      verifyToken();
-    }
-    // eslint-disable-next-line
-  }, [isAuthenticated, isGuest, watch("price")]);
+  // useEffect(() => {
+  //   if (!isAuthenticated | isGuest) {
+  //     navigate("/");
+  //   } else {
+  //     verifyToken();
+  //   }
+  //   // eslint-disable-next-line
+  // }, [isAuthenticated, isGuest, watch("price")]);
 
   useEffect(() => {
     if (getValues()["startDate"] && getValues()["endDate"]) {

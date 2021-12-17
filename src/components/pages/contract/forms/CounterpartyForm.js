@@ -2,6 +2,7 @@ import React, { useContext, useEffect, Fragment } from "react";
 // import { useNavigate } from "react-router-dom";
 
 import { Controller, useFormContext } from "react-hook-form";
+// import useUserGuard from "../../../../hooks/useUserGuard";
 import Spinner from "../../../layout/Spinner";
 import { TextField } from "@mui/material";
 
@@ -24,6 +25,15 @@ const CounterpartyForm = () => {
   } = userContext;
   const authContext = useContext(AuthContext);
   const { isAuthenticated, isGuest } = authContext;
+  // const hasUserPermission = useUserGuard();
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (!hasUserPermission) {
+  //     navigate("/");
+  //   }
+  //   // eslint-disable-next-line
+  // }, [hasUserPermission]);
 
   useEffect(() => {
     if (!selectedContract) {

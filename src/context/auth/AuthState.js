@@ -89,6 +89,7 @@ const AuthState = (props) => {
   };
 
   const verifyToken = () => {
+    console.log("IN VERIFY TOKEN");
     try {
       getUserData();
       const token = localStorage.getItem("token");
@@ -157,6 +158,7 @@ const AuthState = (props) => {
           msg: "",
         },
       });
+      getUserData();
     } catch (err) {
       // console.log("🚀 ~ file: AuthState.js ~ line 134 ~ login ~ err", err);
       errorHandler(err, LOGIN_FAIL);
@@ -178,9 +180,9 @@ const AuthState = (props) => {
 
   const getUserData = async () => {
     setAuthHeader(localStorage.token);
-
     try {
       const res = await axios.get("users/me");
+      // console.log(res.data);
 
       dispatch({
         type: GET_USER_DATA,

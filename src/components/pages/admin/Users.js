@@ -18,17 +18,17 @@ const Users = (props) => {
 
   const { setAlert } = alertContext;
 
-  const hasPermission = useAdminGuard();
+  const hasAdminPermission = useAdminGuard();
 
   const { users, loading, getUsers, setLoader, currentUser } = adminContext;
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!hasPermission) {
+    if (!hasAdminPermission) {
       navigate("/");
     }
     // eslint-disable-next-line
-  }, [hasPermission]);
+  }, [hasAdminPermission]);
 
   useEffect(() => {
     if (authContext.error || adminContext.error) {

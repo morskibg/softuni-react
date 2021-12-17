@@ -44,7 +44,7 @@ const darkTheme = createTheme({
       // secondary: grey[500],
     },
     lineChart: {
-      first: "a23a44",
+      first: "#9900FF",
       second: "#aa4446",
       third: "#ff7139",
       fourth: "#29BF12",
@@ -84,7 +84,7 @@ const lightTheme = createTheme({
       // secondary: grey[500],
     },
     lineChart: {
-      first: "a23a44",
+      first: "#33FFFF",
       second: "#fff",
       third: "#ff7139",
       fourth: "#29BF12",

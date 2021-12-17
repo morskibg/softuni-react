@@ -19,14 +19,15 @@ import {
 } from "../types";
 
 const userReducer = (state, action) => {
-  // console.log(
-  //   "🚀 ~ file: userReducer.js ~ line 18 ~ userReducer ~ action",
-  //   action.type
-  // );
+  console.log(
+    "🚀 ~ file: userReducer.js ~ line 18 ~ userReducer ~ action",
+    action.type
+  );
   switch (action.type) {
     case AUTH_ERROR:
-      //console.log("in user AUTH ERROR reducer ---> ", action.payload);
+      // console.log("in user AUTH ERROR reducer ---> ", action.payload);
       localStorage.removeItem("token");
+
       return {
         ...state,
         loading: false,

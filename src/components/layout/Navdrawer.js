@@ -116,7 +116,7 @@ const Navdrawer = (props) => {
   const themeContext = useContext(ThemeContext);
 
   const { setAlert } = alertContext;
-  const { isAuthenticated } = authContext;
+  const { isAuthenticated, user } = authContext;
 
   // const { getUsers, setLoader } = adminContext;
   const { toggle, themeMode } = themeContext;
@@ -219,6 +219,7 @@ const Navdrawer = (props) => {
           >
             Power App
           </Typography>
+          <Typography variant='h6'>Welcome, {user?.full_name ?? ""}</Typography>
           {isAuthenticated ? (
             <Button
               color='inherit'
@@ -226,9 +227,7 @@ const Navdrawer = (props) => {
               endIcon={<LogoutIcon />}
               component={Link}
               to='logout'
-            >
-              Logout
-            </Button>
+            ></Button>
           ) : (
             // <Button color='inherit' alt='logo' component={Link} to='logout'>
             //   <LogoutIcon />

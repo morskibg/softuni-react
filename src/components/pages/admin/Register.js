@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
+import useAdminGuard from "../../../hooks/useAdminGuard";
 
 import { Box } from "@mui/system";
 import ClearIcon from "@mui/icons-material/LayersClear";
@@ -34,7 +35,16 @@ const Register = () => {
   const { setAlert } = alertContext;
   const { isAdmin, isAuthenticated, getUserData, user, isGuest } = authContext;
   const { registerUser } = adminContext;
+  const hasAdminPermission = useAdminGuard();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!hasAdminPermission) {
+      navigate("/");
+    }
+
+    // eslint-disable-next-line
+  }, [hasAdminPermission]);
 
   useEffect(() => {
     if (authContext.error || adminContext.error) {
@@ -44,18 +54,18 @@ const Register = () => {
       authContext.clearErrors();
       adminContext.clearErrors();
     }
-    if (!isAdmin || !isAuthenticated || isGuest) {
-      navigate("/");
-    }
+    // if (!isAdmin || !isAuthenticated || isGuest) {
+    //   navigate("/");
+    // }
     if (!user) {
       getUserData();
     }
 
     // eslint-disable-next-line
   }, [
-    isAdmin,
-    isAuthenticated,
-    isGuest,
+    // isAdmin,
+    // isAuthenticated,
+    // isGuest,
     adminContext.error,
     authContext.error,
   ]);

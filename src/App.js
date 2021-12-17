@@ -45,9 +45,24 @@ const App = () => {
                   <Container />
                   <Header />
                   <Alerts />
-
                   <Routes>
                     <Route path='/' element={<Home />} />
+                    <Route
+                      path='login'
+                      element={
+                        <RequireAnonymous>
+                          <Login />
+                        </RequireAnonymous>
+                      }
+                    />
+                    <Route
+                      path='logout'
+                      element={
+                        <RequireAuth>
+                          <Logout />
+                        </RequireAuth>
+                      }
+                    />
                     <Route
                       path='admin/register'
                       element={
@@ -78,22 +93,6 @@ const App = () => {
                         <RequireNotGuest>
                           <RedactContract />
                         </RequireNotGuest>
-                      }
-                    />
-                    <Route
-                      path='login'
-                      element={
-                        <RequireAnonymous>
-                          <Login />
-                        </RequireAnonymous>
-                      }
-                    />
-                    <Route
-                      path='logout'
-                      element={
-                        <RequireAuth>
-                          <Logout />
-                        </RequireAuth>
                       }
                     />
                     <Route path='*' element={<NotFound />} />

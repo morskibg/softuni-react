@@ -3,7 +3,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
-
+import useUserGuard from "../../../hooks/useUserGuard";
 import AuthContext from "../../../context/auth/authContext";
 import UserContext from "../../../context/user/userContext";
 import AlertContext from "../../../context/alert/alertContext";
@@ -22,7 +22,7 @@ const RedactContract = () => {
     formState: { errors },
   } = methods;
   const authContext = useContext(AuthContext);
-  const { isAuthenticated, verifyToken } = authContext;
+  const { isAuthenticated, verifyToken, token } = authContext;
   const userContext = useContext(UserContext);
   const {
     getContracts,
@@ -31,17 +31,23 @@ const RedactContract = () => {
   } = userContext;
   const alertContext = useContext(AlertContext);
   const { setAlert } = alertContext;
+  const hasUserPermission = useUserGuard();
+
   const navigate = useNavigate();
-
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!hasUserPermission) {
       navigate("/");
-    } else {
-      verifyToken();
     }
-
     // eslint-disable-next-line
-  }, [isAuthenticated]);
+  }, [hasUserPermission]);
+
+  // useEffect(() => {
+  //   verifyToken();
+  //   if (!isAuthenticated) {
+  //     navigate("/");
+  //   }
+  //   // eslint-disable-next-line
+  // }, [isAuthenticated, token]);
 
   useEffect(() => {
     if (authContext.error || userContext.error) {

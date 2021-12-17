@@ -1,7 +1,8 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import axios from "axios";
 import AdminContext from "./adminContext";
 import adminReducer from "./adminReducer";
+import AuthContext from "../../context/auth/authContext";
 import setAuthHeader from "../../utils/setAuthHeader";
 import {
   REGISTER_SUCCESS,
@@ -31,8 +32,11 @@ const AdminState = (props) => {
   };
 
   const [state, dispatch] = useReducer(adminReducer, initialState);
+  const authContext = useContext(AuthContext);
+  const { verifyToken } = authContext;
 
   const errorHandler = (error, reducerType) => {
+    verifyToken();
     if (error.response) {
       // Request made and server responded
       if (error.response.status === 403 || error.response.status === 401) {

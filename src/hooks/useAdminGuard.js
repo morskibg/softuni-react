@@ -10,7 +10,6 @@ const useAdminGuard = () => {
   const { isAdmin, isAuthenticated } = authContext;
 
   useEffect(() => {
-    console.log("in useADMINGuard", isAdmin);
     const canPass = isAuthenticated && isAdmin;
     setHasPermission(canPass);
 

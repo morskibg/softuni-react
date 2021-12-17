@@ -1,7 +1,8 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import axios from "axios";
 import UserContext from "./userContext";
 import userReducer from "./userReducer";
+import AuthContext from "../../context/auth/authContext";
 import setAuthHeader from "../../utils/setAuthHeader";
 import { format } from "date-fns";
 import {
@@ -42,8 +43,11 @@ const UserState = (props) => {
   };
 
   const [state, dispatch] = useReducer(userReducer, initialState);
+  const authContext = useContext(AuthContext);
+  const { verifyToken } = authContext;
 
   const errorHandler = (error) => {
+    verifyToken();
     if (error.response) {
       // Request made and server responded
       if (error.response.status === 403 || error.response.status === 401) {

@@ -36,15 +36,15 @@ const ContractsTable = () => {
 
   const [selectionModel, setSelectionModel] = useState([]);
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/");
-    } else {
-      verifyToken();
-    }
-    return clearSelectedContract;
-    // eslint-disable-next-line
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     navigate("/");
+  //   } else {
+  //     verifyToken();
+  //   }
+  //   return clearSelectedContract;
+  //   // eslint-disable-next-line
+  // }, [isAuthenticated]);
 
   useEffect(() => {
     getContracts();
@@ -95,10 +95,6 @@ const ContractsTable = () => {
     const selectedIDs = new Set(ids);
     setSelectionModel(selectedIDs.values().next().value);
 
-    // console.log(
-    //   "🚀 ~ file: ContractsTable.js ~ line 103 ~ handleSelectionModelChange ~ rows",
-    //   ids
-    // );
     const selectedRowData = rows.filter((row) => selectedIDs.has(row.id));
     setSelectedRows(selectedRowData);
     const selectedContract = contracts.filter(
@@ -109,6 +105,7 @@ const ContractsTable = () => {
       setSelectedContract(selectedContract);
       setBtnDisabled(false);
     } else {
+      setSelectionModel([]);
       clearSelectedContract();
       setBtnDisabled(true);
     }

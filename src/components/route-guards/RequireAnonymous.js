@@ -3,9 +3,9 @@ import { Navigate } from "react-router-dom";
 import AuthContext from "../../context/auth/authContext";
 
 function RequireAnonymous({ children }) {
-  console.log("in RequireAnonymous");
   const authContext = useContext(AuthContext);
   const { isAuthenticated } = authContext;
+  console.log("in RequireAnonymous", isAuthenticated);
 
   return isAuthenticated ? <Navigate to='/' /> : children;
 }

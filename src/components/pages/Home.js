@@ -63,6 +63,7 @@ const Home = (props) => {
   const [eValue, setEValue] = useState(addDays(Date.now(), 2));
 
   useEffect(() => {
+    console.log("enterin home", isAuthenticated);
     if (!(isAuthenticated || isGuest)) {
       navigate("login");
       // } else {
@@ -214,7 +215,7 @@ const Home = (props) => {
               <Line
                 type='linear'
                 dataKey='DE_Pr'
-                stroke={theme.palette.success.main}
+                stroke={theme.palette.lineChart.first}
                 strokeWidth={3}
               />
             )}
