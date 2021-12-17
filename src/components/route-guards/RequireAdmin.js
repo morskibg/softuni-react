@@ -7,7 +7,6 @@ function RequireAdmin({ children }) {
   const { isAdmin, setAuthAlert } = authContext;
   console.log("in RequireAdmin", isAdmin);
   if (!isAdmin) {
-    console.log("dddddddddddddddddddddddddddddddddddddd");
     setAuthAlert("Admin only !", "danger");
     return <Navigate to='/' />;
   } else {

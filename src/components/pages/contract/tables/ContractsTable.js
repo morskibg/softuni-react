@@ -130,7 +130,7 @@ const ContractsTable = () => {
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
-        checkboxSelection
+        // checkboxSelection
         onSelectionModelChange={handleSelectionModelChange}
         selectionModel={selectionModel}
       />

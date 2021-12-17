@@ -63,7 +63,7 @@ const Home = (props) => {
   const [eValue, setEValue] = useState(addDays(Date.now(), 2));
 
   useEffect(() => {
-    console.log("enterin home", isAuthenticated);
+    // console.log("enterin home", isAuthenticated);
     if (!(isAuthenticated || isGuest)) {
       navigate("login");
       // } else {

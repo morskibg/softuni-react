@@ -229,7 +229,7 @@ const AdminState = (props) => {
   };
 
   const clearUsersFromState = () => {
-    console.log("in clearUsersFromState");
+    // console.log("in clearUsersFromState");
     dispatch({ type: CLEAR_USERS });
   };
 

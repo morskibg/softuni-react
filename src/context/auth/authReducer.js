@@ -15,7 +15,7 @@ import {
 } from "../types";
 
 const authReducer = (state, action) => {
-  console.log("in AUTH reducer", action.type);
+  // console.log("in AUTH reducer", action.type);
   switch (action.type) {
     case USER_LOADED:
       return {

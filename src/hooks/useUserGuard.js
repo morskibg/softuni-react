@@ -10,7 +10,7 @@ const useUserGuard = () => {
   const { isGuest, isAuthenticated } = authContext;
 
   useEffect(() => {
-    console.log("in useUserGuard", isGuest, isAuthenticated);
+    // console.log("in useUserGuard", isGuest, isAuthenticated);
     const canPass = isAuthenticated && !isGuest;
     setHasPermission(canPass);
 
