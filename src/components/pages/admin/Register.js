@@ -25,6 +25,7 @@ import "./Register.css";
 import AlertContext from "../../../context/alert/alertContext";
 import AuthContext from "../../../context/auth/authContext";
 import AdminContext from "../../../context/admin/adminContext";
+import isAdminHoc from "../../../hoc/isAdmin";
 import background from "../../../assets/login2.jpg";
 
 const Register = () => {
@@ -33,18 +34,18 @@ const Register = () => {
   const adminContext = useContext(AdminContext);
 
   const { setAlert } = alertContext;
-  const { isAdmin, isAuthenticated, getUserData, user, isGuest } = authContext;
+  const {  getUserData, user } = authContext;
   const { registerUser } = adminContext;
-  const hasAdminPermission = useAdminGuard();
+ 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!hasAdminPermission) {
-      navigate("/");
-    }
+  // useEffect(() => {
+  //   if (!hasAdminPermission) {
+  //     navigate("/");
+  //   }
 
-    // eslint-disable-next-line
-  }, [hasAdminPermission]);
+  //   // eslint-disable-next-line
+  // }, [hasAdminPermission]);
 
   useEffect(() => {
     if (authContext.error || adminContext.error) {
@@ -54,9 +55,7 @@ const Register = () => {
       authContext.clearErrors();
       adminContext.clearErrors();
     }
-    // if (!isAdmin || !isAuthenticated || isGuest) {
-    //   navigate("/");
-    // }
+    
     if (!user) {
       getUserData();
     }
@@ -281,4 +280,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default isAdminHoc(Register);

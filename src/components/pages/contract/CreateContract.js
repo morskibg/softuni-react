@@ -26,6 +26,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { Box } from "@mui/system";
 
 import { useNavigate } from "react-router-dom";
+import isNotGuest from "../../../hoc/isNotGuest";
 
 const CreateContract = () => {
   const authContext = useContext(AuthContext);
@@ -52,17 +53,17 @@ const CreateContract = () => {
 
   const theme = useTheme();
 
-  useEffect(() => {
-    if (!isAuthenticated | isGuest) {
-      navigate("/");
-    } else {
-      verifyToken();
-    }
-    return () => {
-      console.log("from MASTER form unmounting");
-    };
-    // eslint-disable-next-line
-  }, [isAuthenticated, isGuest]);
+  // useEffect(() => {
+  //   if (!isAuthenticated | isGuest) {
+  //     navigate("/");
+  //   } else {
+  //     verifyToken();
+  //   }
+  //   return () => {
+  //     console.log("from MASTER form unmounting");
+  //   };
+  //   // eslint-disable-next-line
+  // }, [isAuthenticated, isGuest]);
 
   useEffect(() => {
     setBtnDisabled(loading);
@@ -281,4 +282,4 @@ const CreateContract = () => {
   // }
 };
 
-export default CreateContract;
+export default isNotGuest(CreateContract);

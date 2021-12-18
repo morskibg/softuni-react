@@ -29,6 +29,7 @@ import { Box } from "@mui/system";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import isAnonymousHoc from "../../../hoc/isAnonymous";
 
 const Login = () => {
   // const theme = useTheme();
@@ -54,9 +55,9 @@ const Login = () => {
 
   useEffect(() => {
     // console.log("in LOGIN use effect", isAuthenticated);
-    if (isAuthenticated) {
-      navigate("/");
-    }
+    // if (isAuthenticated) {
+    //   navigate("/");
+    // }
 
     if (error === "Incorrect email or password") {
       setAlert(error, "danger");
@@ -121,7 +122,6 @@ const Login = () => {
     if (email === "" || password === "") {
       setAlert("Please fill in all fields", "danger");
     } else {
-      
       startLoader();
       login({
         email,
@@ -252,4 +252,4 @@ const Login = () => {
     );
   }
 };
-export default Login;
+export default isAnonymousHoc(Login);

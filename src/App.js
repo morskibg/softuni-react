@@ -42,19 +42,12 @@ const App = () => {
             <UserState>
               <Router>
                 <Fragment>
-                  <Container />
+                  <Container maxWidth='xl' />
                   <Header />
                   <Alerts />
                   <Routes>
                     <Route path='/' element={<Home />} />
-                    <Route
-                      path='login'
-                      element={
-                        <RequireAnonymous>
-                          <Login />
-                        </RequireAnonymous>
-                      }
-                    />
+                    <Route path='login' element={<Login />} />
                     <Route
                       path='logout'
                       element={
@@ -71,14 +64,7 @@ const App = () => {
                         </RequireAdmin>
                       }
                     />
-                    <Route
-                      path='admin/users'
-                      element={
-                        <RequireAdmin>
-                          <Users />
-                        </RequireAdmin>
-                      }
-                    />
+                    <Route path='admin/users' element={<Users />} />
                     <Route
                       path='create_contract'
                       element={

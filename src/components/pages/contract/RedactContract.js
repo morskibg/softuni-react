@@ -12,6 +12,7 @@ import CounterpartyForm from "./forms/CounterpartyForm";
 import ContractForm from "./forms/ContractForm";
 import "./css/RedactContract.css";
 import ContractsTable from "./tables/ContractsTable";
+import isNotGuest from "../../../hoc/isNotGuest";
 
 const RedactContract = () => {
   const methods = useForm();
@@ -96,4 +97,4 @@ const RedactContract = () => {
   );
 };
 
-export default RedactContract;
+export default isNotGuest(RedactContract);

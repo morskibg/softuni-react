@@ -9,6 +9,7 @@ import useAdminGuard from "../../../hooks/useAdminGuard";
 import { Box } from "@mui/system";
 
 import UsersTable from "../../admin/UsersTable";
+import isAdminHoc from "../../../hoc/isAdmin";
 import "./Users.css";
 
 const Users = (props) => {
@@ -23,14 +24,15 @@ const Users = (props) => {
   const { users, loading, getUsers, setLoader, currentUser } = adminContext;
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!hasAdminPermission) {
-      navigate("/");
-    }
-    // eslint-disable-next-line
-  }, [hasAdminPermission]);
+  // useEffect(() => {
+  //   if (!hasAdminPermission) {
+  //     navigate("/");
+  //   }
+  //   // eslint-disable-next-line
+  // }, [hasAdminPermission]);
 
   useEffect(() => {
+    console.log("in useeers");
     if (authContext.error || adminContext.error) {
       const alert = authContext.error ?? adminContext.error;
       setAlert(alert.msg, alert.type);
@@ -58,4 +60,5 @@ const Users = (props) => {
   }
 };
 
-export default Users;
+export default isAdminHoc(Users);
+// export default Users;

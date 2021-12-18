@@ -30,6 +30,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { addDays } from "date-fns";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import isLogedHoc from "../../hoc/isLoged";
 
 import "./Home.css";
 const markets = ["BG", "GR", "RO", "HU", "DE"];
@@ -53,7 +54,7 @@ const Home = (props) => {
   const userContext = useContext(UserContext);
 
   const { setAlert } = alertContext;
-  const { isGuest, isAuthenticated } = authContext;
+  const { isGuest, isAuthenticated, user, loadUser } = authContext;
 
   const { loading } = adminContext;
   const { getSpotData, spots } = userContext;
@@ -62,17 +63,21 @@ const Home = (props) => {
   const [sValue, setSValue] = useState(addDays(Date.now(), -2));
   const [eValue, setEValue] = useState(addDays(Date.now(), 2));
 
-  useEffect(() => {
-    // console.log("enterin home", isAuthenticated);
-    if (!(isAuthenticated || isGuest)) {
-      navigate("login");
-      // } else {
-      //   verifyToken();
-    }
-    // eslint-disable-next-line
-  }, [isAuthenticated, isGuest]);
+  // useEffect(() => {
+  //   // console.log("enterin home", isAuthenticated);
+  //   if (!(isAuthenticated || isGuest)) {
+  //     navigate("login");
+  //     // } else {
+  //     //   verifyToken();
+  //   }
+  //   // eslint-disable-next-line
+  // }, [isAuthenticated, isGuest]);
 
   useEffect(() => {
+    console.log("enterin home");
+    if (!user) {
+      loadUser();
+    }
     if (authContext.error || adminContext.error || userContext.error) {
       const alert =
         authContext.error ?? adminContext.error ?? userContext.error;
@@ -242,4 +247,4 @@ const Home = (props) => {
   }
 };
 
-export default Home;
+export default isLogedHoc(Home);
