@@ -14,6 +14,7 @@ import AdminContext from "../../context/admin/adminContext";
 import AuthContext from "../../context/auth/authContext";
 
 import ModifyUser from "./ModifyUser";
+import ConfirmDialog from "../layout/ConfirmDialog";
 
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
@@ -35,6 +36,7 @@ const UsersTable = () => {
 
   const [selectedRows, setSelectedRows] = useState();
   const [btnDisabled, setBtnDisabled] = useState(true);
+  const [modConfirmDialog, setConfirmDialog] = useState(false);
   const [modUserDialog, setModUserDialog] = useState(false);
 
   // useEffect(() => {
@@ -51,10 +53,6 @@ const UsersTable = () => {
   //   }
   //   // eslint-disable-next-line
   // }, [isAdmin, isGuest, isAuthenticated]);
-
-  const reloadAfterModify = () => {
-    setModUserDialog(false);
-  };
 
   const createRows = () => {
     const res = users.map((user) =>
@@ -74,8 +72,15 @@ const UsersTable = () => {
   };
 
   const handleModify = () => {
-    setModUserDialog(true);
+    setConfirmDialog(true);
   };
+  const closeAfterModify = () => {
+    setModUserDialog(false);
+    setBtnDisabled(true);
+  };
+  // const handleModify = () => {
+  //   setModUserDialog(true);
+  // };
 
   const handleSelectionModelChange = (ids) => {
     verifyToken();
@@ -98,8 +103,26 @@ const UsersTable = () => {
 
   const rows = createRows();
 
+  const handleConfirmModify = () => {
+    setConfirmDialog(false);
+    setModUserDialog(true);
+  };
+
+  const handleCancelModify = () => {
+    setConfirmDialog(false);
+    setBtnDisabled(true);
+  };
+
+  if (modConfirmDialog) {
+    return (
+      <ConfirmDialog
+        handleConfirm={handleConfirmModify}
+        handleCancel={handleCancelModify}
+      />
+    );
+  }
   if (modUserDialog) {
-    return <ModifyUser reloadCallback={reloadAfterModify} />;
+    return <ModifyUser handleModify={closeAfterModify} />;
   } else {
     return (
       <Box className='users-table-container'>

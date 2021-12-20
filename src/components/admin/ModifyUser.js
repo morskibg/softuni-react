@@ -19,7 +19,7 @@ import {
   Switch,
 } from "@mui/material";
 
-const ModifyUser = ({ reloadCallback }) => {
+const ModifyUser = ({ handleModify }) => {
   const adminContext = useContext(AdminContext);
   const authContext = useContext(AuthContext);
   const { currentUser, clearCurrUser, modifyUser } = adminContext;
@@ -56,11 +56,10 @@ const ModifyUser = ({ reloadCallback }) => {
   const handleClose = () => {
     setOpen(false);
     clearCurrUser();
-    reloadCallback();
+    handleModify();
   };
 
   const onSubmitHandler = (data, e) => {
-    
     const fullData = { ...currentUser, ...data };
     fullData.creator_email = user.email;
     modifyUser(fullData);

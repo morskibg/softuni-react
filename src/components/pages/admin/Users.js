@@ -4,6 +4,7 @@ import Spinner from "../../layout/Spinner";
 import AuthContext from "../../../context/auth/authContext";
 import AlertContext from "../../../context/alert/alertContext";
 import AdminContext from "../../../context/admin/adminContext";
+import { useAdminContext } from "../../../context/admin/adminContext";
 import useAdminGuard from "../../../hooks/useAdminGuard";
 
 import { Box } from "@mui/system";
@@ -15,13 +16,22 @@ import "./Users.css";
 const Users = (props) => {
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
-  const adminContext = useContext(AdminContext);
+  // const adminContext = useContext(AdminContext);
 
   const { setAlert } = alertContext;
 
   const hasAdminPermission = useAdminGuard();
 
-  const { users, loading, getUsers, setLoader, currentUser } = adminContext;
+  const {
+    users,
+    loading,
+    getUsers,
+    setLoader,
+    currentUser,
+    error: adminError,
+    clearErrors: clearAdminErrors,
+  } = useAdminContext();
+  // const { users, loading, getUsers, setLoader, currentUser } = adminContext;
   const navigate = useNavigate();
 
   // useEffect(() => {
@@ -33,11 +43,11 @@ const Users = (props) => {
 
   useEffect(() => {
     console.log("in useeers");
-    if (authContext.error || adminContext.error) {
-      const alert = authContext.error ?? adminContext.error;
+    if (authContext.error || adminError) {
+      const alert = authContext.error ?? adminError;
       setAlert(alert.msg, alert.type);
       authContext.clearErrors();
-      adminContext.clearErrors();
+      clearAdminErrors();
     }
 
     if (users.length === 0) {
@@ -47,7 +57,24 @@ const Users = (props) => {
     }
 
     // eslint-disable-next-line
-  }, [adminContext.error, authContext.error, users, currentUser]);
+  }, [adminError, authContext.error, users, currentUser]);
+  // useEffect(() => {
+  //   console.log("in useeers");
+  //   if (authContext.error || adminContext.error) {
+  //     const alert = authContext.error ?? adminContext.error;
+  //     setAlert(alert.msg, alert.type);
+  //     authContext.clearErrors();
+  //     adminContext.clearErrors();
+  //   }
+
+  //   if (users.length === 0) {
+  //     // console.log("from user use effect");
+  //     setLoader();
+  //     getUsers();
+  //   }
+
+  //   // eslint-disable-next-line
+  // }, [adminContext.error, authContext.error, users, currentUser]);
 
   if (loading) {
     return <Spinner />;

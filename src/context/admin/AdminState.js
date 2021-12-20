@@ -1,9 +1,10 @@
-import React, { useReducer, useContext } from "react";
+import React, { useReducer, useContext, useEffect } from "react";
 import axios from "axios";
 import AdminContext from "./adminContext";
 import adminReducer from "./adminReducer";
 import AuthContext from "../../context/auth/authContext";
 import setAuthHeader from "../../utils/setAuthHeader";
+import useLocalStorage from "../../hooks/useLocalStorage";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -32,6 +33,7 @@ const AdminState = (props) => {
   };
 
   const [state, dispatch] = useReducer(adminReducer, initialState);
+
   const authContext = useContext(AuthContext);
   const { verifyToken } = authContext;
 
